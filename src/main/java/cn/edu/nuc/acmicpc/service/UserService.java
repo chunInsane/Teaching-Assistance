@@ -1,6 +1,9 @@
 package cn.edu.nuc.acmicpc.service;
 
-import cn.edu.nuc.acmicpc.dto.user.UserDto;
+
+import cn.edu.nuc.acmicpc.dto.UserDto;
+
+import java.util.Map;
 
 /**
  * Created with IDEA
@@ -14,5 +17,7 @@ public interface UserService {
     void updateUser(UserDto userDto);
 
     UserDto getUserDtoByUsername(String username);
+
+    void updateUserByUserId(Long userId, Map<String, Object> params);
 
 }

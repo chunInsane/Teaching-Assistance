@@ -16,7 +16,6 @@ public class User implements Serializable {
     private Timestamp createTime;
 
     //user profile
-    private String studentId;
     private String school;
     private Integer departmentId;
     private String mobilePhone;
@@ -36,7 +35,6 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", createTime=" + createTime +
-                ", studentId='" + studentId + '\'' +
                 ", school='" + school + '\'' +
                 ", departmentId=" + departmentId +
                 ", mobilePhone='" + mobilePhone + '\'' +
@@ -67,10 +65,6 @@ public class User implements Serializable {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
     }
 
     public void setSchool(String school) {
@@ -127,10 +121,6 @@ public class User implements Serializable {
 
     public Timestamp getCreateTime() {
         return createTime;
-    }
-
-    public String getStudentId() {
-        return studentId;
     }
 
     public String getSchool() {

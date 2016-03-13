@@ -1,42 +1,42 @@
-package cn.edu.nuc.acmicpc.model;
+package cn.edu.nuc.acmicpc.dto;
 
-import cn.edu.nuc.acmicpc.dto.CodeDto;
-
-import java.io.Serializable;
+import cn.edu.nuc.acmicpc.model.Code;
 
 /**
- * Source code information
+ * Created with IDEA
+ * User: chuninsane
+ * Date: 2016/3/13
  */
-public class Code implements Serializable {
+public class CodeDto {
 
     private Long codeId;
     private String content;
     private boolean share;
 
-    public Code() {
+    public CodeDto() {
     }
 
-    public Code(CodeDto codeDto) {
-        this.codeId = codeDto.getCodeId();
-        this.content = codeDto.getContent();
-        this.share = codeDto.isShare();
+    public CodeDto(Code code) {
+        this.codeId = code.getCodeId();
+        this.content = code.getContent();
+        this.share = code.isShare();
     }
 
     @Override
     public String toString() {
-        return "Code{" +
-                "codeId='" + codeId + '\'' +
+        return "CodeDto{" +
+                "codeId=" + codeId +
                 ", content='" + content + '\'' +
                 ", share=" + share +
                 '}';
     }
 
-    public void setCodeId(Long codeId) {
-        this.codeId = codeId;
-    }
-
     public Long getCodeId() {
         return codeId;
+    }
+
+    public void setCodeId(Long codeId) {
+        this.codeId = codeId;
     }
 
     public String getContent() {

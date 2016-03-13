@@ -3,7 +3,7 @@ package cn.edu.nuc.acmicpc.common.settings;
 import cn.edu.nuc.acmicpc.common.exception.AppException;
 import cn.edu.nuc.acmicpc.common.settings.entity.EmailSetting;
 import cn.edu.nuc.acmicpc.common.settings.entity.JudgeSetting;
-import cn.edu.nuc.acmicpc.dto.other.SettingDto;
+import cn.edu.nuc.acmicpc.form.dto.other.SettingDto;
 import cn.edu.nuc.acmicpc.service.SettingService;
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;

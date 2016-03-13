@@ -8,7 +8,7 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-      <java-version>1.8</java-version>
+      <java-version>1.7</java-version>
       <mysql.version>5.1.33</mysql.version>
       <spring.version>4.1.1.RELEASE</spring.version>
       <org.slf4j.version>1.6.2</org.slf4j.version>
@@ -202,16 +202,6 @@
                     <source>${java-version}</source>
                     <target>${java-version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>

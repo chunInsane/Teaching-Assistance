@@ -1,7 +1,7 @@
 package cn.edu.nuc.acmicpc.service.impl;
 
 import cn.edu.nuc.acmicpc.common.exception.AppException;
-import cn.edu.nuc.acmicpc.dto.other.SettingDto;
+import cn.edu.nuc.acmicpc.form.dto.other.SettingDto;
 import cn.edu.nuc.acmicpc.mapper.SettingMapper;
 import cn.edu.nuc.acmicpc.service.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class SettingServiceImpl implements SettingService {
     private SettingMapper settingMapper = null;
 
     @Override
-    public SettingDto getSettingDto(Integer settingId) {
+    public SettingDto getSettingDto(Long settingId) {
         if (settingId == null)
             throw new AppException("settingId is null");
         return settingMapper.getSettingDto(settingId);

@@ -1,6 +1,6 @@
 package cn.edu.nuc.acmicpc.mapper;
 
-import cn.edu.nuc.acmicpc.dto.other.SettingDto;
+import cn.edu.nuc.acmicpc.form.dto.other.SettingDto;
 
 /**
  * Created with IDEA
@@ -14,7 +14,7 @@ public interface SettingMapper {
      * @param settingId
      * @return
      */
-    SettingDto getSettingDto(Integer settingId);
+    SettingDto getSettingDto(Long settingId);
 
     /**
      * update setting

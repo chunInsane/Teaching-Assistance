@@ -2,10 +2,10 @@ package cn.edu.nuc.acmicpc.web.controller.user;
 
 import cn.edu.nuc.acmicpc.common.constant.StatusConstant;
 import cn.edu.nuc.acmicpc.common.util.ValidateUtil;
-import cn.edu.nuc.acmicpc.dto.other.ResultDto;
-import cn.edu.nuc.acmicpc.dto.user.LoginUserDto;
-import cn.edu.nuc.acmicpc.dto.user.RegisterUserDto;
-import cn.edu.nuc.acmicpc.dto.user.UserDto;
+import cn.edu.nuc.acmicpc.dto.UserDto;
+import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
+import cn.edu.nuc.acmicpc.form.dto.user.LoginUserDto;
+import cn.edu.nuc.acmicpc.form.dto.user.RegisterUserDto;
 import cn.edu.nuc.acmicpc.model.Setting;
 import cn.edu.nuc.acmicpc.service.*;
 import com.alibaba.fastjson.JSON;

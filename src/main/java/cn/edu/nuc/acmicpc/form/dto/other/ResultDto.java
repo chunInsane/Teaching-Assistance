@@ -1,4 +1,4 @@
-package cn.edu.nuc.acmicpc.dto.other;
+package cn.edu.nuc.acmicpc.form.dto.other;
 
 import cn.edu.nuc.acmicpc.common.constant.StatusConstant;
 

@@ -8,20 +8,20 @@ package cn.edu.nuc.acmicpc.common.settings;
  */
 public enum SettingType {
 
-    HOST(1), ENCODING(2), UPLOAD_FOLDER(3), PICTURE_FOLDER(4), JUDGE_CORE(5),
-    DATA_PATH(6), WORK_PATH(7), JUDGES(8), EMAIL(9), RECORD_PER_PAGE(10);
+    HOST(1L), ENCODING(2L), UPLOAD_FOLDER(3L), PICTURE_FOLDER(4L), JUDGE_CORE(5L),
+    DATA_PATH(6L), WORK_PATH(7L), JUDGES(8L), EMAIL(9L), RECORD_PER_PAGE(10L);
 
-    private Integer typeId;
+    private Long typeId;
 
-    SettingType(Integer typeId) {
+    SettingType(Long typeId) {
         this.typeId = typeId;
     }
 
-    public Integer getTypeId() {
+    public Long getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Integer typeId) {
+    public void setTypeId(Long typeId) {
         this.typeId = typeId;
     }
 }

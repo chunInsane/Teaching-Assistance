@@ -1,4 +1,4 @@
-package cn.edu.nuc.acmicpc.dto;
+package cn.edu.nuc.acmicpc.form.dto;
 
 import java.io.Serializable;
 

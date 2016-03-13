@@ -1,4 +1,4 @@
-package cn.edu.nuc.acmicpc.dto.user;
+package cn.edu.nuc.acmicpc.dto;
 
 import java.sql.Timestamp;
 
@@ -166,3 +166,4 @@ public class UserDto {
         this.type = type;
     }
 }
+
