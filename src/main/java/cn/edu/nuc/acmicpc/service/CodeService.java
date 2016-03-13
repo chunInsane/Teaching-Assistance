@@ -17,13 +17,13 @@ public interface CodeService {
      * @param codeId
      * @return
      */
-    public CodeDto getCodeDtoByCodeId(Integer codeId);
+    public CodeDto getCodeDtoByCodeId(Long codeId);
 
     /**
      * Create a new code entity by codeDto
      * @param codeDto
      * @return
      */
-    public Long createNewCode(CodeDto codeDto);
+    public Long createCode(CodeDto codeDto);
 
 }

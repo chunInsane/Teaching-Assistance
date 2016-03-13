@@ -9,12 +9,20 @@ package cn.edu.nuc.acmicpc.service;
 public interface CompileInfoService {
 
     /**
+     * Create a new compile info record.
+     *
+     * @param content
+     * @return
+     */
+    public Long createCompileInfo(String content);
+
+    /**
      * Get compile info by compile info id.
      *
      * @param compileInfoId
      * @return
      */
-    public String getCompileInfo(Integer compileInfoId);
+    public String getCompileInfo(Long compileInfoId);
 
     /**
      * Update compile info.
@@ -24,11 +32,4 @@ public interface CompileInfoService {
      */
     public void updateCompileInfoContent(Long compileInfoId, String content);
 
-    /**
-     * Create a new compile info record.
-     *
-     * @param content
-     * @return
-     */
-    public Long createCompileInfo(String content);
 }

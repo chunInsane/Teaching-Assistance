@@ -6,6 +6,7 @@ import java.sql.Timestamp;
  * Created with IDEA
  * User: chuninsane
  * Date: 2016/3/8
+ * User dto
  */
 public class UserDto {
 

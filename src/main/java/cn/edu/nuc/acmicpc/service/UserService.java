@@ -2,22 +2,79 @@ package cn.edu.nuc.acmicpc.service;
 
 
 import cn.edu.nuc.acmicpc.dto.UserDto;
+import cn.edu.nuc.acmicpc.web.common.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created with IDEA
  * User: chuninsane
  * Date: 2016/3/8
+ * User service interface
  */
 public interface UserService {
 
-    void createUser(UserDto userDto);
+    /**
+     * Get userDto by user id
+     * @param userId
+     * @return
+     */
+    public UserDto getUserByUserId(Long userId);
 
-    void updateUser(UserDto userDto);
+    /**
+     * Get userDto by username
+     * @param username
+     * @return
+     */
+    public UserDto getUserByUsername(String username);
 
-    UserDto getUserDtoByUsername(String username);
+    /**
+     * Update user information by userDto
+      * @param userDto
+     */
+    public void updateUser(UserDto userDto);
 
-    void updateUserByUserId(Long userId, Map<String, Object> params);
+    /**
+     * Create new user record
+     * @param userDto
+     */
+    public Long createUser(UserDto userDto);
+
+    /**
+     * Counts the number of users fit in condition
+     * @param condition
+     * @return
+     */
+    public Long count(Map<String, Object> condition);
+
+    /**
+     * Get userDtos fit in condition and page range
+     * @param condition
+     * @param pageInfo
+     * @return
+     */
+    public List<UserDto> getUsers(Map<String, Object> condition, PageInfo pageInfo);
+
+    /**
+     * Update some fields of user according the user id
+     * @param userId
+     * @param params
+     */
+    public void updateUserByUserId(Long userId, Map<String, Object> params);
+
+    /**
+     * Check whether a user by userId
+     * @param userId
+     * @return
+     */
+    public Boolean isExistUser(Long userId);
+
+    /**
+     * Check whether a user by username
+     * @param username
+     * @return
+     */
+    public Boolean isExistUsers(String username);
 
 }
