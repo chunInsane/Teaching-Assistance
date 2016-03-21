@@ -1,5 +1,6 @@
 package cn.edu.nuc.acmicpc.web.controller.user;
 
+import cn.edu.nuc.acmicpc.common.constant.SessionConstant;
 import cn.edu.nuc.acmicpc.common.constant.StatusConstant;
 import cn.edu.nuc.acmicpc.common.util.ValidateUtil;
 import cn.edu.nuc.acmicpc.dto.UserDto;
@@ -55,17 +56,16 @@ public class UserController {
             resultDto.setStatus(StatusConstant.SERVER_ERROR);
             resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
         } else {
-            UserDto userDto = userService.getUserDtoByUsername(loginUserDto.getUserName());
+            UserDto userDto = userService.getUserByUsername(loginUserDto.getUserName());
             if (userDto == null || Objects.equals(userDto.getPassword(), loginUserDto.getPassword())) {
                 Map<String, String> errors = new HashMap<>();
                 errors.put("password", "username and password do not match!");
                 resultDto.setStatus(StatusConstant.SERVER_ERROR);
                 resultDto.setErrors(errors);
             }
-            //update last login time
             userDto.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
             userService.updateUser(userDto);
-            session.setAttribute("currentUser", userDto);
+            session.setAttribute(SessionConstant.CURRENT_LOGIN_USER_KEY, userDto);
         }
         return JSON.toJSONString(resultDto);
     }
@@ -84,9 +84,27 @@ public class UserController {
             resultDto.setStatus(StatusConstant.SERVER_ERROR);
             resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
         } else {
-            //TODO
+            Map<String, String> errors = new HashMap<>();
+            UserDto userDto = userService.getUserByUsername(registerUserDto.getUserName());
+            resultDto.setStatus(StatusConstant.SERVER_ERROR);
+            if (null != userDto) {
+                errors.put("username", "this username already used!");
+                resultDto.setErrors(errors);
+            } else if (validateResult.hasErrors()) {
+                resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
+            } else if (Objects.equals(registerUserDto.getPassword(), registerUserDto.getPasswordConfirm())) {
+                errors.put("passwordConfirm", "password and passwordConfirm is not same!");
+                resultDto.setErrors(errors);
+            } else {
+                resultDto.setStatus(StatusConstant.SUCCESS);
+                UserDto newUser = new UserDto();
+                Timestamp currentTime = new Timestamp(new Date().getTime() / 1000 * 1000);
+                newUser.setUserName(registerUserDto.getUserName());
+                newUser.setPassword(registerUserDto.getPassword());
+                userService.createUser(newUser);
+            }
         }
-        return "";
+        return JSON.toJSONString(resultDto);
     }
 
 

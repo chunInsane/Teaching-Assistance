@@ -1,0 +1,14 @@
+/*.box
+*.bak
+*.sw[mnop]
+.DS_Store
+nohup.out
+*.pyc
+*.py~
+trunk/build/
+/.idea
+*.iml
+/out
+*.ipr
+*.iws
+target/

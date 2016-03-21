@@ -94,11 +94,16 @@ public class PageInfo {
             Long count, Long countPerPage, int displayDistance, Long currentPage) {
         countPerPage = countPerPage <= 0 ? 20 : countPerPage;
         currentPage = currentPage == null ? 1 : currentPage;
-
         Long totalPages = (count + countPerPage - 1) / countPerPage;
         totalPages = Math.max(1, totalPages);
         currentPage = Math.min(totalPages, Math.max(1, currentPage));
 
         return new PageInfo(currentPage, countPerPage, totalPages, displayDistance, count);
+    }
+
+    public static PageInfo buildPageInfo(Long count, Long currentPage, Long countPerPage,
+                                         Integer displayDistance) {
+        return PageInfo.create(count, countPerPage, displayDistance == null ? 2 : displayDistance,
+                currentPage);
     }
 }

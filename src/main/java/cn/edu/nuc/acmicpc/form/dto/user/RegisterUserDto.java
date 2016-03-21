@@ -13,13 +13,24 @@ public class RegisterUserDto {
 
     private String password;
 
+    private String passwordConfirm;
+
     @Override
     public String toString() {
         return "RegisterUserDto{" +
                 "userId=" + userId +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
+                ", passwordConfirm='" + passwordConfirm + '\'' +
                 '}';
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
     public Integer getUserId() {

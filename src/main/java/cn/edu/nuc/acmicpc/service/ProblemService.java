@@ -28,7 +28,7 @@ public interface ProblemService {
      * @param problemId
      * @return
      */
-    public ProblemDto getProblemDtoByProblemId(Integer problemId);
+    public ProblemDto getProblemDtoByProblemId(Long problemId);
 
     /**
      * Counts the number of problems fit in condition
