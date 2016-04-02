@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.acmicpc.mapper.CompileInfoMapper">
+
+    <!--resultMap-->
+    <resultMap id="compileInfoResultMap" type="CompileInfo">
+        <id column="compile_info_id" property="compileInfoId"/>
+        <result column="content" property="content"/>
+    </resultMap>
+
+    <insert id="createCompileInfo" parameterType="CompileInfo" useGeneratedKeys="true" keyProperty="compileInfoId">
+        insert into tb_compile_info(`content`)
+        value(#{content})
+    </insert>
+
+    <select id="getCompileInfo" parameterType="long" resultMap="compileInfoResultMap">
+        select compile_info_id, content
+        from tb_compile_info
+        where compile_info_id = #{compileInfoId}
+    </select>
+
+    <update id="updateCompileInfoContent" parameterType="CompileInfo">
+        update tb_compile_info
+        set `content` = #{content}
+        where compile_info_id = #{compileInfoId}
+    </update>
+</mapper>

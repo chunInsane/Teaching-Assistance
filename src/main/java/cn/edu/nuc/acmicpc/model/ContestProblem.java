@@ -7,9 +7,9 @@ import java.io.Serializable;
  */
 public class ContestProblem implements Serializable {
 
-    private Integer contestProblemId;
-    private Integer contestId;
-    private Integer problemId;
+    private Long contestProblemId;
+    private Long contestId;
+    private Long problemId;
     private Integer order;
 
     @Override
@@ -22,28 +22,28 @@ public class ContestProblem implements Serializable {
                 '}';
     }
 
-    public Integer getContestProblemId() {
-        return contestProblemId;
-    }
-
-    public void setContestProblemId(Integer contestProblemId) {
-        this.contestProblemId = contestProblemId;
-    }
-
-    public Integer getContestId() {
+    public Long getContestId() {
         return contestId;
     }
 
-    public void setContestId(Integer contestId) {
+    public void setContestId(Long contestId) {
         this.contestId = contestId;
     }
 
-    public Integer getProblemId() {
+    public Long getProblemId() {
         return problemId;
     }
 
-    public void setProblemId(Integer problemId) {
+    public void setProblemId(Long problemId) {
         this.problemId = problemId;
+    }
+
+    public Long getContestProblemId() {
+        return contestProblemId;
+    }
+
+    public void setContestProblemId(Long contestProblemId) {
+        this.contestProblemId = contestProblemId;
     }
 
     public Integer getOrder() {

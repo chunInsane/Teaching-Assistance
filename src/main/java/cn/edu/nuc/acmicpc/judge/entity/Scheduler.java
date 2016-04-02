@@ -1,7 +1,7 @@
 package cn.edu.nuc.acmicpc.judge.entity;
 
 import cn.edu.nuc.acmicpc.common.enums.JudgeReturnType;
-import cn.edu.nuc.acmicpc.form.dto.other.StatusDto;
+import cn.edu.nuc.acmicpc.dto.StatusDto;
 import cn.edu.nuc.acmicpc.service.StatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -16,5 +16,5 @@ public interface EmailService {
      * @param content
      * @return
      */
-    public Boolean send(String emailAddress, String title, String content);
+    public void send(String emailAddress, String title, String content);
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.acmicpc.mapper.ContestUserMapper">
+
+    <!--resultMap-->
+    <resultMap id="contestUserDtoResultMap" type="ContestUserDto">
+        <id column="contest_user_id" property="contestProblemId"/>
+        <result column="contest_id" property="contestId"/>
+        <result column="user_id" property="userId"/>
+        <result column="status" property="status"/>
+        <result column="comment" property="comment"/>
+    </resultMap>
+
+    <insert id="createContestUser" parameterType="ContestUserDto" useGeneratedKeys="true" keyProperty="contestUserId">
+       insert into tb_contest_user(
+        contest_id, user_id, status, comment
+       ) values (
+       #{contestId}, #{userId}, #{status}, #{comment}
+       )
+    </insert>
+
+    <delete id="removeContestUsersByContestId" parameterType="long">
+        delete from tb_contest_user
+        where contest_id = #{contestId}
+    </delete>
+</mapper>

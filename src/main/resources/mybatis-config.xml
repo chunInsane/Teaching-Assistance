@@ -13,5 +13,19 @@
         <setting name="autoMappingBehavior" value="FULL"/>
     </settings>
 
+    <typeAliases>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.UserDto" alias="UserDto"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.model.User" alias="User"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.model.Setting" alias="Setting"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.model.Code" alias="Code"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.LanguageDto" alias="LanguageDto"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.model.CompileInfo" alias="CompileInfo"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.ContestProblemDto" alias="ContestProblemDto"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.contest.ContestProblemDetailDto" alias="ContestProblemDetailDto"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.ContestUserDto" alias="ContestUserDto"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.DepartmentDto" alias="DepartmentDto"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.StatusDto" alias="StatusDto"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.ProblemDto" alias="ProblemDto"/>
+    </typeAliases>
 </configuration>
 

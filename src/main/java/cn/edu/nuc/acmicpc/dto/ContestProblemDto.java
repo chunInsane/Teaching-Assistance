@@ -9,8 +9,8 @@ public class ContestProblemDto {
 
     private Long contestProblemId;
     private Long contestId;
-    private Long order;
     private Long problemId;
+    private Integer order;
 
     @Override
     public String toString() {
@@ -38,11 +38,11 @@ public class ContestProblemDto {
         this.contestId = contestId;
     }
 
-    public Long getOrder() {
+    public Integer getOrder() {
         return order;
     }
 
-    public void setOrder(Long order) {
+    public void setOrder(Integer order) {
         this.order = order;
     }
 

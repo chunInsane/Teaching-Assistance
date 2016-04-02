@@ -1,6 +1,7 @@
 package cn.edu.nuc.acmicpc.service;
 
 import cn.edu.nuc.acmicpc.dto.CodeDto;
+import cn.edu.nuc.acmicpc.model.Code;
 
 import java.util.Map;
 
@@ -13,17 +14,17 @@ import java.util.Map;
 public interface CodeService {
 
     /**
-     * Get codeDto by code id
+     * Get code by code id
      * @param codeId
      * @return
      */
-    public CodeDto getCodeDtoByCodeId(Long codeId);
+    public Code getCodeByCodeId(Long codeId);
 
     /**
      * Create a new code entity by codeDto
-     * @param codeDto
+     * @param code
      * @return
      */
-    public Long createCode(CodeDto codeDto);
+    public Long createCode(Code code);
 
 }

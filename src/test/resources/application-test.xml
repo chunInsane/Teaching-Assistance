@@ -62,10 +62,4 @@
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
-
-    <bean id="mailAuthentication" class="cn.edu.nuc.acmicpc.model.MailObject.MailAuthentication">
-        <property name="username" value="chuninsane"/>
-        <property name="password" value="chuninsane314,"/>
-    </bean>
-
 </beans>

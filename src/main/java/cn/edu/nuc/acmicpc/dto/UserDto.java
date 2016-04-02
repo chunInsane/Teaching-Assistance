@@ -10,12 +10,11 @@ import java.sql.Timestamp;
  */
 public class UserDto {
 
-    private Integer userId;
+    private Long userId;
     private String userName; //user email
     private String password;
     private String nickname;
     private Timestamp createTime;
-    private String studentId;
     private String school;
     private Integer departmentId;
     private String mobilePhone;
@@ -34,7 +33,6 @@ public class UserDto {
                 ", password='" + password + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", createTime=" + createTime +
-                ", studentId='" + studentId + '\'' +
                 ", school='" + school + '\'' +
                 ", departmentId=" + departmentId +
                 ", mobilePhone='" + mobilePhone + '\'' +
@@ -47,11 +45,11 @@ public class UserDto {
                 '}';
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -85,14 +83,6 @@ public class UserDto {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
-    }
-
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
     }
 
     public String getSchool() {

@@ -1,4 +1,4 @@
-package cn.edu.nuc.acmicpc.form.dto.other;
+package cn.edu.nuc.acmicpc.dto;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

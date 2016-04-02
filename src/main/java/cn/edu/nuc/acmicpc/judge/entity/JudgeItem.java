@@ -1,6 +1,6 @@
 package cn.edu.nuc.acmicpc.judge.entity;
 
-import cn.edu.nuc.acmicpc.form.dto.other.StatusDto;
+import cn.edu.nuc.acmicpc.dto.StatusDto;
 import cn.edu.nuc.acmicpc.service.CompileInfoService;
 import cn.edu.nuc.acmicpc.service.ProblemService;
 import cn.edu.nuc.acmicpc.service.StatusService;

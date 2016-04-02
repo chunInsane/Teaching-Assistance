@@ -1,5 +1,4 @@
-package cn.edu.nuc.acmicpc.service;
-
+package cn.edu.nuc.acmicpc.mapper;
 
 import cn.edu.nuc.acmicpc.dto.StatusDto;
 
@@ -8,10 +7,10 @@ import java.util.List;
 /**
  * Created with IDEA
  * User: chuninsane
- * Date: 2016/3/8
- * status service interface
+ * Date: 16/4/2
+ * Status mapper.
  */
-public interface StatusService {
+public interface StatusMapper {
 
     /**
      * list user's tried problem id
@@ -78,4 +77,5 @@ public interface StatusService {
      * @return
      */
     public StatusDto createStatus(StatusDto status);
+
 }

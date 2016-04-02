@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.acmicpc.mapper.LanguageMapper">
+
+    <!--resultMap-->
+    <resultMap id="languageResultMap" type="LanguageDto">
+        <id column="language_id" property="languageId"/>
+        <result column="name" property="name"/>
+        <result column="extension" property="extension"/>
+        <result column="param" property="param"/>
+    </resultMap>
+
+    <select id="getLanguageList" resultMap="languageResultMap">
+        select language_id, name, extension, param
+        from tb_language
+    </select>
+
+    <select id="getExtension" parameterType="long" resultType="string">
+        select extension
+        from tb_language
+        where language_id = #{languageId}
+    </select>
+
+    <select id="getLanguageName" parameterType="long" resultType="string">
+        select `name`
+        from tb_language
+        where language_id = #{languageId}
+    </select>
+</mapper>

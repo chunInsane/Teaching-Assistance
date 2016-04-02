@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class CompileInfo implements Serializable {
 
-    private String compileInfoId;
+    private Long compileInfoId;
     private String content;
 
     @Override
@@ -18,11 +18,11 @@ public class CompileInfo implements Serializable {
                 '}';
     }
 
-    public String getCompileInfoId() {
+    public Long getCompileInfoId() {
         return compileInfoId;
     }
 
-    public void setCompileInfoId(String compileInfoId) {
+    public void setCompileInfoId(Long compileInfoId) {
         this.compileInfoId = compileInfoId;
     }
 

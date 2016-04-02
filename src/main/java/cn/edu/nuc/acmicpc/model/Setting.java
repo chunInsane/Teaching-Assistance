@@ -12,7 +12,7 @@ public class Setting implements Serializable {
 
     private Integer settingId;
     private String name;
-    private String description;
+        private String description;
     private String value;
 
     @Override

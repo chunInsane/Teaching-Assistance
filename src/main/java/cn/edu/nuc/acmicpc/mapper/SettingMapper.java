@@ -6,6 +6,7 @@ import cn.edu.nuc.acmicpc.form.dto.other.SettingDto;
  * Created with IDEA
  * User: chuninsane
  * Date: 2016/3/8
+ * Setting mapper.
  */
 public interface SettingMapper {
 

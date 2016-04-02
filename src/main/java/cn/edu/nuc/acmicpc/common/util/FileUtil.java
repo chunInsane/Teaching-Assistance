@@ -1,6 +1,7 @@
 package cn.edu.nuc.acmicpc.common.util;
 
 import cn.edu.nuc.acmicpc.common.exception.AppException;
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,11 +89,20 @@ public class FileUtil {
      * Delete specific directory
      * @param file
      */
-    private static void clearDirectory(File file) {
+    public static void clearDirectory(File file) {
         if (file.exists()) {
             deleteContents(file);
             file.delete();
         }
+    }
+
+    /**
+     * Delete specific directory by file name.
+     * @param filename
+     */
+    public static void clearDirectory(String filename) {
+        File file = new File(Preconditions.checkNotNull(filename));
+        clearDirectory(file);
     }
 
     /**

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.acmicpc.mapper.ContestProblemMapper">
+
+    <!--resultMap-->
+    <resultMap id="contestProblemDtoResultMap" type="ContestProblemDto">
+        <id column="contest_problem_id" property="contestProblemId"/>
+        <result column="contest_id" property="contestId"/>
+        <result column="problem_id" property="problemId"/>
+        <result column="order" property="order"/>
+    </resultMap>
+
+    <resultMap id="contestProblemDetailDtoResultMap" type="ContestProblemDetailDto">
+        <id column="problem_id" property="problemId"/>
+        <result column="order" property="order"/>
+        <result column="title" property="title"/>
+        <result column="is_spj" property="isSpj"/>
+        <result column="solved" property="solved"/>
+        <result column="tried" property="tried"/>
+        <result column="time_limit" property="timeLimit"/>
+        <result column="memory_limit" property="memoryLimit"/>
+        <result column="java_time_limit" property="javaTimeLimit"/>
+        <result column="java_memory_limit" property="javaMemoryLimit"/>
+        <result column="description" property="description"/>
+        <result column="input" property="input"/>
+        <result column="output" property="output"/>
+        <result column="sample_input" property="sampleInput"/>
+        <result column="sample_output" property="sampleOutput"/>
+        <result column="hint" property="hint"/>
+        <result column="source" property="source"/>
+    </resultMap>
+
+
+    <select id="getContestProblemDto" parameterType="long" resultMap="contestProblemDtoResultMap">
+        select contest_problem_id, contest_id, problem_id, `order`
+        from tb_contest_problem
+        where contest_problem_id = #{contestProblemId}
+    </select>
+
+    <select id="getContestProblemDetailDtoByContestId" parameterType="long" resultMap="contestProblemDetailDtoResultMap">
+        select
+        cp.problem_id, cp.order, p.title, p.is_spj, p.solved, p.tried, p.time_limit, p.memory_limit, p.java_time_limit,
+        p.java_memory_limit, p.description, p.input, p.output, p.sample_input, p.sample_output, p.hint, p.source
+        from tb_contest_problem as cp
+        left join tb_problem as p on cp.problem_id = p.problem_id
+        where cp.contest_id = #{contestId}
+    </select>
+
+    <delete id="removeContestProblemByContestId" parameterType="long">
+        delete from tb_contest_problem
+        where contest_id = #{contestId}
+    </delete>
+
+    <insert id="createContestProblem" parameterType="ContestProblemDto" useGeneratedKeys="true" keyProperty="contestProblemId">
+        insert into tb_contest_problem(
+        <trim suffixOverrides=",">
+            contest_id, problem_id, `order`
+        </trim>
+        ) values(
+        #{contestId}, #{problemId}, #{order}
+        )
+    </insert>
+
+    <select id="isExistContestProblem" parameterType="map" resultType="long">
+        select count(*)
+        from tb_contest_problem
+        where
+        <trim suffix="where" suffixOverrides=",">
+            <if test="contestId != null">contest_id = #{contestId}</if>
+            <if test="problemId != null">problem_id = #{problemId}</if>
+        </trim>
+    </select>
+</mapper>

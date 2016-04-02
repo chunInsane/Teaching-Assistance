@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.acmicpc.mapper.SettingMapper">
+
+    <!--resultMap-->
+    <resultMap id="settingResultMap" type="Setting">
+        <id column="setting_id" property="settingId"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="value" property="value"/>
+    </resultMap>
+
+    <select id="getSettingDto" parameterType="long" resultMap="settingResultMapper">
+      select setting_id, name, `description`, `value`
+      from tb_setting
+      where setting_id = #{settingId}
+    </select>
+
+    <update id="updateSetting" parameterType="Setting">
+        update tb_setting
+        set
+        <trim prefix="set" suffixOverrides=",">
+          <if test="name != null">`name` = #{name}</if>
+          <if test="description != null">`description` = #{description}</if>
+          <if test="value != null">`value` = #{value}</if>
+        </trim>
+        where
+        setting_id = #{settingId}
+    </update>
+</mapper>
+    

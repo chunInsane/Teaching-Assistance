@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Department implements Serializable {
 
-    private Integer departmentId;
+    private Long departmentId;
     private String name;
 
     @Override
@@ -18,7 +18,7 @@ public class Department implements Serializable {
                 '}';
     }
 
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -26,8 +26,7 @@ public class Department implements Serializable {
         this.name = name;
     }
 
-    public Integer getDepartmentId() {
-
+    public Long getDepartmentId() {
         return departmentId;
     }
 

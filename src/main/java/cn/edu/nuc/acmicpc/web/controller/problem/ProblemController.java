@@ -69,7 +69,5 @@ public class ProblemController {
         return "";
     }
 
-    public @ResponseBody String uploadProblemDataFile(@PathVariable Long problemId, @RequestBody(value = "uploadFiles", required = true, ))
-
 
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.acmicpc.mapper.CodeMapper">
+
+    <!--resultMap-->
+    <resultMap id="codeResultMap" type="Code">
+        <id column="code_id" property="codeId"/>
+        <result column="content" property="content"/>
+        <result column="share" property="share"/>
+    </resultMap>
+
+    <select id="getCodeByCodeId" parameterType="long" resultMap="codeResultMap">
+        select code_id, content, share
+        from tb_code
+        where code_id = #{codeId}
+    </select>
+
+    <insert id="createCode" parameterType="Code" useGeneratedKeys="true" keyProperty="codeId">
+        insert into tb_code(
+        <trim suffixOverrides=",">
+            <if test="content != null">`content`,</if>
+            <if test="share != null">`share`,</if>
+        </trim>
+        ) values (
+        <trim suffixOverrides=",">
+            <if test="content != null">#{content},</if>
+            <if test="share != null">#{share},</if>
+        </trim>
+        )
+    </insert>
+</mapper>

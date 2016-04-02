@@ -1,9 +1,11 @@
 package cn.edu.nuc.acmicpc.service.impl;
 
-import cn.edu.nuc.acmicpc.common.exception.AppException;
 import cn.edu.nuc.acmicpc.form.dto.other.SettingDto;
 import cn.edu.nuc.acmicpc.mapper.SettingMapper;
 import cn.edu.nuc.acmicpc.service.SettingService;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +13,9 @@ import org.springframework.stereotype.Service;
  * Created with IDEA
  * User: chuninsane
  * Date: 2016/3/8
+ * Setting service implement.
  */
-@Service
+@Service("settingService")
 public class SettingServiceImpl implements SettingService {
 
     @Autowired
@@ -20,15 +23,12 @@ public class SettingServiceImpl implements SettingService {
 
     @Override
     public SettingDto getSettingDto(Long settingId) {
-        if (settingId == null)
-            throw new AppException("settingId is null");
-        return settingMapper.getSettingDto(settingId);
+        return settingMapper.getSettingDto(checkNotNull(settingId));
     }
 
     @Override
     public void updateSetting(SettingDto settingDto) {
-        if (settingDto == null)
-            throw new AppException("settingDto is null");
+        checkArgument(checkNotNull(settingDto).getSettingId() != null, "settingId为空!");
         settingMapper.updateSetting(settingDto);
     }
 }

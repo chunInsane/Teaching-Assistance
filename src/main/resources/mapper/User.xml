@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.acmicpc.mapper.UserMapper">
+
+    <!--resultMap-->
+    <resultMap id="userDtoResultMapper" type="UserDto">
+        <id column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="create_time" property="createTime"/>
+        <result column="school" property="school"/>
+        <result column="department_id" property="departmentId"/>
+        <result column="mobile_phone" property="mobilePhone"/>
+        <result column="motto" property="motto"/>
+        <result column="sex" property="sex"/>
+        <result column="last_login" property="lastLogin"/>
+        <result column="tried" property="tried"/>
+        <result column="solved" property="solved"/>
+        <result column="type" property="type"/>
+    </resultMap>
+
+    <select id="getUserByUserId" parameterType="long" resultMap="userDtoResultMapper">
+        select user_id, user_name, password, nickname, create_time, school, department_id,
+        mobile_phone, motto, sex, last_login, tried, solved, `type`
+        from tb_user
+        where user_id = #{userId}
+    </select>
+
+    <select id="getUserByUsername" parameterType="string" resultMap="userDtoResultMapper">
+        select user_id, user_name, password, nickname, create_time, school, department_id,
+        mobile_phone, motto, sex, last_login, tried, solved, `type`
+        from tb_user
+        where user_name = #{username}
+    </select>
+
+    <update id="updateUser" parameterType="UserDto">
+        update `tb_user`
+        set
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName != null">`user_name` = #{userName},</if>
+            <if test="password != null">`password` = #{password},</if>
+            <if test="nickname != null">`nickname` = #{nickname},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="school != null">`school` = #{school},</if>
+            <if test="departmentId != null">`department_id` = #{departmentId},</if>
+            <if test="mobilePhone != null">`mobile_phone` = #{mobilePhone},</if>
+            <if test="motto != null">`motto` = #{motto},</if>
+            <if test="sex != null">`sex` = #{sex},</if>
+            <if test="lastLogin != null">`last_login` = #{lastLogin},</if>
+            <if test="tried != null">`tried` = #{tried},</if>
+            <if test="solved != null">`solved` = #{solved},</if>
+            <if test="type != null">`type` = #{type},</if>
+        </trim>
+        where user_id = #userId#
+    </update>
+
+    <update id="updateUserByUserId" parameterType="map">
+        update `tb_user`
+        set
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName != null">`user_name` = #{userName},</if>
+            <if test="password != null">`password` = #{password},</if>
+            <if test="nickname != null">`nickname` = #{nickname},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="school != null">`school` = #{school},</if>
+            <if test="departmentId != null">`department_id` = #{departmentId},</if>
+            <if test="mobilePhone != null">`mobile_phone` = #{mobilePhone},</if>
+            <if test="motto != null">`motto` = #{motto},</if>
+            <if test="sex != null">`sex` = #{sex},</if>
+            <if test="lastLogin != null">`last_login` = #{lastLogin},</if>
+            <if test="tried != null">`tried` = #{tried},</if>
+            <if test="solved != null">`solved` = #{solved},</if>
+            <if test="type != null">`type` = #{type},</if>
+        </trim>
+        where user_id = #userId#
+    </update>
+
+    <insert id="createUser" parameterType="UserDto" useGeneratedKeys="true" keyProperty="userId">
+        insert into tb_user(
+        <trim suffixOverrides=",">
+            <if test="userName != null">`user_name`,</if>
+            <if test="password != null">`password`,</if>
+            <if test="nickname != null">`nickname`,</if>
+            <if test="createTime != null">`create_time`,</if>
+            <if test="school != null">`school`,</if>
+            <if test="departmentId != null">`department_id`,</if>
+            <if test="mobilePhone != null">`mobile_phone`,</if>
+            <if test="motto != null">`motto`,</if>
+            <if test="sex != null">`sex`,</if>
+            <if test="lastLogin != null">`last_login`,</if>
+            <if test="tried != null">`tried`,</if>
+            <if test="solved != null">`solved`,</if>
+            <if test="type != null">`type`</if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+            <if test="userName != null">#{userName},</if>
+            <if test="password != null">#{password},</if>
+            <if test="nickname != null">#{nickname},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="school != null">#{school},</if>
+            <if test="departmentId != null">#{departmentId},</if>
+            <if test="mobilePhone != null">#{mobilePhone},</if>
+            <if test="motto != null">#{motto},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="lastLogin != null">#{lastLogin},</if>
+            <if test="tried != null">#{tried},</if>
+            <if test="solved != null">#{solved},</if>
+            <if test="type != null">#{type}</if>
+        </trim>
+        )
+    </insert>
+
+    <select id="count" parameterType="map" resultType="long">
+        select count(*)
+        from tb_user
+        where
+        <foreach collection="condition.keys" item="k" separator="and">
+            <if test="null != condition[k]">
+                ${k} = ${condition[k]}
+            </if>
+        </foreach>
+    </select>
+
+    <select id="getUsers" parameterType="map" resultMap="UserDtoMapper">
+    </select>
+
+    <select id="isExistUser" parameterType="long" resultMap="long">
+        select count(*)
+        from tb_user
+        where
+        user_id = #{userId}
+    </select>
+
+    <select id="isExistUser" parameterType="long" resultMap="long">
+        select count(*)
+        from tb_user
+        where
+        user_name = #{userName}
+    </select>
+
+</mapper>
