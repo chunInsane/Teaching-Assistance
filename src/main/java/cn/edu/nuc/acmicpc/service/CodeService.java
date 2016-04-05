@@ -18,13 +18,13 @@ public interface CodeService {
      * @param codeId
      * @return
      */
-    public Code getCodeByCodeId(Long codeId);
+    public CodeDto getCodeByCodeId(Long codeId);
 
     /**
      * Create a new code entity by codeDto
      * @param code
      * @return
      */
-    public Long createCode(Code code);
+    public Long createCode(CodeDto code);
 
 }

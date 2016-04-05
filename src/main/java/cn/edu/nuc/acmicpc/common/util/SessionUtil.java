@@ -23,4 +23,14 @@ public class SessionUtil {
         UserDto userDto = getCurrentLoginUser(session);
         return userDto != null && userDto.getType() == AuthenticationType.ADMIN.ordinal();
     }
+
+    public static Boolean checkContestPermission(HttpSession session, Long contestId) {
+        String key = SessionConstant.CONTEST_PERMISSION_KEY + contestId;
+        return session.getAttribute(key) != null ? true : false;
+    }
+
+    public static Byte getContestType(HttpSession session, Long contestId) {
+        String key = SessionConstant.CONTEST_PERMISSION_KEY + contestId + "#type";
+        return (Byte)session.getAttribute(key);
+    }
 }

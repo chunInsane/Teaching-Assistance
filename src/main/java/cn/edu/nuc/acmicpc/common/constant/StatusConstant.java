@@ -8,10 +8,11 @@ package cn.edu.nuc.acmicpc.common.constant;
  */
 public class StatusConstant {
 
-    //200：成功 404：无数据 500：程序异常 401:未登陆/登陆超时
+    //200：成功 404：无数据 500：程序异常 401:未授权 402:登陆超时 403:未认证
     public static final int SUCCESS = 200;
     public static final int NOT_FOUND = 404;
     public static final int SERVER_ERROR = 500;
     public static final int UNAUTHORIZED = 401;
     public static final int SESSION_TIMEOUT = 402;
+    public static final int UNAUTHERIZED = 403;
 }

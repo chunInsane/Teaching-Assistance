@@ -1,8 +1,10 @@
 package cn.edu.nuc.acmicpc.service.impl;
 
+import cn.edu.nuc.acmicpc.common.check.ZipDataChecker;
 import cn.edu.nuc.acmicpc.common.exception.AppException;
 import cn.edu.nuc.acmicpc.common.settings.Settings;
 import cn.edu.nuc.acmicpc.common.util.FileUtil;
+import cn.edu.nuc.acmicpc.common.util.ZipUtil;
 import cn.edu.nuc.acmicpc.dto.FileInformationDto;
 import cn.edu.nuc.acmicpc.dto.FileUploadDto;
 import cn.edu.nuc.acmicpc.service.FileService;

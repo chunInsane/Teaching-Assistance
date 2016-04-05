@@ -8,4 +8,6 @@ package cn.edu.nuc.acmicpc.common.constant;
 public class SessionConstant {
 
     public static final String CURRENT_LOGIN_USER_KEY = "currentUser";
+
+    public static final String CONTEST_PERMISSION_KEY = "contestPermission#";
 }

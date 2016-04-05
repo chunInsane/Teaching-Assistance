@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Language implements Serializable {
 
-    private String languageId;
+    private Long languageId;
     private String name;
     private String extension;
     private String param;
@@ -22,7 +22,7 @@ public class Language implements Serializable {
                 '}';
     }
 
-    public void setLanguageId(String languageId) {
+    public void setLanguageId(Long languageId) {
         this.languageId = languageId;
     }
 
@@ -38,8 +38,7 @@ public class Language implements Serializable {
         this.param = param;
     }
 
-    public String getLanguageId() {
-
+    public Long getLanguageId() {
         return languageId;
     }
 

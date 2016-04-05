@@ -1,4 +1,4 @@
-package cn.edu.nuc.acmicpc.form.dto.other;
+package cn.edu.nuc.acmicpc.dto;
 
 import cn.edu.nuc.acmicpc.form.dto.BaseDto;
 import cn.edu.nuc.acmicpc.model.Setting;

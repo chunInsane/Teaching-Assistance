@@ -1,6 +1,7 @@
 package cn.edu.nuc.acmicpc.service.impl;
 
 import cn.edu.nuc.acmicpc.common.util.EmailUtil;
+import cn.edu.nuc.acmicpc.model.MailAuthentication;
 import cn.edu.nuc.acmicpc.model.MailObject;
 import cn.edu.nuc.acmicpc.service.EmailService;
 import org.slf4j.Logger;
@@ -19,8 +20,7 @@ public class EmailServiceImpl implements EmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
 
-    @Autowired
-    private MailObject.MailAuthentication mailAuthentication;
+    private MailAuthentication mailAuthentication;
 
     @Override
     public void send(String emailAddress, String title, String content) {

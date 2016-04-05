@@ -1,7 +1,6 @@
 package cn.edu.nuc.acmicpc.service;
 
 import cn.edu.nuc.acmicpc.dto.ContestDto;
-import cn.edu.nuc.acmicpc.model.Contest;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
 
 import java.util.List;
@@ -60,6 +59,14 @@ public interface ContestService {
      * @param pageInfo
      * @return
      */
-    public List<Contest> getContestList(Map<String, Object> conditions, PageInfo pageInfo);
+    public List<ContestDto> getContestList(Map<String, Object> conditions, PageInfo pageInfo);
+
+    /**
+     * Check whether a user can register specific contest.
+     * @param userId
+     * @param contestId
+     * @return
+     */
+    public Boolean checkUserCanRegisterInContest(Long userId, Long contestId);
 
 }

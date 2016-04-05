@@ -1,6 +1,6 @@
 package cn.edu.nuc.acmicpc.service.impl;
 
-import cn.edu.nuc.acmicpc.form.dto.other.SettingDto;
+import cn.edu.nuc.acmicpc.dto.SettingDto;
 import cn.edu.nuc.acmicpc.mapper.SettingMapper;
 import cn.edu.nuc.acmicpc.service.SettingService;
 
@@ -19,7 +19,15 @@ import org.springframework.stereotype.Service;
 public class SettingServiceImpl implements SettingService {
 
     @Autowired
-    private SettingMapper settingMapper = null;
+    private SettingMapper settingMapper;
+
+    public SettingMapper getSettingMapper() {
+        return settingMapper;
+    }
+
+    public void setSettingMapper(SettingMapper settingMapper) {
+        this.settingMapper = settingMapper;
+    }
 
     @Override
     public SettingDto getSettingDto(Long settingId) {

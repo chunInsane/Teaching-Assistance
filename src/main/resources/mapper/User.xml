@@ -5,7 +5,7 @@
 <mapper namespace="cn.edu.nuc.acmicpc.mapper.UserMapper">
 
     <!--resultMap-->
-    <resultMap id="userDtoResultMapper" type="UserDto">
+    <resultMap id="userDtoResultMap" type="UserDto">
         <id column="user_id" property="userId"/>
         <result column="user_name" property="userName"/>
         <result column="password" property="password"/>
@@ -22,14 +22,14 @@
         <result column="type" property="type"/>
     </resultMap>
 
-    <select id="getUserByUserId" parameterType="long" resultMap="userDtoResultMapper">
+    <select id="getUserByUserId" parameterType="long" resultMap="userDtoResultMap">
         select user_id, user_name, password, nickname, create_time, school, department_id,
         mobile_phone, motto, sex, last_login, tried, solved, `type`
         from tb_user
         where user_id = #{userId}
     </select>
 
-    <select id="getUserByUsername" parameterType="string" resultMap="userDtoResultMapper">
+    <select id="getUserByUsername" parameterType="string" resultMap="userDtoResultMap">
         select user_id, user_name, password, nickname, create_time, school, department_id,
         mobile_phone, motto, sex, last_login, tried, solved, `type`
         from tb_user
@@ -39,11 +39,8 @@
     <update id="updateUser" parameterType="UserDto">
         update `tb_user`
         set
-        <trim prefix="set" suffixOverrides=",">
-            <if test="userName != null">`user_name` = #{userName},</if>
-            <if test="password != null">`password` = #{password},</if>
+        <trim prefixOverrides="set" suffixOverrides=",">
             <if test="nickname != null">`nickname` = #{nickname},</if>
-            <if test="createTime != null">`create_time` = #{createTime},</if>
             <if test="school != null">`school` = #{school},</if>
             <if test="departmentId != null">`department_id` = #{departmentId},</if>
             <if test="mobilePhone != null">`mobile_phone` = #{mobilePhone},</if>
@@ -54,17 +51,14 @@
             <if test="solved != null">`solved` = #{solved},</if>
             <if test="type != null">`type` = #{type},</if>
         </trim>
-        where user_id = #userId#
+        where user_id = #{userId}
     </update>
 
     <update id="updateUserByUserId" parameterType="map">
         update `tb_user`
         set
-        <trim prefix="set" suffixOverrides=",">
-            <if test="userName != null">`user_name` = #{userName},</if>
-            <if test="password != null">`password` = #{password},</if>
+        <trim prefixOverrides="set" suffixOverrides=",">
             <if test="nickname != null">`nickname` = #{nickname},</if>
-            <if test="createTime != null">`create_time` = #{createTime},</if>
             <if test="school != null">`school` = #{school},</if>
             <if test="departmentId != null">`department_id` = #{departmentId},</if>
             <if test="mobilePhone != null">`mobile_phone` = #{mobilePhone},</if>
@@ -75,7 +69,7 @@
             <if test="solved != null">`solved` = #{solved},</if>
             <if test="type != null">`type` = #{type},</if>
         </trim>
-        where user_id = #userId#
+        where user_id = #{userId}
     </update>
 
     <insert id="createUser" parameterType="UserDto" useGeneratedKeys="true" keyProperty="userId">
@@ -115,28 +109,31 @@
     </insert>
 
     <select id="count" parameterType="map" resultType="long">
-        select count(*)
+        select count(1)
         from tb_user
         where
-        <foreach collection="condition.keys" item="k" separator="and">
-            <if test="null != condition[k]">
-                ${k} = ${condition[k]}
-            </if>
-        </foreach>
+        <trim prefixOverrides="where">
+            <foreach collection="_parameter.keys" item="k" separator="and">
+                <if test="null != _parameter[k]">
+                    ${k} = '${_parameter[k]}'
+                </if>
+            </foreach>
+        </trim>
     </select>
 
-    <select id="getUsers" parameterType="map" resultMap="UserDtoMapper">
+    <select id="getUsers" parameterType="map" resultMap="userDtoResultMap">
+        --         TODO
     </select>
 
-    <select id="isExistUser" parameterType="long" resultMap="long">
-        select count(*)
+    <select id="isExistUserByUserId" parameterType="long" resultType="long">
+        select count(1)
         from tb_user
         where
         user_id = #{userId}
     </select>
 
-    <select id="isExistUser" parameterType="long" resultMap="long">
-        select count(*)
+    <select id="isExistUserByUserName" parameterType="string" resultType="long">
+        select count(1)
         from tb_user
         where
         user_name = #{userName}

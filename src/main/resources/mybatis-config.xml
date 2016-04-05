@@ -17,7 +17,8 @@
         <typeAlias type="cn.edu.nuc.acmicpc.dto.UserDto" alias="UserDto"/>
         <typeAlias type="cn.edu.nuc.acmicpc.model.User" alias="User"/>
         <typeAlias type="cn.edu.nuc.acmicpc.model.Setting" alias="Setting"/>
-        <typeAlias type="cn.edu.nuc.acmicpc.model.Code" alias="Code"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.SettingDto" alias="SettingDto"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.CodeDto" alias="CodeDto"/>
         <typeAlias type="cn.edu.nuc.acmicpc.dto.LanguageDto" alias="LanguageDto"/>
         <typeAlias type="cn.edu.nuc.acmicpc.model.CompileInfo" alias="CompileInfo"/>
         <typeAlias type="cn.edu.nuc.acmicpc.dto.ContestProblemDto" alias="ContestProblemDto"/>

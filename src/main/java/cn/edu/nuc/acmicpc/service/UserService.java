@@ -2,6 +2,7 @@ package cn.edu.nuc.acmicpc.service;
 
 
 import cn.edu.nuc.acmicpc.dto.UserDto;
+import cn.edu.nuc.acmicpc.form.dto.user.TypeAheadUserDto;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
 
 import java.util.List;
@@ -68,13 +69,20 @@ public interface UserService {
      * @param userId
      * @return
      */
-    public Boolean isExistUser(Long userId);
+    public Boolean isExistUserByUserId(Long userId);
 
     /**
      * Check whether a user by username
      * @param username
      * @return
      */
-    public Boolean isExistUsers(String username);
+    public Boolean isExistUserByUsername(String username);
 
+    /**
+     * Get userDtos fit in condition and page range
+     * @param condition
+     * @param pageInfo
+     * @return
+     */
+    public List<TypeAheadUserDto> getTypeAheadUserDtos(Map<String, Object> condition, PageInfo pageInfo);
 }

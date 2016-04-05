@@ -1,6 +1,7 @@
 package cn.edu.nuc.acmicpc.service.impl;
 
 import cn.edu.nuc.acmicpc.dto.UserDto;
+import cn.edu.nuc.acmicpc.form.dto.user.TypeAheadUserDto;
 import cn.edu.nuc.acmicpc.mapper.UserMapper;
 import cn.edu.nuc.acmicpc.service.UserService;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
@@ -11,6 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.Map;
  * Date: 16/4/2
  */
 @Service("userService")
+@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -67,12 +70,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean isExistUser(Long userId) {
-        return userMapper.isExistUser(userId) > 0;
+    public Boolean isExistUserByUserId(Long userId) {
+        return userMapper.isExistUserByUserId(userId) > 0;
     }
 
     @Override
-    public Boolean isExistUsers(String username) {
-        return userMapper.isExistUsers(username) > 0;
+    public Boolean isExistUserByUsername(String username) {
+        return userMapper.isExistUserByUserName(username) > 0;
+    }
+
+    @Override
+    public List<TypeAheadUserDto> getTypeAheadUserDtos(Map<String, Object> condition, PageInfo pageInfo) {
+        //TODO
+        return null;
     }
 }

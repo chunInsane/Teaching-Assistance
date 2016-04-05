@@ -1,6 +1,7 @@
 package cn.edu.nuc.acmicpc.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * Contest information
@@ -10,21 +11,20 @@ public class Contest implements Serializable {
     /** tow hours*/
     private static final Integer DEFAULT_CONTEST_TIME_LENGTH = 2 * 60 * 60;
 
-    private Integer contestId;
+    private Long contestId;
     private String title;
     private String description;
-    private Integer type;
+    private Timestamp time;
+    private Byte type;
     private Integer length = DEFAULT_CONTEST_TIME_LENGTH;
     private boolean isVisible;
     private String password;
-    private Integer parentId;
     private Integer frozenTime;
 
     @Override
     public String toString() {
         return "Contest{" +
                 "frozenTime=" + frozenTime +
-                ", parentId=" + parentId +
                 ", password='" + password + '\'' +
                 ", isVisible=" + isVisible +
                 ", length=" + length +
@@ -35,11 +35,11 @@ public class Contest implements Serializable {
                 '}';
     }
 
-    public Integer getContestId() {
+    public Long getContestId() {
         return contestId;
     }
 
-    public void setContestId(Integer contestId) {
+    public void setContestId(Long contestId) {
         this.contestId = contestId;
     }
 
@@ -59,11 +59,19 @@ public class Contest implements Serializable {
         this.description = description;
     }
 
-    public Integer getType() {
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
+    }
+
+    public Byte getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Byte type) {
         this.type = type;
     }
 
@@ -79,8 +87,8 @@ public class Contest implements Serializable {
         return isVisible;
     }
 
-    public void setVisible(boolean visible) {
-        isVisible = visible;
+    public void setIsVisible(boolean isVisible) {
+        this.isVisible = isVisible;
     }
 
     public String getPassword() {
@@ -89,14 +97,6 @@ public class Contest implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
     }
 
     public Integer getFrozenTime() {

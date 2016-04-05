@@ -1,5 +1,6 @@
 package cn.edu.nuc.acmicpc.service.impl;
 
+import cn.edu.nuc.acmicpc.dto.CodeDto;
 import cn.edu.nuc.acmicpc.mapper.CodeMapper;
 import cn.edu.nuc.acmicpc.model.Code;
 import cn.edu.nuc.acmicpc.service.CodeService;
@@ -20,12 +21,12 @@ public class CodeServiceImpl implements CodeService {
     private CodeMapper codeMapper;
 
     @Override
-    public Code getCodeByCodeId(Long codeId) {
+    public CodeDto getCodeByCodeId(Long codeId) {
         return codeMapper.getCodeByCodeId(checkNotNull(codeId));
     }
 
     @Override
-    public Long createCode(Code code) {
-        return codeMapper.createCode(checkNotNull(code));
+    public Long createCode(CodeDto codeDto) {
+        return codeMapper.createCode(checkNotNull(codeDto));
     }
 }

@@ -64,13 +64,13 @@ public interface UserMapper {
      * @param userId
      * @return
      */
-    public Long isExistUser(Long userId);
+    public Long isExistUserByUserId(Long userId);
 
     /**
      * Check whether a user by userName
      * @param userName
      * @return
      */
-    public Long isExistUsers(String userName);
+    public Long isExistUserByUserName(String userName);
 
 }

@@ -1,6 +1,6 @@
 package cn.edu.nuc.acmicpc.mapper;
 
-import cn.edu.nuc.acmicpc.form.dto.other.SettingDto;
+import cn.edu.nuc.acmicpc.dto.SettingDto;
 
 /**
  * Created with IDEA

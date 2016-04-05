@@ -1,6 +1,6 @@
 package cn.edu.nuc.acmicpc.mapper;
 
-import cn.edu.nuc.acmicpc.model.Code;
+import cn.edu.nuc.acmicpc.dto.CodeDto;
 
 /**
  * Created with IDEA
@@ -15,13 +15,13 @@ public interface CodeMapper {
      * @param codeId
      * @return
      */
-    public Code getCodeByCodeId(Long codeId);
+    public CodeDto getCodeByCodeId(Long codeId);
 
     /**
      * Create new code record.
      * @param code
      * @return
      */
-    public Long createCode(Code code);
+    public Long createCode(CodeDto code);
 
 }

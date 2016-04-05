@@ -5,15 +5,15 @@
 <mapper namespace="cn.edu.nuc.acmicpc.mapper.SettingMapper">
 
     <!--resultMap-->
-    <resultMap id="settingResultMap" type="Setting">
+    <resultMap id="settingResultMap" type="SettingDto">
         <id column="setting_id" property="settingId"/>
         <result column="name" property="name"/>
         <result column="description" property="description"/>
         <result column="value" property="value"/>
     </resultMap>
 
-    <select id="getSettingDto" parameterType="long" resultMap="settingResultMapper">
-      select setting_id, name, `description`, `value`
+    <select id="getSettingDto" parameterType="long" resultMap="settingResultMap">
+      select `setting_id`, `name`, `description`, `value`
       from tb_setting
       where setting_id = #{settingId}
     </select>

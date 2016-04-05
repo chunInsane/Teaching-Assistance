@@ -36,7 +36,7 @@
           destroy-method="close">
         <property name="driverClass" value="${teachAssistance.jdbc.driver}" />
         <property name="jdbcUrl" value="${teachAssistance.local.jdbc.url}" />
-        <property name="user" value="${teachAssistance.local.jdbc.url}" />
+        <property name="user" value="${teachAssistance.local.jdbc.username}" />
         <property name="password" value="${teachAssistance.local.jdbc.password}" />
         <property name="initialPoolSize" value="5" />
         <property name="minPoolSize" value="5" />
@@ -63,7 +63,7 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <bean id="mailAuthentication" class="cn.edu.nuc.acmicpc.model.MailObject.MailAuthentication">
+    <bean id="mailAuthentication" class="cn.edu.nuc.acmicpc.model.MailAuthentication">
         <property name="username" value="chuninsane"/>
         <property name="password" value="chuninsane314,"/>
     </bean>

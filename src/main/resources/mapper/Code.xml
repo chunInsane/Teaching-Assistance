@@ -5,7 +5,7 @@
 <mapper namespace="cn.edu.nuc.acmicpc.mapper.CodeMapper">
 
     <!--resultMap-->
-    <resultMap id="codeResultMap" type="Code">
+    <resultMap id="codeResultMap" type="CodeDto">
         <id column="code_id" property="codeId"/>
         <result column="content" property="content"/>
         <result column="share" property="share"/>
@@ -17,17 +17,11 @@
         where code_id = #{codeId}
     </select>
 
-    <insert id="createCode" parameterType="Code" useGeneratedKeys="true" keyProperty="codeId">
+    <insert id="createCode" parameterType="CodeDto" useGeneratedKeys="true" keyProperty="codeId">
         insert into tb_code(
-        <trim suffixOverrides=",">
-            <if test="content != null">`content`,</if>
-            <if test="share != null">`share`,</if>
-        </trim>
+          `content`, `share`
         ) values (
-        <trim suffixOverrides=",">
-            <if test="content != null">#{content},</if>
-            <if test="share != null">#{share},</if>
-        </trim>
+          #{content}, #{share}
         )
     </insert>
 </mapper>
