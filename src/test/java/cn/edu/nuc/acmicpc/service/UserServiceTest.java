@@ -24,7 +24,7 @@ public class UserServiceTest extends BasicTest {
     @Test
     public void testCreateUser() {
         UserDto userDto = new UserDto();
-        userDto.setUserName("chuninsane");
+        userDto.setUsername("chuninsane");
         userDto.setPassword(EncryptUtil.encoderByMd5("123"));
         userService.createUser(userDto);
     }

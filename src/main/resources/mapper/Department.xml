@@ -10,14 +10,14 @@
         <result column="name" property="name"/>
     </resultMap>
 
-    <select id="getDepartmentName" parameterType="long" resultMap="departmentDtoResultMap">
-        select department_id, `name`
+    <select id="getDepartmentName" parameterType="long" resultType="string">
+        select `name`
         from tb_department
-        where department_id = #{departmentId}
+        where `department_id` = #{departmentId}
     </select>
 
     <select id="getDepartments" resultMap="departmentDtoResultMap">
-        select department_id, `name`
+        select `department_id`, `name`
         from tb_department
     </select>
 </mapper>

@@ -9,7 +9,7 @@ import java.util.List;
  * Created with IDEA
  * User: chuninsane
  * Date: 2016/3/13
- * Contest problem service interface
+ * Contest problem service interface.
  */
 public interface ContestProblemService {
 

@@ -6,6 +6,7 @@ import cn.edu.nuc.acmicpc.service.ContestService;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
 import static com.google.common.base.Preconditions.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import java.util.Map;
  * Date: 16/4/6
  * Contest service implement.
  */
+@Service("contestService")
 public class ContestServiceImpl implements ContestService {
 
     @Autowired

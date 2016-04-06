@@ -1,5 +1,6 @@
 package cn.edu.nuc.acmicpc.form.condition;
 
+import cn.edu.nuc.acmicpc.common.enums.AuthenticationType;
 import cn.edu.nuc.acmicpc.common.enums.JudgeResultType;
 
 import java.sql.Timestamp;
@@ -18,7 +19,7 @@ public class StatusCondition extends BasicCondition {
     public Long endId;
     public Timestamp startTime;
     public Timestamp endTime;
-    public String userName;
+    public String username;
     public Long userId;
     public Long problemId;
     public Long languageId;
@@ -28,41 +29,43 @@ public class StatusCondition extends BasicCondition {
     public Boolean isProblemVisible;
 
     public Map<String, Object> toConditionMap() {
-        Map<String, Object> result = super.toConditionMap();
+        Map<String, Object> conditionMap = super.toConditionMap();
         if (startId != null) {
-            result.put("startId", startId);
+            conditionMap.put("startId", startId);
         }
         if (endId != null) {
-            result.put("endId", endId);
+            conditionMap.put("endId", endId);
         }
         if (startTime != null) {
-            result.put("startTime", startTime);
+            conditionMap.put("startTime", startTime);
         }
         if (endTime != null) {
-            result.put("endTime", endTime);
+            conditionMap.put("endTime", endTime);
         }
-        if (userName != null) {
-            result.put("userName", userName);
+        if (username != null) {
+            conditionMap.put("username", username);
         }
         if (userId != null) {
-            result.put("userId", userId);
+            conditionMap.put("userId", userId);
         }
         if (problemId != null) {
-            result.put("problemId", problemId);
+            conditionMap.put("problemId", problemId);
         }
         if (languageId != null) {
-            result.put("languageId", languageId);
+            conditionMap.put("languageId", languageId);
         }
         if (contestId != null) {
-            result.put("contestId", contestId);
+            conditionMap.put("contestId", contestId);
         }
         if (result != null) {
-            result.put("result", result);
+            if (result != JudgeResultType.JUDGE_ALL) {
+                conditionMap.put("result", result.ordinal());
+            }
         }
-        if (isProblemVisible != null) {
-            result.put("isProblemVisible", isProblemVisible);
+        if (!isForAdmin) {
+            conditionMap.put("userType", AuthenticationType.ADMIN.ordinal());
         }
-        return result;
+        return conditionMap;
     }
 
     @Override
@@ -72,7 +75,7 @@ public class StatusCondition extends BasicCondition {
                 ", endId=" + endId +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
-                ", userName='" + userName + '\'' +
+                ", username='" + username + '\'' +
                 ", userId=" + userId +
                 ", problemId=" + problemId +
                 ", languageId=" + languageId +

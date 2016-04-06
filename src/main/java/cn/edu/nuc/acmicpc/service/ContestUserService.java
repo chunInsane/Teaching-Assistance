@@ -6,7 +6,7 @@ import cn.edu.nuc.acmicpc.dto.ContestUserDto;
  * Created with IDEA
  * User: chuninsane
  * Date: 2016/3/13
- * Contest user service interface
+ * Contest user service interface.
  */
 public interface ContestUserService {
 

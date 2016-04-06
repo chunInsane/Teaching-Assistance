@@ -15,15 +15,15 @@
         values(#{content})
     </insert>
 
-    <select id="getCompileInfo" parameterType="long" resultMap="compileInfoResultMap">
-        select compile_info_id, content
+    <select id="getCompileInfo" parameterType="long" resultType="string">
+        select `content`
         from tb_compile_info
-        where compile_info_id = #{compileInfoId}
+        where `compile_info_id` = #{compileInfoId}
     </select>
 
     <update id="updateCompileInfoContent" parameterType="CompileInfo">
         update tb_compile_info
         set `content` = #{content}
-        where compile_info_id = #{compileInfoId}
+        where `compile_info_id` = #{compileInfoId}
     </update>
 </mapper>

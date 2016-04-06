@@ -12,7 +12,7 @@
     </resultMap>
 
     <select id="getCodeByCodeId" parameterType="long" resultMap="codeResultMap">
-        select code_id, content, share
+        select `code_id`, `content`, `share`
         from tb_code
         where code_id = #{codeId}
     </select>

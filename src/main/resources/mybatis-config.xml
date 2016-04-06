@@ -28,6 +28,7 @@
         <typeAlias type="cn.edu.nuc.acmicpc.dto.DepartmentDto" alias="DepartmentDto"/>
         <typeAlias type="cn.edu.nuc.acmicpc.dto.StatusDto" alias="StatusDto"/>
         <typeAlias type="cn.edu.nuc.acmicpc.dto.ProblemDto" alias="ProblemDto"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.ContestDto" alias="ContestDto"/>
     </typeAliases>
 </configuration>
 

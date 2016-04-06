@@ -10,6 +10,7 @@ import java.util.Map;
  */
 public abstract class BasicCondition {
 
+    public Long currentPage;
     public String orderFields;
     public String orderAsc;
 

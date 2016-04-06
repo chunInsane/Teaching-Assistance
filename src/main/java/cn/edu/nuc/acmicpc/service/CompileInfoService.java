@@ -4,13 +4,12 @@ package cn.edu.nuc.acmicpc.service;
  * Created with IDEA
  * User: chuninsane
  * Date: 2016/3/9
- * Compile information service
+ * Compile information service interface.
  */
 public interface CompileInfoService {
 
     /**
      * Create a new compile info record.
-     *
      * @param content
      * @return
      */
@@ -18,7 +17,6 @@ public interface CompileInfoService {
 
     /**
      * Get compile info by compile info id.
-     *
      * @param compileInfoId
      * @return
      */
@@ -26,7 +24,6 @@ public interface CompileInfoService {
 
     /**
      * Update compile info.
-     *
      * @param compileInfoId
      * @param content
      */

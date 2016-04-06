@@ -96,7 +96,7 @@ public class UserController {
             resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
         } else {
             Map<String, String> errors = new HashMap<>();
-            UserDto userDto = userService.getUserByUsername(registerUserDto.getUserName());
+            UserDto userDto = userService.getUserByUsername(registerUserDto.getUsername());
             resultDto.setStatus(StatusConstant.SERVER_ERROR);
             if (null != userDto) {
                 errors.put("username", "该用户名已被使用!");
@@ -110,7 +110,7 @@ public class UserController {
                 resultDto.setStatus(StatusConstant.SUCCESS);
                 UserDto newUser = new UserDto();
                 Timestamp currentTime = DateUtil.getCurrentTime();
-                newUser.setUserName(registerUserDto.getUserName());
+                newUser.setUsername(registerUserDto.getUsername());
                 newUser.setPassword(registerUserDto.getPassword());
                 newUser.setCreateTime(currentTime);
                 userService.createUser(newUser);
@@ -130,7 +130,7 @@ public class UserController {
         }
         TypeAheadUserDto typeAheadUserDto = new TypeAheadUserDto();
         typeAheadUserDto.setUserId(userDto.getUserId());
-        typeAheadUserDto.setUsername(userDto.getUserName());
+        typeAheadUserDto.setUsername(userDto.getUsername());
         typeAheadUserDto.setNickname(userDto.getNickname());
         Map<String, Object> result = new HashMap<>();
         result.put("user", typeAheadUserDto);

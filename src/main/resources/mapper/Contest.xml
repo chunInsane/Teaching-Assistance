@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.acmicpc.mapper.ContestMapper">
+
+    <!--resultMap-->
+    <resultMap id="contestDtoResultMap" type="ContestDto">
+        <id column="contest_id" property="contestId"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="time" property="time"/>
+        <result column="type" property="type"/>
+        <result column="length" property="length"/>
+        <result column="is_visible" property="isVisible"/>
+        <result column="password" property="password"/>
+        <result column="start_time" property="start_time"/>
+        <result column="end_time" property="end_time"/>
+        <!--TODO-->
+    </resultMap>
+
+    <insert id="createContest" parameterType="ContestDto" useGeneratedKeys="true" keyProperty="contestId">
+        insert into tb_contest(
+          <trim suffixOverrides=",">
+
+          </trim>
+        ) values (
+          <trim suffixOverrides=",">
+
+          </trim>
+        )
+    </insert>
+
+    <select id="getAllisVisibleContestIds" resultType="boolean">
+        select `contest_id`
+        from tb_contest
+        where `is_visible` = #{isVisible}
+    </select>
+
+    <select id="getContestDtoByContestId" parameterType="long" resultType="ContestDto">
+        select *
+        from tb_contest
+        where `contest_id` = #{contestId}
+    </select>
+
+    <select id="isExistsContest" parameterType="long" resultType="long">
+        select count(1)
+        from tb_contest
+        where `contest_id` = #{contestId}
+    </select>
+
+    <select id="count" parameterType="map" resultType="long">
+        select count(1)
+        from tb_contest
+        <trim prefix="where" suffixOverrides="and">
+            <if test="contestId != null">`contest_id` = #{contestId} and </if>
+            <if test="isVisible != null">`is_visible` = #{isVisible} and </if>
+            <if test="type != null">`type` = #{type} and </if>
+            <if test="startTime != null"><![CDATA[`time` >= #{startTime}]]> and </if>
+            <if test="endTime != null"><![CDATA[`time` <= #{endTime}]]> and </if>
+            <if test="keyword != null">
+                (`title` like contact('%', #{keyword}, '%') or `description` like contact('%', #{keyword}, '%')) and
+            </if>
+        </trim>
+    </select>
+
+    <select id="getContestList" parameterType="map" resultMap="contestDtoResultMap">
+        select *
+        from tb_contest
+        <trim prefix="where" suffixOverrides="and">
+            <if test="contestId != null">`contest_id` = #{contestId} and </if>
+            <if test="isVisible != null">`is_visible` = #{isVisible} and </if>
+            <if test="type != null">`type` = #{type} and </if>
+            <if test="startTime != null"><![CDATA[`time` >= #{startTime}]]> and </if>
+            <if test="endTime != null"><![CDATA[`time` <= #{endTime}]]> and </if>
+            <if test="keyword != null">
+                (`title` like contact('%', #{keyword}, '%') or `description` like contact('%', #{keyword}, '%')) and
+            </if>
+        </trim>
+        order by `contest_id` asc
+        <trim prefix="limit" suffixOverrides=",">
+            <if test="firstNo != null">#{firstNo} , </if>
+            <if test="pageSize != null">#{pageSize} , </if>
+        </trim>
+    </select>
+
+    <update id="updateContest" parameterType="ContestDto">
+        update tb_contest
+        <trim prefix="set" suffixOverrides=",">
+            <if test="description != null">`description` = #{description}, </if>
+            <if test="isVisible != null">`is_visible` = #{isVisible}, </if>
+            <if test="length != null">`length` = #{length}, </if>
+            <if test="time != null">`time` = #{time}, </if>
+            <if test="title != null">`title` = #{title}, </if>
+            <if test="password != null">`password` = #{password}, </if>
+            <if test="frozenTime != null">`frozen_time` = #{frozenTime}, </if>
+        </trim>
+        where `contest_id` = #{contestId}
+    </update>
+
+</mapper>

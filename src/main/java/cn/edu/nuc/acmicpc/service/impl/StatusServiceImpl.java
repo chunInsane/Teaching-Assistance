@@ -1,12 +1,15 @@
 package cn.edu.nuc.acmicpc.service.impl;
 
+import cn.edu.nuc.acmicpc.common.enums.AuthenticationType;
 import cn.edu.nuc.acmicpc.common.enums.JudgeResultType;
 import cn.edu.nuc.acmicpc.dto.StatusDto;
 import cn.edu.nuc.acmicpc.mapper.StatusMapper;
 import cn.edu.nuc.acmicpc.service.StatusService;
+import static com.google.common.base.Preconditions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,17 +58,26 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     public List<StatusDto> getQueuingStatus(boolean isFirstTime) {
-        return null;
+        Map<String, Object> params = new HashMap<>();
+        if (isFirstTime) {
+            params.put("result", JudgeResultType.JUDGE_WAIT.ordinal());
+        } else {
+            List<Integer> results = new ArrayList<>();
+            results.add(JudgeResultType.JUDGE_WAIT.ordinal());
+            results.add(JudgeResultType.JUDGE_JUDGING.ordinal());
+            params.put("results", results);
+        }
+        return statusMapper.getStatusList(params);
     }
 
     @Override
-    public void updateStatus(StatusDto status) {
-
+    public void updateStatus(StatusDto statusDto) {
+        statusMapper.updateStatus(statusDto);
     }
 
     @Override
-    public StatusDto createStatus(StatusDto status) {
-        return null;
+    public Long createStatus(StatusDto statusDto) {
+        return statusMapper.createStatus(checkNotNull(statusDto));
     }
 
     private List<Long> findAllProblemIdsThatUser(Boolean solved, Long userId, Boolean isAdmin) {
@@ -73,9 +85,11 @@ public class StatusServiceImpl implements StatusService {
         if (solved) {
             params.put("resultType", JudgeResultType.JUDGE_AC.ordinal());
         }
-        params.put("isAdmin", isAdmin);
+        if (!isAdmin) {
+            params.put("adminType", AuthenticationType.ADMIN.ordinal());
+        }
         params.put("userId", userId);
-        return statusMapper.getProblemIds(params);
+        return statusMapper.findAllProblemIdsThatUser(params);
     }
 
     private Long countProblemsThatUser(boolean solved, Long userId, boolean isAdmin) {
@@ -83,7 +97,9 @@ public class StatusServiceImpl implements StatusService {
         if (solved) {
             params.put("resultType", JudgeResultType.JUDGE_AC.ordinal());
         }
-        params.put("isAdmin", isAdmin);
+        if (!isAdmin) {
+            params.put("adminType", AuthenticationType.ADMIN.ordinal());
+        }
         params.put("userId", userId);
         return statusMapper.countProblems(params);
     }

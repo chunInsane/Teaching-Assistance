@@ -8,13 +8,12 @@ import java.util.List;
  * Created with IDEA
  * User: chuninsane
  * Date: 2016/3/8
- * Department service interface
+ * Department service interface.
  */
 public interface DepartmentService {
 
     /**
      * Get department name by department id
-     *
      * @param departmentId
      * @return
      */

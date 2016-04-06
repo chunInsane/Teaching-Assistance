@@ -2,12 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.edu.nuc.acmicpc.mapper.CodeMapper">
+<mapper namespace="cn.edu.nuc.acmicpc.mapper.StatusMapper">
 
     <!--resultMap-->
     <resultMap id="statusDtoResultMap" type="StatusDto">
         <id column="status_id" property="statusId"/>
-        <result column="result_id" property="resultId"/>
         <result column="result" property="result"/>
         <result column="memory_cost" property="memoryCost"/>
         <result column="time_cost" property="timeCost"/>
@@ -20,7 +19,7 @@
         <result column="language_id" property="languageId"/>
         <result column="problem_id" property="problemId"/>
         <result column="user_id" property="userId"/>
-        <result column="username" property="username"/>
+        <result column="user_name" property="username"/>
         <result column="nickname" property="nickname"/>
         <result column="language" property="language"/>
         <result column="extension" property="extension"/>
@@ -34,5 +33,112 @@
         <result column="is_spj" property="isSpj"/>
     </resultMap>
 
+    <insert id="createStatus" parameterType="StatusDto" useGeneratedKeys="true" keyProperty="statusId">
+        insert into tb_status(
+        <trim suffixOverrides=",">
+            <if test="userId != null">`user_id` , </if>
+            <if test="problemId != null">`problem_id` , </if>
+            <if test="result != null">`result` , </if>
+            <if test="memoryCost != null">`memory_cost` , </if>
+            <if test="timeCost != null">`time_cost` , </if>
+            <if test="languageId != null">`language_id` , </if>
+            <if test="length != null">`length`, </if>
+            <if test="time != null">`time` , </if>
+            <if test="contestId != null">`contest_id` , </if>
+            <if test="caseNumber != null">`case_number` , </if>
+            <if test="codeId != null">`code_id` , </if>
+            <if test="compileInfoId != null">`compile_info_id` , </if>
+        </trim>
+        ) values(
+        <trim suffixOverrides=",">
+            <if test="userId != null">#{userId} , </if>
+            <if test="problemId != null">#{problemId} , </if>
+            <if test="result != null">#{result} , </if>
+            <if test="memoryCost != null">#{memoryCost} , </if>
+            <if test="timeCost != null">#{timeCost} , </if>
+            <if test="languageId != null">#{languageId} , </if>
+            <if test="length != null">#{length}, </if>
+            <if test="time != null">#{time} , </if>
+            <if test="contestId != null">#{contestId} , </if>
+            <if test="caseNumber != null">#{caseNumber} , </if>
+            <if test="codeId != null">#{codeId} , </if>
+            <if test="compileInfoId != null">#{compileInfoId} , </if>
+        </trim>
+        )
+    </insert>
 
+    <select id="getStatusList" parameterType="map" resultMap="statusDtoResultMap">
+        select
+        s.status_id, s.result, s.memory_cost, s.time_cost, s.length, s.time, s.case_number,
+        s.code_id, s.compile_info_id, s.contest_id, s.language_id, s.problem_id, s.user_id,
+        u.user_name, u.nickname, l.language, l.extension, p.code_content, p.data_count,
+        p.java_memory_limit, p.java_time_limit, p.memory_limit, p.time_limit, p.output_limit, p.is_spj
+        from tb_status s
+        left join tb_problem p on s.problem_id = p.problem_id
+        left join tb_user u on s.user_id = u.user_id
+        left join tb_language l on s.language_id = l.language_id
+        <trim prefix="where" suffixOverrides="and">
+            <if test="startId != null"><![CDATA[`s.status_id` >= #{startId}]]> and </if>
+            <if test="endId != null"><![CDATA[`s.status_id` <= #{endId}]]> and </if>
+            <if test="startTime != null"><![CDATA[`s.time` >= #{startTime}]]> and </if>
+            <if test="endTime != null"><![CDATA[`s.time` <= #{endTime}]]> and </if>
+            <if test="userId != null">`u.user_id` = #{userId} and </if>
+            <if test="username != null">`u.username` like contact('%', #{username}, '%') and </if>
+            <if test="problemId != null">`s.problem_id` = #{problemId} and </if>
+            <if test="languageId != null">`s.language_id` = #{languageId} and </if>
+            <if test="contestId != null">`s.contest_id` = #{contestId} and </if>
+            <if test="result != null">`s.result` = #{result} and </if>
+            <if test="userType != null">`u.type` != #{userType} , </if>
+        </trim>
+    </select>
+
+    <update id="updateStatus" parameterType="StatusDto">
+        update tb_status
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userId != null">`user_id` = #{userId} , </if>
+            <if test="problemId != null">`problem_id` = #{problemId} , </if>
+            <if test="result != null">`result` = #{result} , </if>
+            <if test="memoryCost != null">`memory_cost` = #{memoryCost}, </if>
+            <if test="timeCost != null">`time_cost` = #{timeCost}, </if>
+            <if test="languageId != null">`language_id` = #{languageId}, </if>
+            <if test="length != null">`length` = #{length}, </if>
+            <if test="time != null">`time` = #{time}, </if>
+            <if test="contestId != null">`contest_id` = #{contestId}, </if>
+            <if test="caseNumber != null">`case_number` = #{caseNumber}, </if>
+            <if test="codeId != null">`code_id` = #{codeId}, </if>
+            <if test="compileInfoId != null">`compile_info_id` = #{compileInfoId}, </if>
+        </trim>
+    </update>
+
+    <select id="findAllProblemIdsThatUser" parameterType="map" resultType="long">
+        select distinct `problem_id`
+        from tb_status s
+        left join tb_problem p on s.problem_id = p.problem_id
+        left join tb_user u on s.user_id = u.user_id
+        <trim prefix="where" suffixOverrides="and">
+            <if test="resultType != null">`s.result` = #{resultType} and </if>
+            <if test="userId != null">`s.user_id` = #{userId} and </if>
+            <if test="adminType != null">`u.type` != #{adminType} and </if>
+        </trim>
+    </select>
+
+    <select id="countUsers" parameterType="map" resultType="long">
+        select count(user_id)
+        from tb_status
+        <trim prefix="where" suffixOverrides="and">
+            <if test="resultType != null">`result` = #{resultType} and </if>
+            <if test="problemId != null">`problem_id` = #{problemId} and </if>
+        </trim>
+    </select>
+
+    <select id="countProblems" parameterType="map" resultType="long">
+        select count(s.problem_id)
+        from tb_status s
+        left join tb_user u on s.user_id = u.user_id
+        <trim prefix="where" suffixOverrides="and">
+            <if test="resultType != null">`result` = #{resultType} and </if>
+            <if test="userId != null">`user_id` = #{problemId} and </if>
+            <if test="adminType != null">`u.type` != #{adminType}</if>
+        </trim>
+    </select>
 </mapper>

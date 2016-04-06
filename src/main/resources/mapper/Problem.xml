@@ -60,7 +60,7 @@
         </trim>
     </select>
 
-    <select id="getProblemDtoList" parameterType="map"  resultMap="ProblemDto">
+    <select id="getProblemDtoList" parameterType="map"  resultMap="problemDtoResultMap">
         select
         `problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`,`hint`, `source`,
         `time_limit`, `memory_limit`, `solved`, `tried`, `is_visible`, `is_spj`, `output_limit`,

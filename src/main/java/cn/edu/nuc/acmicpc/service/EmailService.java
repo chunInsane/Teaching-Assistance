@@ -10,7 +10,6 @@ public interface EmailService {
 
     /**
      * Send email
-     *
      * @param emailAddress
      * @param title
      * @param content

@@ -3,7 +3,7 @@ package cn.edu.nuc.acmicpc.service.impl;
 import cn.edu.nuc.acmicpc.dto.ContestUserDto;
 import cn.edu.nuc.acmicpc.mapper.ContestUserMapper;
 import cn.edu.nuc.acmicpc.service.ContestUserService;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

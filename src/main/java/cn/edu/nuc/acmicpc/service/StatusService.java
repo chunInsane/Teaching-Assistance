@@ -77,5 +77,5 @@ public interface StatusService {
      * @param status
      * @return
      */
-    public StatusDto createStatus(StatusDto status);
+    public Long createStatus(StatusDto status);
 }

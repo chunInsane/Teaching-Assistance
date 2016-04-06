@@ -79,7 +79,7 @@ public class ContestController {
             throw new AppException("比赛已经结束!");
         }
 
-        if (!contestService.checkUserCanRegisterInContest(userId, contestId)) {
+        if (!contestUserService.checkUserCanRegisterInContest(userId, contestId)) {
             throw new AppException("已经注册过该比赛!");
         }
 
@@ -103,7 +103,7 @@ public class ContestController {
         if (!SessionUtil.isAdmin(session)) {
             condition.isVisible = true;
         }
-        Map<String, Object> conditionMap = condition.buildConditionMap();
+        Map<String, Object> conditionMap = condition.toConditionMap();
         Long count = contestService.count(conditionMap);
         PageInfo pageInfo = PageInfo.buildPageInfo(count, condition.currentPage, settings.RECORD_PER_PAGE, null);
         List<ContestDto> contestDtos = contestService.getContestList(conditionMap, pageInfo);

@@ -14,7 +14,6 @@ public interface DepartmentMapper {
 
     /**
      * Get department name by department id
-     *
      * @param departmentId
      * @return
      */
