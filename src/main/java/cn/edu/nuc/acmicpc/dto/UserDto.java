@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 public class UserDto {
 
     private Long userId;
-    private String userName; //user email
+    private String username; //user email
     private String password;
     private String nickname;
     private Timestamp createTime;
@@ -29,7 +29,7 @@ public class UserDto {
     public String toString() {
         return "UserDto{" +
                 "userId=" + userId +
-                ", userName='" + userName + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", createTime=" + createTime +
@@ -53,12 +53,12 @@ public class UserDto {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public String getPassword() {

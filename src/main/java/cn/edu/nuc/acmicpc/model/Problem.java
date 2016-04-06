@@ -10,15 +10,16 @@ public class Problem implements Serializable {
     private Integer problemId;
     private String title;
     private String description;
-    private String standardInput;
-    private String standardOutput;
+    private String input;
+    private String output;
     private String sampleInput;
     private String sampleOutput;
     private String hint;
     private String source;
     private Integer solved;
     private Integer tried;
-    private Boolean isVisiable;
+    private Boolean isVisible;
+    private Boolean isSpj;
     private Integer dataCount;
     //limit
     private Integer timeLimit;
@@ -26,6 +27,7 @@ public class Problem implements Serializable {
     private Integer javaTimeLimit;
     private Integer javaMemoryLimit;
     private Integer outputLimit;
+    private Integer difficulty = 1;
 
     @Override
     public String toString() {
@@ -33,21 +35,23 @@ public class Problem implements Serializable {
                 "problemId=" + problemId +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", standardInput='" + standardInput + '\'' +
-                ", standardOutput='" + standardOutput + '\'' +
+                ", input='" + input + '\'' +
+                ", output='" + output + '\'' +
                 ", sampleInput='" + sampleInput + '\'' +
                 ", sampleOutput='" + sampleOutput + '\'' +
                 ", hint='" + hint + '\'' +
                 ", source='" + source + '\'' +
                 ", solved=" + solved +
                 ", tried=" + tried +
-                ", isVisiable=" + isVisiable +
+                ", isSpj=" + isSpj +
+                ", isVisible=" + isVisible +
                 ", dataCount=" + dataCount +
                 ", timeLimit=" + timeLimit +
                 ", memoryLimit=" + memoryLimit +
                 ", javaTimeLimit=" + javaTimeLimit +
                 ", javaMemoryLimit=" + javaMemoryLimit +
                 ", outputLimit=" + outputLimit +
+                ", difficulty=" + difficulty +
                 '}';
     }
 
@@ -61,14 +65,6 @@ public class Problem implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setStandardInput(String standardInput) {
-        this.standardInput = standardInput;
-    }
-
-    public void setStandardOutput(String standardOutput) {
-        this.standardOutput = standardOutput;
     }
 
     public void setSampleInput(String sampleInput) {
@@ -93,10 +89,6 @@ public class Problem implements Serializable {
 
     public void setTried(Integer tried) {
         this.tried = tried;
-    }
-
-    public void setVisiable(Boolean visiable) {
-        isVisiable = visiable;
     }
 
     public void setDataCount(Integer dataCount) {
@@ -136,12 +128,20 @@ public class Problem implements Serializable {
         return description;
     }
 
-    public String getStandardInput() {
-        return standardInput;
+    public String getInput() {
+        return input;
     }
 
-    public String getStandardOutput() {
-        return standardOutput;
+    public void setInput(String input) {
+        this.input = input;
+    }
+
+    public String getOutput() {
+        return output;
+    }
+
+    public void setOutput(String output) {
+        this.output = output;
     }
 
     public String getSampleInput() {
@@ -168,8 +168,20 @@ public class Problem implements Serializable {
         return tried;
     }
 
-    public Boolean getVisiable() {
-        return isVisiable;
+    public Boolean getIsVisible() {
+        return isVisible;
+    }
+
+    public void setIsVisible(Boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    public Boolean getIsSpj() {
+        return isSpj;
+    }
+
+    public void setIsSpj(Boolean isSpj) {
+        this.isSpj = isSpj;
     }
 
     public Integer getDataCount() {
@@ -194,5 +206,13 @@ public class Problem implements Serializable {
 
     public Integer getOutputLimit() {
         return outputLimit;
+    }
+
+    public Integer getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Integer difficulty) {
+        this.difficulty = difficulty;
     }
 }

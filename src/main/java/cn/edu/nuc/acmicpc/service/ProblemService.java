@@ -20,7 +20,7 @@ public interface ProblemService {
      * @param isVisible
      * @return
      */
-    public List<Integer> getAllProblemIds(boolean isVisible);
+    public List<Long> getAllProblemIds(boolean isVisible);
 
     /**
      * Get ProblemDto entity by problem's ID.
@@ -35,7 +35,7 @@ public interface ProblemService {
      * @param condition
      * @return
      */
-    public Integer count(Map<String, Object> condition);
+    public Long count(Map<String, Object> condition);
 
     /**
      * Get the problems fit in the condition and page range

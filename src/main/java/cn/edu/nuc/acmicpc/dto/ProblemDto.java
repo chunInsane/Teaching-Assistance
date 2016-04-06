@@ -1,7 +1,5 @@
 package cn.edu.nuc.acmicpc.dto;
 
-import cn.edu.nuc.acmicpc.model.ProblemTag;
-
 import java.io.Serializable;
 
 /**
@@ -25,6 +23,7 @@ public class ProblemDto implements Serializable {
     private Integer solved;
     private Integer tried;
     private Boolean isVisible;
+    private Boolean isSpj;
     private Integer outputLimit;
     private Integer javaTimeLimit;
     private Integer javaMemoryLimit;
@@ -48,6 +47,7 @@ public class ProblemDto implements Serializable {
                 ", solved=" + solved +
                 ", tried=" + tried +
                 ", isVisible=" + isVisible +
+                ", isSpj=" + isSpj +
                 ", outputLimit=" + outputLimit +
                 ", javaTimeLimit=" + javaTimeLimit +
                 ", javaMemoryLimit=" + javaMemoryLimit +
@@ -166,6 +166,14 @@ public class ProblemDto implements Serializable {
 
     public void setIsVisible(Boolean isVisible) {
         this.isVisible = isVisible;
+    }
+
+    public Boolean getIsSpj() {
+        return isSpj;
+    }
+
+    public void setIsSpj(Boolean isSpj) {
+        this.isSpj = isSpj;
     }
 
     public Integer getOutputLimit() {

@@ -25,4 +25,10 @@
         delete from tb_contest_user
         where contest_id = #{contestId}
     </delete>
+
+    <select id="checkUserCanRegisterInContest" parameterType="map" resultType="long">
+        select count(1)
+        from tb_contest_user
+        where user_id = #{userId} and contest_id = #{contestId}
+    </select>
 </mapper>

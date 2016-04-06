@@ -11,7 +11,7 @@ import cn.edu.nuc.acmicpc.form.condition.UserCondition;
 import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
 import cn.edu.nuc.acmicpc.form.dto.user.LoginUserDto;
 import cn.edu.nuc.acmicpc.form.dto.user.RegisterUserDto;
-import cn.edu.nuc.acmicpc.form.dto.user.TypeAheadUserDto;
+import cn.edu.nuc.acmicpc.dto.TypeAheadUserDto;
 import cn.edu.nuc.acmicpc.service.*;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
 import com.alibaba.fastjson.JSON;

@@ -1,6 +1,5 @@
 package cn.edu.nuc.acmicpc.form.condition;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -32,7 +31,7 @@ public class UserCondition extends BasicCondition {
     }
 
     public Map<String, Object> toConditionMap() {
-        Map<String, Object> conditionMap = new HashMap<>();
+        Map<String, Object> conditionMap = super.toConditionMap();
         if (startId != null) {
             conditionMap.put("startId", startId);
         }

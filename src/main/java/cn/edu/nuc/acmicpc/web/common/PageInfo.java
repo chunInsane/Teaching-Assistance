@@ -78,6 +78,10 @@ public class PageInfo {
         this.totalItems = totalItems;
     }
 
+    public Long getFirstNo() {
+        return (getCurrentPage() - 1) * getCountPerPage();
+    }
+
     /**
      * Create a PageInfo object
      *

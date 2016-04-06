@@ -12,7 +12,7 @@ import java.util.Map;
  * Date: 16/4/5
  * Status condition.
  */
-public class StatusCondition {
+public class StatusCondition extends BasicCondition {
 
     public Long startId;
     public Long endId;
@@ -27,8 +27,8 @@ public class StatusCondition {
     public JudgeResultType result;
     public Boolean isProblemVisible;
 
-    public Map<String, Object> buildConditionMap() {
-        Map<String, Object> result = new HashMap<>();
+    public Map<String, Object> toConditionMap() {
+        Map<String, Object> result = super.toConditionMap();
         if (startId != null) {
             result.put("startId", startId);
         }

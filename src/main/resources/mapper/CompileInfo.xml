@@ -12,7 +12,7 @@
 
     <insert id="createCompileInfo" parameterType="CompileInfo" useGeneratedKeys="true" keyProperty="compileInfoId">
         insert into tb_compile_info(`content`)
-        value(#{content})
+        values(#{content})
     </insert>
 
     <select id="getCompileInfo" parameterType="long" resultMap="compileInfoResultMap">

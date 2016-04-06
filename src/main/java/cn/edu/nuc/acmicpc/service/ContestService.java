@@ -61,12 +61,4 @@ public interface ContestService {
      */
     public List<ContestDto> getContestList(Map<String, Object> conditions, PageInfo pageInfo);
 
-    /**
-     * Check whether a user can register specific contest.
-     * @param userId
-     * @param contestId
-     * @return
-     */
-    public Boolean checkUserCanRegisterInContest(Long userId, Long contestId);
-
 }

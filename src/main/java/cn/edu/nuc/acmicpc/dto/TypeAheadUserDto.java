@@ -1,4 +1,4 @@
-package cn.edu.nuc.acmicpc.form.dto.user;
+package cn.edu.nuc.acmicpc.dto;
 
 /**
  * Created with IDEA

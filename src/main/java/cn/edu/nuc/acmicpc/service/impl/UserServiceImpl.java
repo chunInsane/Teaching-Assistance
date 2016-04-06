@@ -1,7 +1,7 @@
 package cn.edu.nuc.acmicpc.service.impl;
 
 import cn.edu.nuc.acmicpc.dto.UserDto;
-import cn.edu.nuc.acmicpc.form.dto.user.TypeAheadUserDto;
+import cn.edu.nuc.acmicpc.dto.TypeAheadUserDto;
 import cn.edu.nuc.acmicpc.mapper.UserMapper;
 import cn.edu.nuc.acmicpc.service.UserService;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -59,8 +58,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getUsers(Map<String, Object> condition, PageInfo pageInfo) {
-        //TODO
-        return Collections.EMPTY_LIST;
+        condition.put("firstNo", pageInfo.getFirstNo());
+        condition.put("pageSize", pageInfo.getCountPerPage());
+        return userMapper.getUsers(condition);
     }
 
     @Override
@@ -81,7 +81,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<TypeAheadUserDto> getTypeAheadUserDtos(Map<String, Object> condition, PageInfo pageInfo) {
-        //TODO
-        return null;
+        condition.put("firstNo", pageInfo.getFirstNo());
+        condition.put("pageSize", pageInfo.getCountPerPage());
+        return userMapper.getTypeAheadUserDtos(condition);
     }
 }

@@ -2,7 +2,7 @@ package cn.edu.nuc.acmicpc.service;
 
 
 import cn.edu.nuc.acmicpc.dto.UserDto;
-import cn.edu.nuc.acmicpc.form.dto.user.TypeAheadUserDto;
+import cn.edu.nuc.acmicpc.dto.TypeAheadUserDto;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
 
 import java.util.List;

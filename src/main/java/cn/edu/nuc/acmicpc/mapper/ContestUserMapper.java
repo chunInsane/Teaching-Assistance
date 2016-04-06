@@ -2,6 +2,8 @@ package cn.edu.nuc.acmicpc.mapper;
 
 import cn.edu.nuc.acmicpc.dto.ContestUserDto;
 
+import java.util.Map;
+
 /**
  * Created with IDEA
  * User: chuninsane
@@ -22,4 +24,11 @@ public interface ContestUserMapper {
      * @param contestId
      */
     public void removeContestUsersByContestId(Long contestId);
+
+    /**
+     * Check whether a user can register specific contest.
+     * @param params
+     * @return
+     */
+    public Long checkUserCanRegisterInContest(Map<String, Object> params);
 }

@@ -1,7 +1,9 @@
 package cn.edu.nuc.acmicpc.mapper;
 
 import cn.edu.nuc.acmicpc.dto.UserDto;
+import cn.edu.nuc.acmicpc.dto.TypeAheadUserDto;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,7 +59,7 @@ public interface UserMapper {
      * @param params
      * @return
      */
-    public UserDto getUsers(Map<String, Object> params);
+    public List<UserDto> getUsers(Map<String, Object> params);
 
     /**
      * Check whether a user by user id
@@ -73,4 +75,10 @@ public interface UserMapper {
      */
     public Long isExistUserByUserName(String userName);
 
+    /**
+     * Get typeAheadUserDto fit in condition
+     * @param condition
+     * @return
+     */
+    public List<TypeAheadUserDto> getTypeAheadUserDtos(Map<String, Object> condition);
 }

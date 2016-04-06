@@ -14,8 +14,9 @@
     </settings>
 
     <typeAliases>
-        <typeAlias type="cn.edu.nuc.acmicpc.dto.UserDto" alias="UserDto"/>
         <typeAlias type="cn.edu.nuc.acmicpc.model.User" alias="User"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.UserDto" alias="UserDto"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.dto.TypeAheadUserDto" alias="TypeAheadUserDto"/>
         <typeAlias type="cn.edu.nuc.acmicpc.model.Setting" alias="Setting"/>
         <typeAlias type="cn.edu.nuc.acmicpc.dto.SettingDto" alias="SettingDto"/>
         <typeAlias type="cn.edu.nuc.acmicpc.dto.CodeDto" alias="CodeDto"/>

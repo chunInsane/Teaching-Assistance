@@ -22,4 +22,12 @@ public interface ContestUserService {
      * @param contestId
      */
     public void removeContestUsersByContestId(Long contestId);
+
+    /**
+     * Check whether a user can register specific contest.
+     * @param userId
+     * @param contestId
+     * @return
+     */
+    public Boolean checkUserCanRegisterInContest(Long userId, Long contestId);
 }

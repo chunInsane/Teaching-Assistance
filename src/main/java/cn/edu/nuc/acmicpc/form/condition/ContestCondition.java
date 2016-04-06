@@ -1,7 +1,6 @@
 package cn.edu.nuc.acmicpc.form.condition;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,8 +29,8 @@ public class ContestCondition extends BasicCondition {
                 '}';
     }
 
-    public Map<String, Object> buildConditionMap() {
-        Map<String, Object> conditionMap = new HashMap<>();
+    public Map<String, Object> toConditionMap() {
+        Map<String, Object> conditionMap = super.toConditionMap();
         if (contestId != null) {
             conditionMap.put("contestId", contestId);
         }

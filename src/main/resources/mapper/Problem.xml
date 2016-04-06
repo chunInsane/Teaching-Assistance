@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.acmicpc.mapper.ProblemMapper">
+
+    <!--resultMap-->
+    <resultMap id="problemDtoResultMap" type="ProblemDto">
+        <id column="problem_id" property="problemId"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="input" property="input"/>
+        <result column="output" property="output"/>
+        <result column="sample_input" property="sampleInput"/>
+        <result column="sample_output" property="sampleOutput"/>
+        <result column="hint" property="hint"/>
+        <result column="source" property="source"/>
+        <result column="time_limit" property="timeLimit"/>
+        <result column="memory_limit" property="memoryLimit"/>
+        <result column="solved" property="solved"/>
+        <result column="tried" property="tried"/>
+        <result column="is_visible" property="isVisible"/>
+        <result column="is_spj" property="isSpj"/>
+        <result column="output_limit" property="outputLimit"/>
+        <result column="java_time_limit" property="javaTimeLimit"/>
+        <result column="java_memory_limit" property="javaMemoryLimit"/>
+        <result column="data_count" property="dataCount"/>
+        <result column="difficulty" property="difficulty"/>
+    </resultMap>
+
+   <select id="getAllProblemIds" parameterType="boolean" resultType="long">
+       select problem_id
+       from tb_problem
+       where is_visible = #{isVisible}
+   </select>
+
+    <select id="getProblemDtoByProblemId" parameterType="long" resultMap="problemDtoResultMap">
+        select
+        `problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`,`hint`, `source`,
+         `time_limit`, `memory_limit`, `solved`, `tried`, `is_visible`, `is_spj`, `output_limit`,
+         `java_time_limit`, `java_memory_limit`, `data_count`, `difficulty`
+        from tb_problem
+        where problem_id = #{problemId}
+    </select>
+
+    <select id="count" parameterType="map" resultType="long">
+        select count(1)
+        from tb_problem
+        <trim suffixOverrides="and" prefix="where">
+            <if test="startId != null"><![CDATA[problem_id >= #{startId}]]> and </if>
+            <if test="endId != null"><![CDATA[problem_id <= #{endId}]]> and </if>
+            <if test="title != null">`title` like contact('%', #{title},'%') and </if>
+            <if test="keyword != null">
+                (`problem_id` like contact('%', #{keyword}, '%') or `title` like contact('%', #{keyword}, '%')) and
+            </if>
+            <if test="isSpj != null">`is_spj` = #{isSpj}</if>
+            <if test="isVisible != null">`is_visible` = #{isVisible}</if>
+            <if test="startDifficulty != null"><![CDATA[`start_difficulty` >= #{startDifficulty}]]> and </if>
+            <if test="endDifficulty != null"><![CDATA[`end_difficulty` <= #{endDifficulty}]]> and </if>
+        </trim>
+    </select>
+
+    <select id="getProblemDtoList" parameterType="map"  resultMap="ProblemDto">
+        select
+        `problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`,`hint`, `source`,
+        `time_limit`, `memory_limit`, `solved`, `tried`, `is_visible`, `is_spj`, `output_limit`,
+        `java_time_limit`, `java_memory_limit`, `data_count`, `difficulty`
+        from tb_problem
+        <trim suffixOverrides="and" prefix="where">
+            <if test="startId != null"><![CDATA[problem_id >= #{startId}]]> and </if>
+            <if test="endId != null"><![CDATA[problem_id <= #{endId}]]> and </if>
+            <if test="title != null">`title` like contact('%', #{title},'%') and </if>
+            <if test="keyword != null">
+                (`problem_id` like contact('%', #{keyword}, '%') or `title` like contact('%', #{keyword}, '%')) and
+            </if>
+            <if test="isSpj != null">`is_spj` = #{isSpj}</if>
+            <if test="isVisible != null">`is_visible` = #{isVisible}</if>
+            <if test="startDifficulty != null"><![CDATA[`start_difficulty` >= #{startDifficulty}]]> and </if>
+            <if test="endDifficulty != null"><![CDATA[`end_difficulty` <= #{endDifficulty}]]> and </if>
+        </trim>
+        order by `problem_id` asc
+        <trim prefix="limit" suffixOverrides=",">
+            <if test="firstNo != null">#{firstNo},</if>
+            <if test="pageSize != null">#{pageSize},</if>
+        </trim>
+    </select>
+
+    <insert id="createProblem" parameterType="ProblemDto" useGeneratedKeys="true" keyProperty="problemId">
+        insert into tb_problem(
+        <trim suffixOverrides=",">
+            <if test="title != null"> `title`,</if>
+            <if test="description != null"> `description`,</if>
+            <if test="input != null"> `input`,</if>
+            <if test="output != null"> `ouput`,</if>
+            <if test="sampleInput != null"> `sample_input`,</if>
+            <if test="sampleOutput != null"> `sample_output`,</if>
+            <if test="hint != null"> `hint`,</if>
+            <if test="source != null"> `source`,</if>
+            <if test="timeLimit != null"> `time_limit`,</if>
+            <if test="memoryLimit != null"> `memory_limit`,</if>
+            <if test="solved != null"> `solved`,</if>
+            <if test="tried != null">`tried`,</if>
+            <if test="isVisible != null">`is_visible`,</if>
+            <if test="isSpj != null">`is_spj`,</if>
+            <if test="outputLimit != null">`output_limit`,</if>
+            <if test="javaTimeLimit != null">`java_time_limit`,</if>
+            <if test="javaMemoryLimit != null">`java_memory_limit`,</if>
+            <if test="dataCount != null">`data_count`,</if>
+            <if test="difficulty != null">`difficulty`,</if>
+        </trim>
+        ) values (
+        <trim suffixOverrides=",">
+            <if test="title != null"> #{title},</if>
+            <if test="description != null"> #{description},</if>
+            <if test="input != null"> #{input},</if>
+            <if test="output != null"> #{ouput},</if>
+            <if test="sampleInput != null"> #{sampleInput},</if>
+            <if test="sampleOutput != null"> #{sampleOutput},</if>
+            <if test="hint != null"> #{hint},</if>
+            <if test="source != null"> #{source},</if>
+            <if test="timeLimit != null"> #{timeLimit},</if>
+            <if test="memoryLimit != null"> #{memoryLimit},</if>
+            <if test="solved != null"> #{solved},</if>
+            <if test="tried != null"> #{tried},</if>
+            <if test="isVisible != null">#{isVisible},</if>
+            <if test="isSpj != null">#{isSpj},</if>
+            <if test="outputLimit != null"> #{outputLimit},</if>
+            <if test="javaTimeLimit != null"> #{javaTimeLimit},</if>
+            <if test="javaMemoryLimit != null">#{javaMemoryLimit},</if>
+            <if test="dataCount != null">#{dataCount},</if>
+            <if test="difficulty != null">#{difficulty},</if>
+        </trim>
+        )
+    </insert>
+
+    <update id="updateProblem" parameterType="ProblemDto">
+        update tb_problem
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title != null"> `title` = #{title},</if>
+            <if test="description != null"> `description` = #{description},</if>
+            <if test="input != null"> `input` = #{input},</if>
+            <if test="output != null"> `ouput` = #{output},</if>
+            <if test="sampleInput != null"> `sample_input` = #{sampleInput},</if>
+            <if test="sampleOutput != null"> `sample_output` = #{sampleOutput},</if>
+            <if test="hint != null"> `hint` = #{hint},</if>
+            <if test="source != null"> `source` = #{source},</if>
+            <if test="timeLimit != null"> `time_limit` = #{timeLimit},</if>
+            <if test="memoryLimit != null"> `memory_limit` = #{memoryLimit},</if>
+            <if test="solved != null"> `solved` = #{solved},</if>
+            <if test="tried != null">`tried` = #{tried},</if>
+            <if test="isVisible != null">`is_visible` = #{isVisible},</if>
+            <if test="isSpj != null">`is_spj` = #{isSpj},</if>
+            <if test="outputLimit != null">`output_limit` = #{outputLimit},</if>
+            <if test="javaTimeLimit != null">`java_time_limit` = #{javaTimeLimit},</if>
+            <if test="javaMemoryLimit != null">`java_memory_limit` = #{javaMemoryLimit},</if>
+            <if test="dataCount != null">`data_count` = #{dataCount},</if>
+            <if test="difficulty != null">`difficulty` = #{difficulty},</if>
+        </trim>
+        where
+        `problem_id` = #{problemId}
+    </update>
+    
+    <update id="updateProblemByProblemId" parameterType="map">
+        update tb_problem
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title != null"> `title` = #{title},</if>
+            <if test="description != null"> `description` = #{description},</if>
+            <if test="input != null"> `input` = #{input},</if>
+            <if test="output != null"> `ouput` = #{output},</if>
+            <if test="sampleInput != null"> `sample_input` = #{sampleInput},</if>
+            <if test="sampleOutput != null"> `sample_output` = #{sampleOutput},</if>
+            <if test="hint != null"> `hint` = #{hint},</if>
+            <if test="source != null"> `source` = #{source},</if>
+            <if test="timeLimit != null"> `time_limit` = #{timeLimit},</if>
+            <if test="memoryLimit != null"> `memory_limit` = #{memoryLimit},</if>
+            <if test="solved != null"> `solved` = #{solved},</if>
+            <if test="tried != null">`tried` = #{tried},</if>
+            <if test="isVisible != null">`is_visible` = #{isVisible},</if>
+            <if test="isSpj != null">`is_spj` = #{isSpj},</if>
+            <if test="outputLimit != null">`output_limit` = #{outputLimit},</if>
+            <if test="javaTimeLimit != null">`java_time_limit` = #{javaTimeLimit},</if>
+            <if test="javaMemoryLimit != null">`java_memory_limit` = #{javaMemoryLimit},</if>
+            <if test="dataCount != null">`data_count` = #{dataCount},</if>
+            <if test="difficulty != null">`difficulty` = #{difficulty},</if>
+        </trim>
+        where
+        `problem_id` = #{problemId}
+    </update>
+
+    <select id="checkProblemExists" parameterType="long" resultType="long">
+        select count(1)
+        from tb_problem
+        where
+        `problem_id` = #{problemId}
+    </select>
+</mapper>
