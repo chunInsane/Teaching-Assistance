@@ -11,6 +11,7 @@ import cn.edu.nuc.acmicpc.service.FileService;
 import static com.google.common.base.Preconditions.checkNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -25,6 +26,7 @@ import java.util.zip.ZipFile;
  * File service implement.
  */
 @Service("fileService")
+@Transactional(rollbackFor = Exception.class)
 public class FileServiceImpl implements FileService {
 
     @Autowired

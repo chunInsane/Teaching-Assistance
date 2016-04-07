@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Created with IDEA
  * User: chuninsane
  * Date: 16/4/6
+ * Email service test.
  */
 public class EmailServiceTest extends BasicTest{
 
@@ -16,6 +17,6 @@ public class EmailServiceTest extends BasicTest{
 
     @Test
     public void sendEmail() {
-        emailService.send("965394829@qq.com", "测试邮件", "董玉凯你好!");
+        emailService.send("411935330@qq.com", "测试邮件", "董玉凯你好!");
     }
 }

@@ -8,6 +8,7 @@ import cn.edu.nuc.acmicpc.service.StatusService;
 import static com.google.common.base.Preconditions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import java.util.Map;
  * Status service implement.
  */
 @Service("statusService")
+@Transactional(rollbackFor = Exception.class)
 public class StatusServiceImpl implements StatusService {
 
     @Autowired
@@ -72,6 +74,8 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     public void updateStatus(StatusDto statusDto) {
+        checkNotNull(statusDto);
+        checkArgument(statusDto.getStatusId() != null);
         statusMapper.updateStatus(statusDto);
     }
 

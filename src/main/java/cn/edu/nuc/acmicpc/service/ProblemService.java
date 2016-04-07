@@ -1,6 +1,7 @@
 package cn.edu.nuc.acmicpc.service;
 
 import cn.edu.nuc.acmicpc.dto.ProblemDto;
+import cn.edu.nuc.acmicpc.dto.ProblemListDto;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
 
 import java.util.List;
@@ -16,7 +17,6 @@ public interface ProblemService {
 
     /**
      * Gets all problems' id according to the parameters.
-     *
      * @param isVisible
      * @return
      */
@@ -24,7 +24,6 @@ public interface ProblemService {
 
     /**
      * Get ProblemDto entity by problem's ID.
-     *
      * @param problemId
      * @return
      */
@@ -43,11 +42,10 @@ public interface ProblemService {
      * @param pageInfo
      * @return
      */
-    public List<ProblemDto> getProblemDtoList(Map<String, Object> condition, PageInfo pageInfo);
+     public List<ProblemListDto> getProblemListDtos(Map<String, Object> condition, PageInfo pageInfo);
 
     /**
      * Modify one field of multiply entities as value.
-     *
      * @param ids
      * @param values
      * @throws
@@ -56,7 +54,6 @@ public interface ProblemService {
 
     /**
      * Query one field of multiply entities.
-     *
      * @param values
      * @return
      */
@@ -64,14 +61,12 @@ public interface ProblemService {
 
     /**
      * Creates a new problem record.
-     *
      * @return the new problem's id.
      */
     public Long createProblem();
 
     /**
      * Create problems by problemDtos.
-     *
      * @param problemDtos
      * @return
      */
@@ -79,7 +74,6 @@ public interface ProblemService {
 
     /**
      * update problem record
-     *
      * @param problemDto
      */
     public void updateProblem(ProblemDto problemDto);
@@ -87,7 +81,6 @@ public interface ProblemService {
 
     /**
      * Check whether a problem exists.
-     *
      * @param problemId
      * @return true if this problem exists.
      */
@@ -95,9 +88,9 @@ public interface ProblemService {
 
     /**
      * update problem information by problem id
-     *
      * @param problemId
      * @param params
      */
     public void updateProblemByProblemId(Long problemId, Map<String, Object> params);
+
 }

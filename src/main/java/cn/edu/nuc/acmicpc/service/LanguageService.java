@@ -8,7 +8,7 @@ import java.util.List;
  * Created with IDEA
  * User: chuninsane
  * Date: 2016/3/13
- * Language service interface
+ * Language service interface.
  */
 public interface LanguageService {
 

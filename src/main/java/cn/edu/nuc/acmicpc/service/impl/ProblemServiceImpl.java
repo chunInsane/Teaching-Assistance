@@ -2,13 +2,17 @@ package cn.edu.nuc.acmicpc.service.impl;
 
 import cn.edu.nuc.acmicpc.common.exception.AppException;
 import cn.edu.nuc.acmicpc.dto.ProblemDto;
+import cn.edu.nuc.acmicpc.dto.ProblemListDto;
 import cn.edu.nuc.acmicpc.mapper.ProblemMapper;
 import cn.edu.nuc.acmicpc.model.Problem;
 import cn.edu.nuc.acmicpc.service.ProblemService;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
+
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +24,7 @@ import java.util.Map;
  * Problem service implement.
  */
 @Service("problemService")
+@Transactional(rollbackFor = Exception.class)
 public class ProblemServiceImpl implements ProblemService {
 
     @Autowired
@@ -41,10 +46,12 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public List<ProblemDto> getProblemDtoList(Map<String, Object> condition, PageInfo pageInfo) {
-        checkNotNull(condition).put("firstNo", pageInfo.getFirstNo());
+    public List<ProblemListDto> getProblemListDtos(Map<String, Object> condition, PageInfo pageInfo) {
+        checkNotNull(condition);
+        checkNotNull(pageInfo);
+        condition.put("firstNo", pageInfo.getFirstNo());
         condition.put("pageSize", pageInfo.getCountPerPage());
-        return problemMapper.getProblemDtoList(condition);
+        return problemMapper.getProblemListDtos(condition);
     }
 
     @Override
@@ -102,17 +109,24 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public void updateProblem(ProblemDto problemDto) {
+        checkNotNull(problemDto);
+        checkArgument(problemDto.getProblemId() != null);
+        checkNotNull(problemDto.getProblemId());
         problemMapper.updateProblem(problemDto);
     }
 
     @Override
     public Boolean checkProblemExists(Long problemId) {
+        checkNotNull(problemId);
         return problemMapper.checkProblemExists(problemId) > 0;
     }
 
     @Override
     public void updateProblemByProblemId(Long problemId, Map<String, Object> params) {
-
+        checkNotNull(params);
+        checkNotNull(problemId);
+        params.put("problemId", problemId);
+        problemMapper.updateProblemByProblemId(params);
     }
 
 }

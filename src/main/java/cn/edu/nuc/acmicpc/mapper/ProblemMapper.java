@@ -1,6 +1,7 @@
 package cn.edu.nuc.acmicpc.mapper;
 
 import cn.edu.nuc.acmicpc.dto.ProblemDto;
+import cn.edu.nuc.acmicpc.dto.ProblemListDto;
 import cn.edu.nuc.acmicpc.model.Problem;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public interface ProblemMapper {
      * @param condition
      * @return
      */
-    public List<ProblemDto> getProblemDtoList(Map<String, Object> condition);
+    public List<ProblemListDto> getProblemListDtos(Map<String, Object> condition);
 
     /**
      * Create new problem record.
@@ -61,4 +62,10 @@ public interface ProblemMapper {
      * @return
      */
     public Long checkProblemExists(Long problemId);
+
+    /**
+     * Update problem information by problem id.
+     * @param params
+     */
+    public void updateProblemByProblemId(Map<String, Object> params);
 }

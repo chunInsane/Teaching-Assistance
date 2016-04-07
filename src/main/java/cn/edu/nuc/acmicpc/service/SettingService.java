@@ -11,16 +11,14 @@ import cn.edu.nuc.acmicpc.dto.SettingDto;
 public interface SettingService {
 
     /**
-     * Get settings detail by settings name
-     *
+     * Get settings detail by settings id.
      * @param settingId
      * @return
      */
     public SettingDto getSettingDto(Long settingId);
 
     /**
-     * update setting
-     *
+     * Update setting.
      * @param settingDto
      */
     public void updateSetting(SettingDto settingDto);

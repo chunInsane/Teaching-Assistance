@@ -6,7 +6,7 @@
 
     <!--resultMap-->
     <resultMap id="contestUserDtoResultMap" type="ContestUserDto">
-        <id column="contest_user_id" property="contestProblemId"/>
+        <id column="contest_user_id" property="contestUserId"/>
         <result column="contest_id" property="contestId"/>
         <result column="user_id" property="userId"/>
         <result column="status" property="status"/>
@@ -15,20 +15,30 @@
 
     <insert id="createContestUser" parameterType="ContestUserDto" useGeneratedKeys="true" keyProperty="contestUserId">
        insert into tb_contest_user(
-        contest_id, user_id, status, comment
+        <trim suffixOverrides=",">
+            <if test="contestId != null">`contest_id`, </if>
+            <if test="userId != null">`user_id`, </if>
+            <if test="status != null">`status`, </if>
+            <if test="comment != null">`comment`, </if>
+        </trim>
        ) values (
-       #{contestId}, #{userId}, #{status}, #{comment}
+        <trim suffixOverrides=",">
+            <if test="contestId != null">#{contestId}, </if>
+            <if test="userId != null">#{userId}, </if>
+            <if test="status != null">#{status}, </if>
+            <if test="comment != null">#{comment}, </if>
+        </trim>
        )
     </insert>
 
     <delete id="removeContestUsersByContestId" parameterType="long">
         delete from tb_contest_user
-        where contest_id = #{contestId}
+        where `contest_id` = #{contestId}
     </delete>
 
     <select id="checkUserCanRegisterInContest" parameterType="map" resultType="long">
         select count(1)
         from tb_contest_user
-        where user_id = #{userId} and contest_id = #{contestId}
+        where `user_id` = #{userId} and `contest_id` = #{contestId}
     </select>
 </mapper>

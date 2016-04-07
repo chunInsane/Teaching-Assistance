@@ -15,19 +15,18 @@
     <select id="getSettingDto" parameterType="long" resultMap="settingResultMap">
       select `setting_id`, `name`, `description`, `value`
       from tb_setting
-      where setting_id = #{settingId}
+      where `setting_id` = #{settingId}
     </select>
 
     <update id="updateSetting" parameterType="Setting">
         update tb_setting
-        set
         <trim prefix="set" suffixOverrides=",">
-          <if test="name != null">`name` = #{name}</if>
-          <if test="description != null">`description` = #{description}</if>
-          <if test="value != null">`value` = #{value}</if>
+          <if test="name != null">`name` = #{name}, </if>
+          <if test="description != null">`description` = #{description}, </if>
+          <if test="value != null">`value` = #{value}, </if>
         </trim>
         where
-        setting_id = #{settingId}
+        `setting_id` = #{settingId}
     </update>
 </mapper>
     

@@ -5,6 +5,7 @@ import cn.edu.nuc.acmicpc.mapper.CodeMapper;
 import cn.edu.nuc.acmicpc.service.CodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -15,6 +16,7 @@ import static com.google.common.base.Preconditions.*;
  * Code service implement.
  */
 @Service("codeService")
+@Transactional(rollbackFor = Exception.class)
 public class CodeServiceImpl implements CodeService {
 
     @Autowired

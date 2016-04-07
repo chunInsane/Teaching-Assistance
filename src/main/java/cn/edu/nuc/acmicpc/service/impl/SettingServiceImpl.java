@@ -8,6 +8,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created with IDEA
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
  * Setting service implement.
  */
 @Service("settingService")
+@Transactional(rollbackFor = Exception.class)
 public class SettingServiceImpl implements SettingService {
 
     @Autowired

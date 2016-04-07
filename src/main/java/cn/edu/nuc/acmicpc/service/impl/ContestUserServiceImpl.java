@@ -6,6 +6,7 @@ import cn.edu.nuc.acmicpc.service.ContestUserService;
 import static com.google.common.base.Preconditions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ import java.util.Map;
  * Contest user service implement.
  */
 @Service("contestUserService")
+@Transactional(rollbackFor = Exception.class)
 public class ContestUserServiceImpl implements ContestUserService {
 
     @Autowired

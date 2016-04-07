@@ -33,7 +33,7 @@ public class EmailServiceImpl implements EmailService {
         mailObject.setBody(content);
         mailObject.setMailAuthentication(mailAuthentication);
         mailObject.setHostname("smtp.163.com");
-        mailObject.setCcAddresses("842469848@qq.com");
+        mailObject.setCcAddresses("");
         EmailUtil.mailTo(mailObject);
     }
 

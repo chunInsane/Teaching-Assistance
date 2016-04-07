@@ -9,6 +9,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created with IDEA
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
  * CompileInfo service implement.
  */
 @Service("compileInfoService")
+@Transactional(rollbackFor = Exception.class)
 public class CompileInfoServiceImpl implements CompileInfoService {
 
     @Autowired

@@ -7,6 +7,7 @@ import cn.edu.nuc.acmicpc.service.ContestProblemService;
 import static com.google.common.base.Preconditions.checkNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Map;
  * Contest problem service implement.
  */
 @Service("contestProblemService")
+@Transactional(rollbackFor = Exception.class)
 public class ContestProblemServiceImpl implements ContestProblemService {
 
     @Autowired

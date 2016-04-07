@@ -9,7 +9,7 @@ import java.util.List;
  * Created with IDEA
  * User: chuninsane
  * Date: 2016/3/8
- * status service interface
+ * Status service interface.
  */
 public interface StatusService {
 

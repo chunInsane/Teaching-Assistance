@@ -29,17 +29,17 @@
     </resultMap>
 
     <select id="getUserByUserId" parameterType="long" resultMap="userDtoResultMap">
-        select user_id, user_name, password, nickname, create_time, school, department_id,
-        mobile_phone, motto, sex, last_login, tried, solved, `type`
+        select `user_id`, `user_name`, `password`, `nickname`, `create_time`, `school`, `department_id`,
+        `mobile_phone`, `motto`, `sex`, `last_login`, `tried`, `solved`, `type`
         from tb_user
-        where user_id = #{userId}
+        where `user_id` = #{userId}
     </select>
 
     <select id="getUserByUsername" parameterType="string" resultMap="userDtoResultMap">
-        select user_id, user_name, password, nickname, create_time, school, department_id,
-        mobile_phone, motto, sex, last_login, tried, solved, `type`
+        select `user_id`, `user_name`, `password`, `nickname`, `create_time`, `school`, `department_id`,
+        `mobile_phone`, `motto`, `sex`, `last_login`, `tried`, `solved`, `type`
         from tb_user
-        where user_name = #{username}
+        where `user_name` = #{username}
     </select>
 
     <update id="updateUser" parameterType="UserDto">
@@ -105,7 +105,7 @@
             <if test="lastLogin != null">#{lastLogin},</if>
             <if test="tried != null">#{tried},</if>
             <if test="solved != null">#{solved},</if>
-            <if test="type != null">#{type}</if>
+            <if test="type != null">#{type},</if>
         </trim>
         )
     </insert>
@@ -114,13 +114,13 @@
         select count(1)
         from tb_user
         <trim prefix="where" suffixOverrides="and">
-            <if test="startId != null"><![CDATA[user_id >= #{startId}]]> and </if>
-            <if test="endId != null"><![CDATA[user_id <= #{endId}]]> and </if>
-            <if test="username != null">user_name = #{username} and </if>
-            <if test="nickname != null">nickname = #{nickname} and </if>
+            <if test="startId != null"><![CDATA[`user_id` >= #{startId}]]> and </if>
+            <if test="endId != null"><![CDATA[`user_id` <= #{endId}]]> and </if>
+            <if test="username != null">`user_name` = #{username} and </if>
+            <if test="nickname != null">`nickname` = #{nickname} and </if>
             <if test="type != null">`type` = #{type} and </if>
-            <if test="school != null">school = #{school} and </if>
-            <if test="keyword != null">user_name like contact('%', #{keyword},'%') and </if>
+            <if test="school != null">`school` = #{school} and </if>
+            <if test="keyword != null">(`user_name` like contact('%', #{keyword},'%') or `nickname` like contact('%', #{keyword}, '%')) and </if>
         </trim>
     </select>
 
@@ -129,18 +129,18 @@
         mobile_phone, motto, sex, last_login, tried, solved, `type`
         from tb_user
         <trim prefix="where" suffixOverrides="and">
-            <if test="startId != null"><![CDATA[user_id >= #{startId}]]> and </if>
-            <if test="endId != null"><![CDATA[user_id <= #{endId}]]> and </if>
-            <if test="username != null">user_name = #{username} and </if>
-            <if test="nickname != null">nickname = #{nickname} and </if>
+            <if test="startId != null"><![CDATA[`user_id` >= #{startId}]]> and </if>
+            <if test="endId != null"><![CDATA[`user_id` <= #{endId}]]> and </if>
+            <if test="username != null">`user_name` = #{username} and </if>
+            <if test="nickname != null">`nickname` = #{nickname} and </if>
             <if test="type != null">`type` = #{type} and </if>
-            <if test="school != null">school = #{school} and </if>
-            <if test="keyword != null">user_name like contact('%', #{keyword},'%') and </if>
+            <if test="school != null">`school` = #{school} and </if>
+            <if test="keyword != null">`user_name` like contact('%', #{keyword},'%') and </if>
         </trim>
-        order by user_id asc
+        order by `user_id` asc
         <trim prefix="limit" suffixOverrides=",">
-            <if test="firstNo != null">#{firstNo},</if>
-            <if test="countPerPage != null">#{countPerPage},</if>
+            <if test="firstNo != null">#{firstNo}, </if>
+            <if test="countPerPage != null">#{countPerPage}, </if>
         </trim>
     </select>
 
@@ -148,33 +148,35 @@
         select count(1)
         from tb_user
         where
-        user_id = #{userId}
+        `user_id` = #{userId}
     </select>
 
     <select id="isExistUserByUserName" parameterType="string" resultType="long">
         select count(1)
         from tb_user
         where
-        user_name = #{userName}
+        `user_name` = #{username}
     </select>
     
     <select id="getTypeAheadUserDtos" parameterType="map" resultMap="typeAheadUserDtoResultMap">
         select
-        user_id, user_name, nickname
+        `user_id`, `user_name`, `nickname`
         from tb_user
         <trim prefix="where" suffixOverrides="and|or">
-            <if test="startId != null"><![CDATA[user_id >= #{startId}]]> and </if>
-            <if test="endId != null"><![CDATA[user_id <= #{endId}]]> and </if>
-            <if test="username != null">user_name = #{username} and </if>
-            <if test="nickname != null">nickname = #{nickname} and </if>
+            <if test="startId != null"><![CDATA[`user_id` >= #{startId}]]> and </if>
+            <if test="endId != null"><![CDATA[`user_id` <= #{endId}]]> and </if>
+            <if test="username != null">`user_name` = #{username} and </if>
+            <if test="nickname != null">`nickname` = #{nickname} and </if>
             <if test="type != null">`type` = #{type} and </if>
-            <if test="school != null">school = #{school} and </if>
-            <if test="keyword != null">user_name like contact('%', #{keyword},'%') and </if>
+            <if test="school != null">`school` = #{school} and </if>
+            <if test="keyword != null">
+            (`user_name` like contact('%', #{keyword}, '%') or `nickname` like contact('%', #{keyword}, '%')) and
+            </if>
         </trim>
-        order by user_id asc
+        order by `user_id` asc
         <trim prefix="limit" suffixOverrides=",">
-            <if test="firstNo != null">#{firstNo},</if>
-            <if test="countPerPage != null">#{countPerPage},</if>
+            <if test="firstNo != null">#{firstNo}, </if>
+            <if test="countPerPage != null">#{countPerPage}, </if>
         </trim>
     </select>
 

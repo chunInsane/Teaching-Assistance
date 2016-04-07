@@ -7,6 +7,7 @@ import cn.edu.nuc.acmicpc.web.common.PageInfo;
 import static com.google.common.base.Preconditions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.Map;
  * Contest service implement.
  */
 @Service("contestService")
+@Transactional(rollbackFor = Exception.class)
 public class ContestServiceImpl implements ContestService {
 
     @Autowired
@@ -59,7 +61,9 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public List<ContestDto> getContestList(Map<String, Object> conditions, PageInfo pageInfo) {
-        checkNotNull(conditions).put("firstNo", checkNotNull(pageInfo).getFirstNo());
+        checkNotNull(conditions);
+        checkNotNull(pageInfo);
+        conditions.put("firstNo", pageInfo.getFirstNo());
         conditions.put("pageSize", pageInfo.getCountPerPage());
         return contestMapper.getContestList(conditions);
     }

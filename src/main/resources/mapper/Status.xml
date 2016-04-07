@@ -73,31 +73,45 @@
         s.code_id, s.compile_info_id, s.contest_id, s.language_id, s.problem_id, s.user_id,
         u.user_name, u.nickname, l.language, l.extension, p.code_content, p.data_count,
         p.java_memory_limit, p.java_time_limit, p.memory_limit, p.time_limit, p.output_limit, p.is_spj
-        from tb_status s
+        from (
+            select *
+            from tb_status
+            <trim prefix="where" suffixOverrides="and">
+                <if test="startId != null"><![CDATA[`s.status_id` >= #{startId}]]> and </if>
+                <if test="endId != null"><![CDATA[`s.status_id` <= #{endId}]]> and </if>
+                <if test="startTime != null"><![CDATA[`s.time` >= #{startTime}]]> and </if>
+                <if test="endTime != null"><![CDATA[`s.time` <= #{endTime}]]> and </if>
+                <if test="userId != null">`s.user_id` = #{userId} and </if>
+                <if test="problemId != null">`s.problem_id` = #{problemId} and </if>
+                <if test="languageId != null">`s.language_id` = #{languageId} and </if>
+                <if test="contestId != null">`s.contest_id` = #{contestId} and </if>
+                <if test="result != null">`s.result` = #{result} and </if>
+                <if test="results != null">
+                  `s.result` in
+                  <foreach collection="results" open="(" close=")" separator="," item="obj" index="ind">
+                      #{obj}
+                  </foreach>
+                </if>
+            </trim>
+        ) as s
+        left join (
+            select *
+            from tb_user
+            <trim prefix="where" suffixOverrides="and">
+                <if test="username != null">`u.username` like contact('%', #{username}, '%') and </if>
+                <if test="userType != null">`u.type` != #{userType} , </if>
+            </trim>
+        ) as u on s.user_id = u.user_id
         left join tb_problem p on s.problem_id = p.problem_id
-        left join tb_user u on s.user_id = u.user_id
         left join tb_language l on s.language_id = l.language_id
-        <trim prefix="where" suffixOverrides="and">
-            <if test="startId != null"><![CDATA[`s.status_id` >= #{startId}]]> and </if>
-            <if test="endId != null"><![CDATA[`s.status_id` <= #{endId}]]> and </if>
-            <if test="startTime != null"><![CDATA[`s.time` >= #{startTime}]]> and </if>
-            <if test="endTime != null"><![CDATA[`s.time` <= #{endTime}]]> and </if>
-            <if test="userId != null">`u.user_id` = #{userId} and </if>
-            <if test="username != null">`u.username` like contact('%', #{username}, '%') and </if>
-            <if test="problemId != null">`s.problem_id` = #{problemId} and </if>
-            <if test="languageId != null">`s.language_id` = #{languageId} and </if>
-            <if test="contestId != null">`s.contest_id` = #{contestId} and </if>
-            <if test="result != null">`s.result` = #{result} and </if>
-            <if test="userType != null">`u.type` != #{userType} , </if>
-        </trim>
     </select>
 
     <update id="updateStatus" parameterType="StatusDto">
         update tb_status
         <trim prefix="set" suffixOverrides=",">
-            <if test="userId != null">`user_id` = #{userId} , </if>
-            <if test="problemId != null">`problem_id` = #{problemId} , </if>
-            <if test="result != null">`result` = #{result} , </if>
+            <if test="userId != null">`user_id` = #{userId}, </if>
+            <if test="problemId != null">`problem_id` = #{problemId}, </if>
+            <if test="result != null">`result` = #{result}, </if>
             <if test="memoryCost != null">`memory_cost` = #{memoryCost}, </if>
             <if test="timeCost != null">`time_cost` = #{timeCost}, </if>
             <if test="languageId != null">`language_id` = #{languageId}, </if>
@@ -108,18 +122,27 @@
             <if test="codeId != null">`code_id` = #{codeId}, </if>
             <if test="compileInfoId != null">`compile_info_id` = #{compileInfoId}, </if>
         </trim>
+        where `status_id` = #{statusId}
     </update>
 
     <select id="findAllProblemIdsThatUser" parameterType="map" resultType="long">
-        select distinct `problem_id`
-        from tb_status s
+        select distinct `s.problem_id`
+        from (
+          select *
+          from tb_status
+          <trim suffixOverrides="and" prefix="where">
+              <if test="resultType != null">`result` = #{resultType} and </if>
+              <if test="userId != null">`user_id` = #{userId} and </if>
+          </trim>
+        )as s
         left join tb_problem p on s.problem_id = p.problem_id
-        left join tb_user u on s.user_id = u.user_id
-        <trim prefix="where" suffixOverrides="and">
-            <if test="resultType != null">`s.result` = #{resultType} and </if>
-            <if test="userId != null">`s.user_id` = #{userId} and </if>
-            <if test="adminType != null">`u.type` != #{adminType} and </if>
-        </trim>
+        left join (
+            select *
+            from tb_user
+            <trim prefix="where" suffixOverrides="and">
+                <if test="adminType != null">`type` != #{adminType} and </if>
+            </trim>
+        )as u on s.user_id = u.user_id
     </select>
 
     <select id="countUsers" parameterType="map" resultType="long">
@@ -133,12 +156,20 @@
 
     <select id="countProblems" parameterType="map" resultType="long">
         select count(s.problem_id)
-        from tb_status s
-        left join tb_user u on s.user_id = u.user_id
-        <trim prefix="where" suffixOverrides="and">
-            <if test="resultType != null">`result` = #{resultType} and </if>
-            <if test="userId != null">`user_id` = #{problemId} and </if>
-            <if test="adminType != null">`u.type` != #{adminType}</if>
-        </trim>
+        from (
+          select *
+          from tb_status
+          <trim prefix="where" suffixOverrides="and">
+              <if test="resultType != null">`result` = #{resultType} and </if>
+              <if test="userId != null">`user_id` = #{userId} and </if>
+          </trim>
+        ) as s
+        left join (
+          select *
+          from tb_user
+          <trim prefix="where" suffixOverrides="and">
+              <if test="adminType != null">`type` != #{adminType}</if>
+          </trim>
+        ) as u on s.user_id = u.user_id
     </select>
 </mapper>

@@ -13,12 +13,12 @@
     </resultMap>
 
     <select id="getLanguageList" resultMap="languageResultMap">
-        select language_id, name, extension, param
+        select `language_id`, `name`, `extension`, `param`
         from tb_language
     </select>
 
     <select id="getExtension" parameterType="long" resultType="string">
-        select extension
+        select `extension`
         from tb_language
         where language_id = #{languageId}
     </select>
