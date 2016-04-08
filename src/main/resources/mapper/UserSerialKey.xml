@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.acmicpc.mapper.UserSerialKeyMapper">
+
+    <!--resultMap-->
+    <resultMap id="userSerialKeyResultMap" type="UserSerialKey">
+        <id column="key_id" property="keyId"/>
+        <result column="key" property="key"/>
+        <result column="user_name" property="username"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <select id="getUserSerialKey" parameterType="long" resultMap="userSerialKeyResultMap">
+        select `key_id`, `key`, `user_name`, `status`
+        from tb_user_serial_key
+        where `key_id` = #{keyId}
+    </select>
+
+    <insert id="addUserSerialKey" parameterType="UserSerialKey" useGeneratedKeys="true" keyProperty="keyId">
+        insert into tb_user_serial_key(
+        <trim suffixOverrides=",">
+            <if test="key != null">`key`, </if>
+            <if test="username != null">`user_name`, </if>
+            <if test="status != null">`status`, </if>
+        </trim>
+        ) values (
+        <trim suffixOverrides=",">
+            <if test="key != null">#{key}, </if>
+            <if test="username != null">#{username}, </if>
+            <if test="status != null">#{status}, </if>
+        </trim>
+        )
+    </insert>
+
+    <update id="updateUserSerialKey" parameterType="UserSerialKey">
+        update tb_user_serial_key
+        <trim prefix="set" suffixOverrides=",">
+            <if test="key != null">`key` = #{key}, </if>
+            <if test="username != null">`user_name` = #{username}, </if>
+            <if test="status != null">`status` = #{status}, </if>
+        </trim>
+        where `key_id` = #{keyId}
+    </update>
+
+    <select id="getUserSerialKeyByUsername" parameterType="string" resultMap="userSerialKeyResultMap">
+        select `key_id`, `key`, `user_name`, `status`
+        from tb_user_serial_key
+        where `user_name` = #{username}
+    </select>
+</mapper>

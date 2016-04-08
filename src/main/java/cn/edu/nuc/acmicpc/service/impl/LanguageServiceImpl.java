@@ -24,6 +24,11 @@ public class LanguageServiceImpl implements LanguageService {
     private LanguageMapper languageMapper;
 
     @Override
+    public Long createLanguage(LanguageDto languageDto) {
+        return languageMapper.createLanguage(checkNotNull(languageDto));
+    }
+
+    @Override
     public List<LanguageDto> getLanguageList() {
         return languageMapper.getLanguageList();
     }

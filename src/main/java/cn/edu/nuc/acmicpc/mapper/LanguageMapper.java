@@ -31,4 +31,11 @@ public interface LanguageMapper {
      * @return
      */
     public String getLanguageName(Long languageId);
+
+    /**
+     * Create new language record.
+     * @param languageDto
+     * @return
+     */
+    public Long createLanguage(LanguageDto languageDto);
 }

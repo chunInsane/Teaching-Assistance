@@ -24,4 +24,11 @@ public interface DepartmentMapper {
      * @return
      */
     public List<DepartmentDto> getDepartments();
+
+    /**
+     * Create new department record.
+     * @param name
+     * @return
+     */
+    public Long createDepartment(String name);
 }

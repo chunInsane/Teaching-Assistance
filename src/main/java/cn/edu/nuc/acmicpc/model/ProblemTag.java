@@ -7,9 +7,9 @@ import java.io.Serializable;
  */
 public class ProblemTag implements Serializable {
 
-    private Integer problemTagId;
-    private Integer problemId;
-    private Integer tagId;
+    private Long problemTagId;
+    private Long problemId;
+    private Long tagId;
 
     @Override
     public String toString() {
@@ -20,28 +20,27 @@ public class ProblemTag implements Serializable {
                 '}';
     }
 
-    public void setProblemTagId(Integer problemTagId) {
-        this.problemTagId = problemTagId;
-    }
-
-    public void setProblemId(Integer problemId) {
-        this.problemId = problemId;
-    }
-
-    public void setTagId(Integer tagId) {
-        this.tagId = tagId;
-    }
-
-    public Integer getProblemTagId() {
-
+    public Long getProblemTagId() {
         return problemTagId;
     }
 
-    public Integer getProblemId() {
+    public void setProblemTagId(Long problemTagId) {
+        this.problemTagId = problemTagId;
+    }
+
+    public Long getProblemId() {
         return problemId;
     }
 
-    public Integer getTagId() {
+    public void setProblemId(Long problemId) {
+        this.problemId = problemId;
+    }
+
+    public Long getTagId() {
         return tagId;
+    }
+
+    public void setTagId(Long tagId) {
+        this.tagId = tagId;
     }
 }

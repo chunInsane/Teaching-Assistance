@@ -20,7 +20,7 @@ public interface ProblemService {
      * @param isVisible
      * @return
      */
-    public List<Long> getAllProblemIds(boolean isVisible);
+    public List<Long> getAllProblemIds(Boolean isVisible);
 
     /**
      * Get ProblemDto entity by problem's ID.

@@ -71,23 +71,23 @@
         select
         s.status_id, s.result, s.memory_cost, s.time_cost, s.length, s.time, s.case_number,
         s.code_id, s.compile_info_id, s.contest_id, s.language_id, s.problem_id, s.user_id,
-        u.user_name, u.nickname, l.language, l.extension, p.code_content, p.data_count,
+        u.user_name, u.nickname, l.name as `language`, l.extension, c.content as `code_content`, p.data_count,
         p.java_memory_limit, p.java_time_limit, p.memory_limit, p.time_limit, p.output_limit, p.is_spj
         from (
             select *
             from tb_status
             <trim prefix="where" suffixOverrides="and">
-                <if test="startId != null"><![CDATA[`s.status_id` >= #{startId}]]> and </if>
-                <if test="endId != null"><![CDATA[`s.status_id` <= #{endId}]]> and </if>
-                <if test="startTime != null"><![CDATA[`s.time` >= #{startTime}]]> and </if>
-                <if test="endTime != null"><![CDATA[`s.time` <= #{endTime}]]> and </if>
-                <if test="userId != null">`s.user_id` = #{userId} and </if>
-                <if test="problemId != null">`s.problem_id` = #{problemId} and </if>
-                <if test="languageId != null">`s.language_id` = #{languageId} and </if>
-                <if test="contestId != null">`s.contest_id` = #{contestId} and </if>
-                <if test="result != null">`s.result` = #{result} and </if>
+                <if test="startId != null"><![CDATA[`status_id` >= #{startId}]]> and </if>
+                <if test="endId != null"><![CDATA[`status_id` <= #{endId}]]> and </if>
+                <if test="startTime != null"><![CDATA[`time` >= #{startTime}]]> and </if>
+                <if test="endTime != null"><![CDATA[`time` <= #{endTime}]]> and </if>
+                <if test="userId != null">`user_id` = #{userId} and </if>
+                <if test="problemId != null">`problem_id` = #{problemId} and </if>
+                <if test="languageId != null">`language_id` = #{languageId} and </if>
+                <if test="contestId != null">`contest_id` = #{contestId} and </if>
+                <if test="result != null">`result` = #{result} and </if>
                 <if test="results != null">
-                  `s.result` in
+                  `result` in
                   <foreach collection="results" open="(" close=")" separator="," item="obj" index="ind">
                       #{obj}
                   </foreach>
@@ -98,12 +98,13 @@
             select *
             from tb_user
             <trim prefix="where" suffixOverrides="and">
-                <if test="username != null">`u.username` like contact('%', #{username}, '%') and </if>
-                <if test="userType != null">`u.type` != #{userType} , </if>
+                <if test="username != null">`username` like concat('%', #{username}, '%') and </if>
+                <if test="userType != null">`type` != #{userType} , </if>
             </trim>
         ) as u on s.user_id = u.user_id
         left join tb_problem p on s.problem_id = p.problem_id
         left join tb_language l on s.language_id = l.language_id
+        left join tb_code c on s.code_id = c.code_id
     </select>
 
     <update id="updateStatus" parameterType="StatusDto">
@@ -126,7 +127,7 @@
     </update>
 
     <select id="findAllProblemIdsThatUser" parameterType="map" resultType="long">
-        select distinct `s.problem_id`
+        select distinct s.`problem_id`
         from (
           select *
           from tb_status

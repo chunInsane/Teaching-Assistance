@@ -14,19 +14,31 @@
         <result column="length" property="length"/>
         <result column="is_visible" property="isVisible"/>
         <result column="password" property="password"/>
-        <result column="start_time" property="start_time"/>
-        <result column="end_time" property="end_time"/>
-        <!--TODO-->
+        <result column="frozen_time" property="frozenTime"/>
     </resultMap>
 
     <insert id="createContest" parameterType="ContestDto" useGeneratedKeys="true" keyProperty="contestId">
         insert into tb_contest(
           <trim suffixOverrides=",">
-
+              <if test="title != null">`title`, </if>
+              <if test="description != null">`description`, </if>
+              <if test="time != null">`time`, </if>
+              <if test="type != null">`type`, </if>
+              <if test="length != null">`length`, </if>
+              <if test="isVisible != null">`is_visible`, </if>
+              <if test="password != null">`password`, </if>
+              <if test="frozenTime != null">`frozen_time`, </if>
           </trim>
         ) values (
           <trim suffixOverrides=",">
-
+              <if test="title != null">#{title}, </if>
+              <if test="description != null">#{description}, </if>
+              <if test="time != null">#{time}, </if>
+              <if test="type != null">#{type}, </if>
+              <if test="length != null">#{length}, </if>
+              <if test="isVisible != null">#{isVisible}, </if>
+              <if test="password != null">#{password}, </if>
+              <if test="frozenTime != null">#{frozenTime}, </if>
           </trim>
         )
     </insert>
@@ -34,11 +46,12 @@
     <select id="getAllisVisibleContestIds" resultType="boolean">
         select `contest_id`
         from tb_contest
-        where `is_visible` = #{isVisible}
+        where `is_visible` = #{value}
     </select>
 
     <select id="getContestDtoByContestId" parameterType="long" resultType="ContestDto">
-        select *
+        select `contest_id`, `title`, `description`, `time`, `type`, `length`, `is_visible`,
+        `password`, `frozen_time`
         from tb_contest
         where `contest_id` = #{contestId}
     </select>
@@ -59,13 +72,14 @@
             <if test="startTime != null"><![CDATA[`time` >= #{startTime}]]> and </if>
             <if test="endTime != null"><![CDATA[`time` <= #{endTime}]]> and </if>
             <if test="keyword != null">
-                (`title` like contact('%', #{keyword}, '%') or `description` like contact('%', #{keyword}, '%')) and
+                (`title` like concat('%', #{keyword}, '%') or `description` like concat('%', #{keyword}, '%')) and
             </if>
         </trim>
     </select>
 
     <select id="getContestList" parameterType="map" resultMap="contestDtoResultMap">
-        select *
+        select `contest_id`, `title`, `description`, `time`, `type`, `length`, `is_visible`,
+        `password`, `frozen_time`
         from tb_contest
         <trim prefix="where" suffixOverrides="and">
             <if test="contestId != null">`contest_id` = #{contestId} and </if>
@@ -74,7 +88,7 @@
             <if test="startTime != null"><![CDATA[`time` >= #{startTime}]]> and </if>
             <if test="endTime != null"><![CDATA[`time` <= #{endTime}]]> and </if>
             <if test="keyword != null">
-                (`title` like contact('%', #{keyword}, '%') or `description` like contact('%', #{keyword}, '%')) and
+                (`title` like concat('%', #{keyword}, '%') or `description` like concat('%', #{keyword}, '%')) and
             </if>
         </trim>
         order by `contest_id` asc
@@ -91,6 +105,7 @@
             <if test="isVisible != null">`is_visible` = #{isVisible}, </if>
             <if test="length != null">`length` = #{length}, </if>
             <if test="time != null">`time` = #{time}, </if>
+            <if test="type != null">`type` = #{type}, </if>
             <if test="title != null">`title` = #{title}, </if>
             <if test="password != null">`password` = #{password}, </if>
             <if test="frozenTime != null">`frozen_time` = #{frozenTime}, </if>

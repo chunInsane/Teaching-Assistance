@@ -120,7 +120,7 @@
             <if test="nickname != null">`nickname` = #{nickname} and </if>
             <if test="type != null">`type` = #{type} and </if>
             <if test="school != null">`school` = #{school} and </if>
-            <if test="keyword != null">(`user_name` like contact('%', #{keyword},'%') or `nickname` like contact('%', #{keyword}, '%')) and </if>
+            <if test="keyword != null">(`user_name` like concat('%', #{keyword},'%') or `nickname` like contact('%', #{keyword}, '%')) and </if>
         </trim>
     </select>
 

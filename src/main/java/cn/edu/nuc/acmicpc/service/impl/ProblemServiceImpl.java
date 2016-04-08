@@ -31,7 +31,7 @@ public class ProblemServiceImpl implements ProblemService {
     private ProblemMapper problemMapper;
 
     @Override
-    public List<Long> getAllProblemIds(boolean isVisible) {
+    public List<Long> getAllProblemIds(Boolean isVisible) {
         return problemMapper.getAllProblemIds(isVisible);
     }
 

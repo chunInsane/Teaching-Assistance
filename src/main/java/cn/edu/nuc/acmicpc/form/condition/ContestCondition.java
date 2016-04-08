@@ -7,10 +7,13 @@ import java.util.Map;
  * Created with IDEA
  * User: chuninsane
  * Date: 16/4/5
+ * Contest condition.
  */
 public class ContestCondition extends BasicCondition {
 
     public Long contestId;
+    public Long startId;
+    public Long endId;
     public Boolean isVisible;
     public Byte type;
     public Timestamp startTime;
@@ -20,7 +23,9 @@ public class ContestCondition extends BasicCondition {
     @Override
     public String toString() {
         return "ContestCondition{" +
-                "contestId=" + contestId +
+                "startId=" + startId +
+                ", endId=" + endId +
+                ", contestId=" + contestId +
                 ", isVisible=" + isVisible +
                 ", type=" + type +
                 ", startTime=" + startTime +
@@ -31,6 +36,12 @@ public class ContestCondition extends BasicCondition {
 
     public Map<String, Object> toConditionMap() {
         Map<String, Object> conditionMap = super.toConditionMap();
+        if (startId != null) {
+            conditionMap.put("startId", startId);
+        }
+        if (endId != null) {
+            conditionMap.put("endId", endId);
+        }
         if (contestId != null) {
             conditionMap.put("contestId", contestId);
         }

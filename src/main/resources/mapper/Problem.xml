@@ -42,7 +42,10 @@
    <select id="getAllProblemIds" parameterType="boolean" resultType="long">
        select `problem_id`
        from tb_problem
-       where `is_visible` = #{isVisible}
+       <trim prefix="where">
+          <if test="value != null">`is_visible` = #{value}</if>
+       </trim>
+
    </select>
 
     <select id="getProblemDtoByProblemId" parameterType="long" resultMap="problemDtoResultMap">
@@ -60,8 +63,8 @@
         <trim prefix="where" suffixOverrides="and">
             <if test="startId != null"><![CDATA[problem_id >= #{startId}]]> and </if>
             <if test="endId != null"><![CDATA[problem_id <= #{endId}]]> and </if>
-            <if test="title != null">`title` like contact('%', #{title},'%') and </if>
-            <if test="keyword != null">(`problem_id` like contact('%', #{keyword}, '%') or `title` like contact('%', #{keyword}, '%')) and </if>
+            <if test="title != null">`title` like concat('%', #{title},'%') and </if>
+            <if test="keyword != null">(`problem_id` like concat('%', #{keyword}, '%') or `title` like concat('%', #{keyword}, '%')) and </if>
             <if test="isSpj != null">`is_spj` = #{isSpj} and </if>
             <if test="isVisible != null">`is_visible` = #{isVisible} and </if>
             <if test="startDifficulty != null"><![CDATA[`start_difficulty` >= #{startDifficulty}]]> and </if>
@@ -76,8 +79,8 @@
         <trim prefix="where" suffixOverrides="and">
             <if test="startId != null"><![CDATA[problem_id >= #{startId}]]> and </if>
             <if test="endId != null"><![CDATA[problem_id <= #{endId}]]> and </if>
-            <if test="title != null">`title` like contact('%', #{title},'%') and </if>
-            <if test="keyword != null">(`problem_id` like contact('%', #{keyword}, '%') or `title` like contact('%', #{keyword}, '%')) and</if>
+            <if test="title != null">`title` like concat('%', #{title},'%') and </if>
+            <if test="keyword != null">(`title` like concat('%', #{keyword}, '%') or `source` like concat('%', #{keyword}, '%')) and</if>
             <if test="isSpj != null">`is_spj` = #{isSpj} and </if>
             <if test="isVisible != null">`is_visible` = #{isVisible} and </if>
             <if test="startDifficulty != null"><![CDATA[`start_difficulty` >= #{startDifficulty}]]> and </if>
@@ -96,7 +99,7 @@
             <if test="title != null"> `title`, </if>
             <if test="description != null"> `description`, </if>
             <if test="input != null"> `input`, </if>
-            <if test="output != null"> `ouput`, </if>
+            <if test="output != null"> `output`, </if>
             <if test="sampleInput != null"> `sample_input`, </if>
             <if test="sampleOutput != null"> `sample_output`, </if>
             <if test="hint != null"> `hint`, </if>
@@ -118,7 +121,7 @@
             <if test="title != null"> #{title}, </if>
             <if test="description != null"> #{description}, </if>
             <if test="input != null"> #{input}, </if>
-            <if test="output != null"> #{ouput}, </if>
+            <if test="output != null"> #{output}, </if>
             <if test="sampleInput != null"> #{sampleInput}, </if>
             <if test="sampleOutput != null"> #{sampleOutput}, </if>
             <if test="hint != null"> #{hint}, </if>
@@ -139,33 +142,6 @@
     </insert>
 
     <update id="updateProblem" parameterType="ProblemDto">
-        update tb_problem
-        <trim prefix="set" suffixOverrides=",">
-            <if test="title != null"> `title` = #{title}, </if>
-            <if test="description != null"> `description` = #{description}, </if>
-            <if test="input != null"> `input` = #{input}, </if>
-            <if test="output != null"> `ouput` = #{output}, </if>
-            <if test="sampleInput != null"> `sample_input` = #{sampleInput}, </if>
-            <if test="sampleOutput != null"> `sample_output` = #{sampleOutput}, </if>
-            <if test="hint != null"> `hint` = #{hint}, </if>
-            <if test="source != null"> `source` = #{source}, </if>
-            <if test="timeLimit != null"> `time_limit` = #{timeLimit}, </if>
-            <if test="memoryLimit != null"> `memory_limit` = #{memoryLimit}, </if>
-            <if test="solved != null"> `solved` = #{solved}, </if>
-            <if test="tried != null">`tried` = #{tried}, </if>
-            <if test="isVisible != null">`is_visible` = #{isVisible}, </if>
-            <if test="isSpj != null">`is_spj` = #{isSpj}, </if>
-            <if test="outputLimit != null">`output_limit` = #{outputLimit}, </if>
-            <if test="javaTimeLimit != null">`java_time_limit` = #{javaTimeLimit}, </if>
-            <if test="javaMemoryLimit != null">`java_memory_limit` = #{javaMemoryLimit}, </if>
-            <if test="dataCount != null">`data_count` = #{dataCount}, </if>
-            <if test="difficulty != null">`difficulty` = #{difficulty}, </if>
-        </trim>
-        where
-        `problem_id` = #{problemId}
-    </update>
-
-    <update id="updateProblemByProblemId" parameterType="map">
         update tb_problem
         <trim prefix="set" suffixOverrides=",">
             <if test="title != null"> `title` = #{title}, </if>

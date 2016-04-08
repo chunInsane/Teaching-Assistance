@@ -30,6 +30,9 @@
         <typeAlias type="cn.edu.nuc.acmicpc.dto.ProblemDto" alias="ProblemDto"/>
         <typeAlias type="cn.edu.nuc.acmicpc.dto.ProblemListDto" alias="ProblemListDto"/>
         <typeAlias type="cn.edu.nuc.acmicpc.dto.ContestDto" alias="ContestDto"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.model.UserSerialKey" alias="UserSerialKey"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.model.Tag" alias="Tag"/>
+        <typeAlias type="cn.edu.nuc.acmicpc.model.ProblemTag" alias="ProblemTag"/>
     </typeAliases>
 </configuration>
 

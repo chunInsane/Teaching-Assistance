@@ -1,5 +1,7 @@
 package cn.edu.nuc.acmicpc.dto;
 
+import com.sun.tools.corba.se.idl.constExpr.Times;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -18,38 +20,54 @@ public class ContestDto {
     private Integer length;
     private boolean isVisible;
     private String password;
+    private String passwordRepeat;
     private Integer frozenTime;
+    private String action;
     private Integer lengthDays;
     private Integer lengthHours;
     private Integer lengthMinutes;
     private String problemList;
+    private Boolean needFrozen;
+    private Integer frozenLengthMinutes;
+    private Integer frozenLengthHours;
+    private Integer frozenLengthDays;
     private List<UserDto> userDtos;
     private String typeName;
     private String status;
     private Timestamp startTime;
     private Timestamp endTime;
+    private Timestamp currentTime;
+    private Long timeLeft;
 
     @Override
     public String toString() {
         return "ContestDto{" +
-                "endTime=" + endTime +
-                ", startTime=" + startTime +
-                ", status='" + status + '\'' +
-                ", typeName='" + typeName + '\'' +
-                ", userDtos=" + userDtos +
-                ", problemList='" + problemList + '\'' +
-                ", lengthMinutes=" + lengthMinutes +
-                ", lengthHours=" + lengthHours +
-                ", lengthDays=" + lengthDays +
-                ", frozenTime=" + frozenTime +
-                ", password='" + password + '\'' +
-                ", isVisible=" + isVisible +
-                ", length=" + length +
-                ", type=" + type +
-                ", time=" + time +
-                ", description='" + description + '\'' +
+                "contestId=" + contestId +
                 ", title='" + title + '\'' +
-                ", contestId=" + contestId +
+                ", description='" + description + '\'' +
+                ", time=" + time +
+                ", type=" + type +
+                ", length=" + length +
+                ", isVisible=" + isVisible +
+                ", password='" + password + '\'' +
+                ", passwordRepeat='" + passwordRepeat + '\'' +
+                ", frozenTime=" + frozenTime +
+                ", action='" + action + '\'' +
+                ", lengthDays=" + lengthDays +
+                ", lengthHours=" + lengthHours +
+                ", lengthMinutes=" + lengthMinutes +
+                ", problemList='" + problemList + '\'' +
+                ", needFrozen=" + needFrozen +
+                ", frozenLengthMinutes=" + frozenLengthMinutes +
+                ", frozenLengthHours=" + frozenLengthHours +
+                ", frozenLengthDays=" + frozenLengthDays +
+                ", userDtos=" + userDtos +
+                ", typeName='" + typeName + '\'' +
+                ", status='" + status + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", currentTime=" + currentTime +
+                ", timeLeft=" + timeLeft +
                 '}';
     }
 
@@ -117,6 +135,14 @@ public class ContestDto {
         this.password = password;
     }
 
+    public String getPasswordRepeat() {
+        return passwordRepeat;
+    }
+
+    public void setPasswordRepeat(String passwordRepeat) {
+        this.passwordRepeat = passwordRepeat;
+    }
+
     public Integer getFrozenTime() {
         return frozenTime;
     }
@@ -125,21 +151,12 @@ public class ContestDto {
         this.frozenTime = frozenTime;
     }
 
-    public Timestamp getEndTime() {
-        return endTime;
+    public String getAction() {
+        return action;
     }
 
-    public void setEndTime(Timestamp endTime) {
-        this.endTime = endTime;
-    }
-
-    public Timestamp getStartTime() {
-
-        return startTime;
-    }
-
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public Integer getLengthDays() {
@@ -174,6 +191,38 @@ public class ContestDto {
         this.problemList = problemList;
     }
 
+    public Boolean getNeedFrozen() {
+        return needFrozen;
+    }
+
+    public void setNeedFrozen(Boolean needFrozen) {
+        this.needFrozen = needFrozen;
+    }
+
+    public Integer getFrozenLengthMinutes() {
+        return frozenLengthMinutes;
+    }
+
+    public void setFrozenLengthMinutes(Integer frozenLengthMinutes) {
+        this.frozenLengthMinutes = frozenLengthMinutes;
+    }
+
+    public Integer getFrozenLengthHours() {
+        return frozenLengthHours;
+    }
+
+    public void setFrozenLengthHours(Integer frozenLengthHours) {
+        this.frozenLengthHours = frozenLengthHours;
+    }
+
+    public Integer getFrozenLengthDays() {
+        return frozenLengthDays;
+    }
+
+    public void setFrozenLengthDays(Integer frozenLengthDays) {
+        this.frozenLengthDays = frozenLengthDays;
+    }
+
     public List<UserDto> getUserDtos() {
         return userDtos;
     }
@@ -196,5 +245,37 @@ public class ContestDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
+    public Timestamp getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(Timestamp currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public Long getTimeLeft() {
+        return timeLeft;
+    }
+
+    public void setTimeLeft(Long timeLeft) {
+        this.timeLeft = timeLeft;
     }
 }

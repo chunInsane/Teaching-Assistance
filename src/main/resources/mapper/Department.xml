@@ -10,6 +10,14 @@
         <result column="name" property="name"/>
     </resultMap>
 
+    <insert id="createDepartment" parameterType="DepartmentDto" useGeneratedKeys="true" keyProperty="departmentId">
+        insert into tb_department(
+        `name`
+        ) values (
+        #{name}
+        )
+    </insert>
+
     <select id="getDepartmentName" parameterType="long" resultType="string">
         select `name`
         from tb_department

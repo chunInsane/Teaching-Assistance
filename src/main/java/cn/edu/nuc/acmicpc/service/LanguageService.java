@@ -13,6 +13,13 @@ import java.util.List;
 public interface LanguageService {
 
     /**
+     * Create new language record.
+     * @param languageDto
+     * @return
+     */
+    public Long createLanguage(LanguageDto languageDto);
+
+    /**
      * Get all languageDto entity
      * @return
      */

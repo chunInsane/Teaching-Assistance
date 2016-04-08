@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Tag implements Serializable {
 
-    private Integer tagId;
+    private Long tagId;
     private String name;
 
     @Override
@@ -18,7 +18,7 @@ public class Tag implements Serializable {
                 '}';
     }
 
-    public void setTagId(Integer tagId) {
+    public void setTagId(Long tagId) {
         this.tagId = tagId;
     }
 
@@ -26,8 +26,7 @@ public class Tag implements Serializable {
         this.name = name;
     }
 
-    public Integer getTagId() {
-
+    public Long getTagId() {
         return tagId;
     }
 

@@ -62,12 +62,12 @@ public class StatusServiceImpl implements StatusService {
     public List<StatusDto> getQueuingStatus(boolean isFirstTime) {
         Map<String, Object> params = new HashMap<>();
         if (isFirstTime) {
-            params.put("result", JudgeResultType.JUDGE_WAIT.ordinal());
-        } else {
             List<Integer> results = new ArrayList<>();
-            results.add(JudgeResultType.JUDGE_WAIT.ordinal());
-            results.add(JudgeResultType.JUDGE_JUDGING.ordinal());
+            results.addAll(JudgeResultType.JUDGE_WAIT.getResults());
+            results.addAll(JudgeResultType.JUDGE_JUDGING.getResults());
             params.put("results", results);
+        } else {
+            params.put("result", JudgeResultType.JUDGE_WAIT.getResults());
         }
         return statusMapper.getStatusList(params);
     }

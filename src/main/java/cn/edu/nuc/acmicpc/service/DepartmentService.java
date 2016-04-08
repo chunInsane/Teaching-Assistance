@@ -13,6 +13,13 @@ import java.util.List;
 public interface DepartmentService {
 
     /**
+     * Create new department record.
+     * @param name
+     * @return
+     */
+    public Long createDepartment(String name);
+
+    /**
      * Get department name by department id
      * @param departmentId
      * @return

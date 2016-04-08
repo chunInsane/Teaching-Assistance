@@ -64,12 +64,11 @@
     </insert>
 
     <select id="isExistContestProblem" parameterType="map" resultType="long">
-        select count(*)
+        select count(1)
         from tb_contest_problem
-        where
-        <trim suffix="where" suffixOverrides=",">
-            <if test="contestId != null">contest_id = #{contestId}</if>
-            <if test="problemId != null">problem_id = #{problemId}</if>
+        <trim prefix="where" suffixOverrides="and">
+            <if test="contestId != null">contest_id = #{contestId} and </if>
+            <if test="problemId != null">problem_id = #{problemId} and </if>
         </trim>
     </select>
 </mapper>
