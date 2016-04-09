@@ -10,7 +10,7 @@
         <!-- Bootstrap -->
         <link href="/resources/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/css/main.css" rel="stylesheet">
-        <link href="/resources/css/home.css" rel="stylesheet">
+        <link href="/resources/css/status.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -36,10 +36,10 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="./index.html"><span class="glyphicon glyphicon-home"></span>首页 <span class="sr-only">(current)</span></a></li>
+                        <li><a href="./index.html"><span class="glyphicon glyphicon-home"></span>首页 <span class="sr-only">(current)</span></a></li>
                         <li><a href="./problems.html"><span class="glyphicon glyphicon-edit"></span>考前练习</a></li>
                         <li><a href="contests.html"><span class="glyphicon glyphicon-fire"></span>编程比赛</a></li>
-                        <li><a href="./status.html"><span class="glyphicon glyphicon-th-list"></span>status</a></li>
+                        <li class="active"><a href="./status.html"><span class="glyphicon glyphicon-th-list"></span>status</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
@@ -79,7 +79,39 @@
                 <div class="col-md-12 search-bar">
                     <form class="form-inline" v-on:submit.prevent="search">
                         <div class="form-group">
-                            <input v-model="searchKeyWord" type="text" class="form-control" placeholder="id 或 关键字">
+                            <label for="user">用户</label>
+                            <input v-model="user" type="text" class="form-control" placeholder="User" id="user">
+                        </div>
+                        <div class="form-group">
+                            <label for="prob">题目</label>
+                            <input v-model="prob" type="text" class="form-control" placeholder="Prob" id="prob">
+                        </div>
+                        <div class="form-group">
+                            <label for="result">状态</label>
+                            <select v-model="result" class="form-control" id="result">
+                                <option value="0"  selected="selected">All</option>
+                                <option value="1">Accepted</option>
+                                <option value="2">Presentation Error</option>
+                                <option value="3">Time Limit Exceeded</option>
+                                <option value="4">Memory Limit Exceeded</option>
+                                <option value="5">Wrong Answer</option>
+                                <option value="6">Output Limit Exceeded</option>
+                                <option value="7">Compilation Error</option>
+                                <option value="8">Runtime Error</option>
+                                <option value="9">Restricted Function</option>
+                                <option value="10">System Error</option>
+                                <option value="11">Judging</option><option value="12">Queuing</option>
+                                <option value="13">Not accepted</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="language">语言</label>
+                            <select v-model="language" class="form-control" id="language">
+                                <option value="" selected="selected">All</option>
+                                <option value="0">C</option>
+                                <option value="1" >C++</option>
+                                <option value="2">Java</option>
+                            </select>
                         </div>
                         <button  type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                     </form>
@@ -92,14 +124,26 @@
                 <div class="col-md-12">
                     <table class="table table-hover table-bordered elevation-1">
                         <tr>
-                            <th class="col-md-2">ID</th>
-                            <th class="col-md-8">Problem</th>
-                            <th class="col-md-2">Solved</th>
+                            <th class="col-md-1">ID</th>
+                            <th class="col-md-2">User</th>
+                            <th class="col-md-1">Prob</th>
+                            <th class="col-md-2">Result</th>
+                            <th class="col-md-2">Memory</th>
+                            <th class="col-md-1">Time</th>
+                            <th class="col-md-1">Language</th>
+                            <th class="col-md-1">Length</th>
+                            <th class="col-md-1">Submit Time</th>
                         </tr>
 
                         <tr v-for="item in problemsList">
                             <td>{{ item.title }}</td>
                             <td><a>{{ item.title }}</a>&nbsp;-&nbsp;{{ item.source }}</td>
+                            <td><a>{{ item.solved }}</a></td>
+                            <td><a>{{ item.solved }}</a></td>
+                            <td><a>{{ item.solved }}</a></td>
+                            <td><a>{{ item.solved }}</a></td>
+                            <td><a>{{ item.solved }}</a></td>
+                            <td><a>{{ item.solved }}</a></td>
                             <td><a>{{ item.solved }}</a></td>
                         </tr>
                     </table>
@@ -127,6 +171,6 @@
         <script src="/resources/lib/vue/dist/vue.js"></script>
         <script src="/resources/lib/layer/layer.js"></script>
         <script src="/resources/js/main.js"></script>
-        <script src="/resources/js/home.js"></script>
+        <script src="/resources/js/status.js"></script>
     </body>
 </html>

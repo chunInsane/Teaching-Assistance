@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /**
  * elevation end
  **/
@@ -133,5 +134,24 @@ hr.colorful {
 
 .grey-900 {
   color: #212121; }
+
+body a {
+  cursor: pointer; }
+body .table * {
+  text-align: left; }
+body .container .pagination li {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
+  /* 以下两个属性目前并未支持，写在这里为了减少风险 */
+  -o-user-select: none;
+  user-select: none;
+  cursor: pointer; }
+  body .container .pagination li a.active {
+    background-color: #337ab7;
+    color: #FFFFFF; }
+  body .container .pagination li a.disable {
+    cursor: default; }
 
 /*# sourceMappingURL=main.css.map */

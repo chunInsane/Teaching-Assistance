@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="cmn-Hans-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Teach-Assistance</title>
+
+        <!-- Bootstrap -->
+        <link href="/public/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/public/css/home.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body id="app">
+        <nav class="navbar navbar-inverse elevation-4">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Teach-Assistance</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li v-link="{ path: '/home' }"><a href="#"><span class="glyphicon glyphicon-home"></span>首页 <span class="sr-only">(current)</span></a></li>
+                        <li v-link="{ path: '/problems' }" ><a href="#"><span class="glyphicon glyphicon-edit"></span>考前练习</a></li>
+                        <li v-link="{ path: '/contest' }" ><a href="#"><span class="glyphicon glyphicon-fire"></span>编程比赛</a></li>
+                        <li v-link="{ path: '/status' }"><a href="#"><span class="glyphicon glyphicon-th-list"></span>status</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        <!-- nav bar end -->
+
+        <!-- body container start -->
+        <div class="container">
+             <router-view></router-view>
+        </div>
+        <!-- body container end -->
+
+        <!-- footer start -->
+        <footer class="footer col-md-12">
+            <!-- <hr class="colorful"> -->
+            <div class="container text-center">
+                <span>All Rights Reversed.</span>
+                <span>邮箱：<a href="mailto:teach_assistance@163.com">teach_assistance@163.com</a></span>
+                <span>联系地址：山西省太原市尖草坪区学院路3号</span>
+            </div>
+        </footer>
+        <!-- footer end -->
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="/public/lib/jquery/dist/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="/public/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/public/lib/vue/dist/vue.js"></script>
+        <script src="/public/lib/vue-router/dist/vue-router.js"></script>
+        <script src="/public/lib/layer/layer.js"></script>
+        <script src="/public/js/main.js"></script>
+
+        <!-- home页面模板 start -->
+        <script type="text/html" id="home_template">
+            <!-- 分页工具 start-->
+            <nav>
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li v-on:click="show"><a>1</a></li>
+                    <li><a>2</a></li>
+                    <li><a>3</a></li>
+                    <li><a>4</a></li>
+                    <li><a>5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- 分页工具 end-->
+
+        </script>
+        <!-- home页面模板 end -->
+
+        <!-- 考前练习 problems 页面模板 start-->
+        <script type="text/html" id="problems_template">
+            <p>Problems</p>
+        </script>
+        <!-- 考前练习 problems 页面模板 end-->
+        <script>
+            "use strict"
+            Vue.config.debug = true;     // 上线后关闭
+
+            // 定义home页面组件
+            let component_home = Vue.extend({
+                data :function(){
+                    return {
+                        name : "asd",
+                    }
+                },
+                ready:function(){
+                    this.name = "123";
+                },
+                methods:{
+                    show:function(){
+                        alert(this.name);
+                    },
+                },
+                template: "#home_template"
+            });
+
+            // 定义 problems 页面组件
+            let component_problems = Vue.extend({
+                data:function(){
+                    return {
+
+                    };
+                },
+
+                template: "#problems_template"
+            });
+
+            Vue.component("asc", component_home);
+            Vue.component("ascs", component_problems);
+
+            let App = Vue.extend({
+            });
+
+            let router = new VueRouter();
+            router.map({
+                '/home':{
+                    name: "home",
+                    component: component_home
+                },
+                '/problems':{
+                    name: "problems",
+                    component: component_problems
+                },
+            });
+            router.start(App, '#app');
+            router.go({name: "home"}); // 设置默认路由为 home 模块
+        </script>
+    </body>
+</html>
