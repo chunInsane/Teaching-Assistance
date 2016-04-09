@@ -1,0 +1,27 @@
+{
+  "name": "ergou_graduation",
+  "description": "font end project",
+  "main": "index.js",
+  "authors": [
+    "joe223"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.3",
+    "bootstrap": "^3.3.6",
+    "font-awesome": "^4.5.0",
+    "vue": "^1.0.21",
+    "layer": "*",
+    "vue-router": "^0.7.13"
+  }
+}

@@ -1,0 +1,196 @@
+/**
+ * elevation end
+ **/
+body {
+  font-family: Arial, Microsoft Yahei, SimSun, 'Helvetica Neue', 'Liberation Sans', FreeSans, sans-serif;
+  color: #222; }
+
+.font-blod {
+  font-weight: 700 !important; }
+
+.font-sm {
+  font-size: 0.5em !important; }
+
+.font-lg {
+  font-size: 1.5em !important; }
+
+.glyphicon {
+  margin-right: 0.3em; }
+
+hr.colorful {
+  height: 3px;
+  border-top: 0;
+  background: #c4e17f;
+  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4); }
+
+/**
+ * elevation start
+ **/
+.elevation-1 {
+  -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
+  -o-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12); }
+
+.elevation-2 {
+  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13), 0 2px 6px rgba(0, 0, 0, 0.13);
+  -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13), 0 2px 6px rgba(0, 0, 0, 0.13);
+  -o-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13), 0 2px 6px rgba(0, 0, 0, 0.13);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13), 0 2px 6px rgba(0, 0, 0, 0.13); }
+
+.elevation-3 {
+  -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16), 0 3px 10px rgba(0, 0, 0, 0.23);
+  -moz-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16), 0 3px 10px rgba(0, 0, 0, 0.23);
+  -o-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16), 0 3px 10px rgba(0, 0, 0, 0.23);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16), 0 3px 10px rgba(0, 0, 0, 0.23); }
+
+.elevation-4 {
+  -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.17), 0 4px 10px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.17), 0 4px 10px rgba(0, 0, 0, 0.24);
+  -o-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.17), 0 4px 10px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.17), 0 4px 10px rgba(0, 0, 0, 0.24); }
+
+.elevation-6 {
+  -webkit-box-shadow: 0 6px 18px rgba(0, 0, 0, 0.175), 0 5px 10px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0 6px 18px rgba(0, 0, 0, 0.175), 0 5px 10px rgba(0, 0, 0, 0.24);
+  -o-box-shadow: 0 6px 18px rgba(0, 0, 0, 0.175), 0 5px 10px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.175), 0 5px 10px rgba(0, 0, 0, 0.24); }
+
+.elevation-8 {
+  -webkit-box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), 0 5px 10px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), 0 5px 10px rgba(0, 0, 0, 0.24);
+  -o-box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), 0 5px 10px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), 0 5px 10px rgba(0, 0, 0, 0.24); }
+
+.elevation-9 {
+  -webkit-box-shadow: 0 9px 27px rgba(0, 0, 0, 0.185), 0 6px 10px rgba(0, 0, 0, 0.235);
+  -moz-box-shadow: 0 9px 27px rgba(0, 0, 0, 0.185), 0 6px 10px rgba(0, 0, 0, 0.235);
+  -o-box-shadow: 0 9px 27px rgba(0, 0, 0, 0.185), 0 6px 10px rgba(0, 0, 0, 0.235);
+  box-shadow: 0 9px 27px rgba(0, 0, 0, 0.185), 0 6px 10px rgba(0, 0, 0, 0.235); }
+
+.elevation-12 {
+  -webkit-box-shadow: 0 12px 36px rgba(0, 0, 0, 0.24), 0 8px 17px rgba(0, 0, 0, 0.23);
+  -moz-box-shadow: 0 12px 36px rgba(0, 0, 0, 0.24), 0 8px 17px rgba(0, 0, 0, 0.23);
+  -o-box-shadow: 0 12px 36px rgba(0, 0, 0, 0.24), 0 8px 17px rgba(0, 0, 0, 0.23);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.24), 0 8px 17px rgba(0, 0, 0, 0.23); }
+
+/*.elevation-14{
+    box-shadow: 0 14px 45px rgba(0,0,0,0.25), 0 10px 18px rgba(0,0,0,0.22);
+}*/
+.elevation-16 {
+  -webkit-box-shadow: 0 16px 50 px rgba(0, 0, 0, 0.275), 0 11px 18px rgba(0, 0, 0, 0.22);
+  -moz-box-shadow: 0 16px 50 px rgba(0, 0, 0, 0.275), 0 11px 18px rgba(0, 0, 0, 0.22);
+  -o-box-shadow: 0 16px 50 px rgba(0, 0, 0, 0.275), 0 11px 18px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 16px 50 px rgba(0, 0, 0, 0.275), 0 11px 18px rgba(0, 0, 0, 0.22); }
+
+/*.elevation-19{
+    box-shadow: 0 19px 60px rgba(0,0,0,0.3), 0 15px 20px rgba(0,0,0,0.22);
+}*/
+.elevation-24 {
+  -webkit-box-shadow: 0 24px 72px rgba(0, 0, 0, 0.33), 0 16px 24px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0 24px 72px rgba(0, 0, 0, 0.33), 0 16px 24px rgba(0, 0, 0, 0.24);
+  -o-box-shadow: 0 24px 72px rgba(0, 0, 0, 0.33), 0 16px 24px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.33), 0 16px 24px rgba(0, 0, 0, 0.24); }
+
+/**
+ * @material-ui base-color
+ **/
+.black {
+  color: #000000; }
+
+.white {
+  color: #FFFFFF; }
+
+.grey-50 {
+  color: #FAFAFA; }
+
+.grey-100 {
+  color: #F5F5F5; }
+
+.grey-200 {
+  color: #EEEEEE; }
+
+.grey-300 {
+  color: #E0E0E0; }
+
+.grey-400 {
+  color: #BDBDBD; }
+
+.grey-500 {
+  color: #9E9E9E; }
+
+.grey-600 {
+  color: #757575; }
+
+.grey-700 {
+  color: #616161; }
+
+.grey-800 {
+  color: #424242; }
+
+.grey-900 {
+  color: #212121; }
+
+body {
+  background-color: #FFFFFF; }
+
+.no-display {
+  display: none; }
+
+.container {
+  position: relative; }
+  .container #login {
+    position: absolute;
+    overflow: hidden;
+    top: 100px;
+    right: 0;
+    width: 300px;
+    height: auto;
+    padding: 0 0 50px 0;
+    color: #616161;
+    background-color: #FFFFFF;
+    line-height: 0;
+    border-radius: 6px; }
+    .container #login .btngroup {
+      font-size: 0;
+      margin-bottom: 40px; }
+      .container #login .btngroup a {
+        font-size: 10px; }
+      .container #login .btngroup .flat-btn {
+        position: relative;
+        border-radius: 0;
+        border-top: 0;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 46px;
+        overflow: hidden;
+        outline: none;
+        text-align: center;
+        background-color: #FFFFFF;
+        color: #616161;
+        cursor: pointer;
+        border-bottom: 1px solid #BDBDBD; }
+      .container #login .btngroup .flat-btn:nth-child(2) {
+        border-left: 1px solid #BDBDBD; }
+      .container #login .btngroup .activebar {
+        border-bottom: 1px solid #FFFFFF; }
+    .container #login .input-group-addon img {
+      width: 100%;
+      min-width: 50px;
+      height: auto; }
+
+footer.footer {
+  position: fixed;
+  overflow: hidden;
+  bottom: 0;
+  height: 60px;
+  padding: 20px 0;
+  background-color: #424242;
+  color: #9d9d9d; }
+  footer.footer span {
+    margin-right: 30px; }
+
+/*# sourceMappingURL=home.css.map */

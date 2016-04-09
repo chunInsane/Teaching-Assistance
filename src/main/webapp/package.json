@@ -1,0 +1,16 @@
+{
+  "name": "ergou_graduation",
+  "version": "1.0.0",
+  "description": "font end project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "joe223",
+  "license": "MIT",
+  "dependencies": {
+    "bower": "^1.7.9",
+    "express": "^4.13.4",
+    "fis": "^1.9.46"
+  }
+}

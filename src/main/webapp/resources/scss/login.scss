@@ -1,0 +1,78 @@
+@import "base";
+@import "base-color";
+
+body {
+    background-color: $blue-300;
+}
+
+.no-display {
+    display:none;
+}
+
+.container {
+    position: relative;
+    #login {
+        position: absolute;
+        overflow: hidden;
+        top:100px;
+        right: 0;
+        width: 300px;
+        height: auto;
+        padding:0 0 50px 0;
+        color: $grey-700;
+        background-color: $white;
+        line-height: 0;
+        border-radius: 6px;
+
+        .btngroup {
+            font-size: 0;
+            margin-bottom: 40px;
+            a {
+                font-size: 10px;
+            }
+            .flat-btn {
+                position: relative;
+                border-radius: 0;
+                border-top: 0;
+                font-size: 14px;
+                font-weight: bold;
+                line-height: 46px;
+                overflow: hidden;
+                outline: none;
+                text-align: center;
+                background-color: $white;
+                color: $grey-700;
+                cursor: pointer;
+                border-bottom: 1px solid $grey-400;
+            }
+            .flat-btn:nth-child(2) {
+                border-left: 1px solid $grey-400;
+            }
+            .activebar {
+                border-bottom: 1px solid $white;
+            }
+        }
+        .input-group-addon img {
+            // padding: 0 10px;
+            width: 100%;
+            min-width: 50px;
+            height: auto;
+        }
+    }
+
+}
+
+
+footer.footer {
+    position: fixed;
+    overflow: hidden;
+    bottom: 0;
+    height: 60px;
+    padding: 20px 0;
+    background-color: $grey-800;
+    color:$theme-font-color;
+
+    span {
+        margin-right: 30px;
+    }
+}
