@@ -17,6 +17,6 @@ public class EmailServiceTest extends BasicTest{
 
     @Test
     public void sendEmail() {
-        emailService.send("411935330@qq.com", "测试邮件", "董玉凯你好!");
+        emailService.send("chuninsane@163.com", "测试邮件", "hello!");
     }
 }

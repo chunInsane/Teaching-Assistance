@@ -1,7 +1,5 @@
 package cn.edu.nuc.acmicpc.dto;
 
-import com.sun.tools.corba.se.idl.constExpr.Times;
-
 import java.sql.Timestamp;
 import java.util.List;
 
