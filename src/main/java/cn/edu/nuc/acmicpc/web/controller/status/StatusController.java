@@ -13,6 +13,8 @@ import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
 import cn.edu.nuc.acmicpc.form.dto.status.SubmitStatusDto;
 import cn.edu.nuc.acmicpc.service.*;
 import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -33,6 +35,8 @@ import java.sql.Timestamp;
 @Controller
 @RequestMapping("/status")
 public class StatusController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(StatusController.class);
 
     @Autowired
     private StatusService statusService;
@@ -67,6 +71,7 @@ public class StatusController {
             if (condition.contestId != -1) {
                 ContestDto contestDto = contestService.getContestDtoByContestId(condition.contestId);
                 if (contestDto == null) {
+                    LOGGER.error(String.format("不存在该比赛, contestId = %s", condition.contestId));
                     throw new AppException("不存在该比赛!");
                 }
             }
@@ -91,13 +96,13 @@ public class StatusController {
      * @return
      */
     @RequestMapping("/submit")
-    public @ResponseBody String submit(HttpSession session, @RequestBody @Valid SubmitStatusDto submitDto,
+    public @ResponseBody ResultDto submit(HttpSession session, @RequestBody @Valid SubmitStatusDto submitDto,
                                        BindingResult validateResult) {
         ResultDto resultDto = new ResultDto();
         if (validateResult.hasErrors()) {
             resultDto.setStatus(StatusConstant.SERVER_ERROR);
             resultDto.setResult(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
-            return JSON.toJSONString(resultDto);
+            return resultDto;
         }
 
         UserDto currentUser = SessionUtil.getCurrentLoginUser(session);
@@ -165,6 +170,6 @@ public class StatusController {
         statusDto.setUserId(currentUser.getUserId());
         statusDto.setLength(submitDto.getCodeContent().length());
         statusService.createStatus(statusDto);
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 }

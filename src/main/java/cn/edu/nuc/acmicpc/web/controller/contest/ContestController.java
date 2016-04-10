@@ -6,7 +6,6 @@ import cn.edu.nuc.acmicpc.common.settings.Settings;
 import cn.edu.nuc.acmicpc.common.util.DateUtil;
 import cn.edu.nuc.acmicpc.common.util.SessionUtil;
 import cn.edu.nuc.acmicpc.dto.ContestDto;
-import cn.edu.nuc.acmicpc.dto.ContestProblemDto;
 import cn.edu.nuc.acmicpc.dto.ContestUserDto;
 import cn.edu.nuc.acmicpc.dto.UserDto;
 import cn.edu.nuc.acmicpc.dto.contest.ContestProblemDetailDto;
@@ -17,7 +16,8 @@ import cn.edu.nuc.acmicpc.service.ContestService;
 import cn.edu.nuc.acmicpc.service.ContestUserService;
 import cn.edu.nuc.acmicpc.service.UserService;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
-import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,11 +33,13 @@ import java.util.*;
  * Created with IDEA
  * User: chuninsane
  * Date: 16/4/5
- * Contest Controller.
+ * Contest controller.
  */
 @Controller
 @RequestMapping("/contest")
 public class ContestController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContestController.class);
 
     @Autowired
     private Settings settings;
@@ -54,12 +56,10 @@ public class ContestController {
      * user register contest
      * @param userId
      * @param contestId
-     * @param session
      * @return
      */
     @RequestMapping("register/{userId}/{contestId}")
-    public @ResponseBody String register(@PathVariable("userId") Long userId, @PathVariable("contestId") Long contestId,
-                                         HttpSession session) {
+    public @ResponseBody ResultDto register(@PathVariable("userId") Long userId, @PathVariable("contestId") Long contestId) {
         ResultDto resultDto = new ResultDto();
         //check user
         UserDto userDto = userService.getUserByUserId(userId);
@@ -88,14 +88,15 @@ public class ContestController {
         contestUserDto.setContestId(contestId);
         Long contestUserId = contestUserService.createContestUser(contestUserDto);
         if (contestUserId == null) {
+            LOGGER.error("注册比赛出现错误!");
             throw new AppException("注册比赛出现错误!");
         }
 
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 
     @RequestMapping("search")
-    public @ResponseBody String search(HttpSession session, @RequestBody(required = false) ContestCondition condition) {
+    public @ResponseBody ResultDto search(HttpSession session, @RequestBody(required = false) ContestCondition condition) {
         ResultDto resultDto = new ResultDto();
         if (condition == null) {
             condition = new ContestCondition();
@@ -112,23 +113,25 @@ public class ContestController {
         result.put("pageInfo", pageInfo);
         result.put("list", contestDtos);
         resultDto.setResult(result);
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 
     @RequestMapping("data/{contestId}")
-    public @ResponseBody String data(@PathVariable("contestId") Long contestId, HttpSession session) {
+    public @ResponseBody ResultDto data(@PathVariable("contestId") Long contestId, HttpSession session) {
         ResultDto resultDto = new ResultDto();
         ContestDto contestDto = contestService.getContestDtoByContestId(contestId);
         if (contestDto == null) {
+            LOGGER.error(String.format("不存在该比赛! contestId = %s", contestId));
             throw new AppException("不存在该比赛!");
         }
 
         if (!contestDto.isVisible() && !SessionUtil.isAdmin(session)) {
+            LOGGER.error(String.format("不存在该比赛! contestId = %s", contestId));
             throw new AppException("不存在该比赛!");
         }
         if (SessionUtil.checkContestPermission(session, contestId)) {
             resultDto.setStatus(StatusConstant.UNAUTHORIZED);
-            return JSON.toJSONString(resultDto);
+            return resultDto;
         }
 
         List<ContestProblemDetailDto> contestProblemDetailDtos;
@@ -147,6 +150,6 @@ public class ContestController {
         result.put("contest", contestDto);
         result.put("problemList", contestProblemDetailDtos);
         resultDto.setResult(result);
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 }

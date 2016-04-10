@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public @ResponseBody String login(HttpSession session, @RequestBody @Valid LoginUserDto loginUser,
+    public @ResponseBody ResultDto login(HttpSession session, @RequestBody @Valid LoginUserDto loginUser,
                                       BindingResult validateResult) {
         ResultDto resultDto = new ResultDto();
         if (validateResult.hasErrors()) {
@@ -91,18 +91,18 @@ public class UserController {
             userService.updateUser(userDto);
             session.setAttribute(SessionConstant.CURRENT_LOGIN_USER_KEY, userDto);
         }
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 
     @RequestMapping("/logout")
-    public @ResponseBody String logout(HttpSession session) {
+    public @ResponseBody ResultDto logout(HttpSession session) {
         session.removeAttribute(SessionConstant.CURRENT_LOGIN_USER_KEY);
         ResultDto resultDto = new ResultDto();
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 
     @RequestMapping("/register")
-    public @ResponseBody String register2(@RequestBody @Valid UserNameDto userNameDto, BindingResult validateResult,
+    public @ResponseBody ResultDto register2(@RequestBody @Valid UserNameDto userNameDto, BindingResult validateResult,
                                           HttpSession session) {
         ResultDto resultDto = new ResultDto();
         if (validateResult.hasErrors()) {
@@ -115,7 +115,7 @@ public class UserController {
                 result.put("validateCode", "验证码错误!");
                 resultDto.setStatus(StatusConstant.SERVER_ERROR);
                 resultDto.setResult(result);
-                return JSON.toJSONString(resultDto);
+                return resultDto;
             }
 
             boolean needEmail = false; //whether need send email
@@ -147,12 +147,12 @@ public class UserController {
                 resultDto.setMessage("激活邮件已发送，请注意查收!");
             }
         }
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 
     @Deprecated
     @RequestMapping("/register1")
-    public @ResponseBody String register1(@RequestBody @Valid RegisterUserDto registerUserDto, BindingResult validateResult) {
+    public @ResponseBody ResultDto register1(@RequestBody @Valid RegisterUserDto registerUserDto, BindingResult validateResult) {
         ResultDto resultDto = new ResultDto();
         if (validateResult.hasErrors()) {
             resultDto.setStatus(StatusConstant.SERVER_ERROR);
@@ -179,16 +179,16 @@ public class UserController {
                 userService.createUser(newUser);
             }
         }
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 
     @RequestMapping("/activate")
-    public @ResponseBody String activate(@RequestBody @Valid BasicInfoDto basicInfoDto, BindingResult validateResult) {
+    public @ResponseBody ResultDto activate(@RequestBody @Valid BasicInfoDto basicInfoDto, BindingResult validateResult) {
         ResultDto resultDto = new ResultDto();
         if (validateResult.hasErrors()) {
             resultDto.setStatus(StatusConstant.SERVER_ERROR);
             resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
-            return JSON.toJSONString(resultDto);
+            return resultDto;
         }
         //twins input password inconsistent
         if (!Objects.equals(basicInfoDto.getPassword(), basicInfoDto.getRepeatPassword())) {
@@ -196,7 +196,7 @@ public class UserController {
             errors.put("repeatPassword", "两次输入的密码不一致!");
             resultDto.setStatus(StatusConstant.SERVER_ERROR);
             resultDto.setResult(errors);
-            return JSON.toJSONString(resultDto);
+            return resultDto;
         }
 
         String username = basicInfoDto.getUsername();
@@ -209,17 +209,17 @@ public class UserController {
         userSerialKeyService.updateSerialKey(userSerialKey);
 
         userService.createUser(basicInfoDto.buildUserDto());
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 
     @RequestMapping("/typeAheadItem/{username}")
-    public @ResponseBody String typeAheadItem(@PathVariable("username") String username) {
+    public @ResponseBody ResultDto typeAheadItem(@PathVariable("username") String username) {
         ResultDto resultDto = new ResultDto();
         UserDto userDto = userService.getUserByUsername(username);
         if (userDto == null) {
             resultDto.setStatus(StatusConstant.NOT_FOUND);
             resultDto.setMessage("不存在该用户!");
-            return JSON.toJSONString(resultDto);
+            return resultDto;
         }
         TypeAheadUserDto typeAheadUserDto = new TypeAheadUserDto();
         typeAheadUserDto.setUserId(userDto.getUserId());
@@ -228,11 +228,11 @@ public class UserController {
         Map<String, Object> result = new HashMap<>();
         result.put("user", typeAheadUserDto);
         resultDto.setResult(result);
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 
     @RequestMapping("typeAheadList")
-    public @ResponseBody String typeAheadList(@RequestBody UserCondition condition) {
+    public @ResponseBody ResultDto typeAheadList(@RequestBody UserCondition condition) {
         ResultDto resultDto = new ResultDto();
         Map<String, Object> conditionMap = condition.toConditionMap();
         Long count = userService.count(conditionMap);
@@ -242,7 +242,7 @@ public class UserController {
         result.put("pageInfo", pageInfo);
         result.put("list", userDtos);
         resultDto.setResult(result);
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 
     /**
