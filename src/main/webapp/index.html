@@ -79,7 +79,7 @@
                             <input v-model="register_password" type="password" class="form-control" id="exampleInputPassword1" placeholder="请输入密码" minlength="6" maxlength="12" required>
                         </div> -->
                         <div class="form-group">
-                            <input v-model="register_verifycode" type="text" class="form-control" id="exampleInputAmount" placeholder="验证码">
+                            <input v-model="register_verifycode" type="text" class="form-control" id="exampleInputAmount" placeholder="验证码" maxlength="4" minlength="4">
                         </div>
                         <div class="form-group">
                             <img class="img center-block" onclick="this.src='http://www.acmcoder.com/account/captcha.php?'+Math.random();" src="http://www.acmcoder.com/account/captcha.php?0.3877142474111007" alt="">
@@ -147,22 +147,30 @@
                             "email" : this.login_email,
                             "password": this.login_password,
                         };
+                        if( typeof data.email === "undefined" ||
+                            typeof data.password === "undefined" ||
+                                   data.email.length <= 0 ||
+                                   data.password.length <= 0){
+                            layer.msg("输入不能为空!");
+                            return false;
+                        }
                         $.ajax({
-                            mehtod:"post",
+                            method:"post",
                             data:data,
                             dataType:"json",
-                            url:"",
+                            url:"/login",
                             error: function(msg){
-
+                                layer.msg("请求失败!" + msg.message);
                             },
                         }).done(function(msg){
                             if(msg.status === 200){
-                                // TODO
+                                layer.msg("登录成功!")
+                                window.location.href = "/staticPage/Home";
                             }else{
                                 showAjaxMsg(msg);
                             }
                         });
-                        console.log("login");
+                        // console.log("login");
 
                     },
                     /**
@@ -173,7 +181,30 @@
                             "email" : this.register_email,
                             "verifyCode": this.register_verifycode,
                         };
-                        console.log("register");
+                        if( typeof data.email === "undefined" ||
+                            typeof data.verifyCode === "undefined" ||
+                            data.email.length <= 0 ||
+                            data.verifyCode.length <= 0){
+                            layer.msg("输入不能为空!");
+                            return false;
+                        }
+                        $.ajax({
+                            method:"post",
+                            data:data,
+                            dataType:"json",
+                            url:"/register",
+                            error: function(msg){
+                                layer.msg("请求失败!" + msg.message);
+                            },
+                        }).done(function(msg){
+                            if(msg.status === 200){
+                                layer.alert("激活邮件已发送,请注意查收!");
+                            }else{
+                                showAjaxMsg(msg);
+                            }
+                        });
+                        // console.log("login");
+
                     },
                 },
             });
