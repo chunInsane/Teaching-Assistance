@@ -15,11 +15,9 @@ import cn.edu.nuc.acmicpc.form.dto.user.BasicInfoDto;
 import cn.edu.nuc.acmicpc.form.dto.user.LoginUserDto;
 import cn.edu.nuc.acmicpc.form.dto.user.RegisterUserDto;
 import cn.edu.nuc.acmicpc.dto.TypeAheadUserDto;
-import cn.edu.nuc.acmicpc.form.dto.user.UserNameDto;
 import cn.edu.nuc.acmicpc.model.UserSerialKey;
 import cn.edu.nuc.acmicpc.service.*;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
-import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +100,7 @@ public class UserController {
     }
 
     @RequestMapping("/register")
-    public @ResponseBody ResultDto register2(@RequestBody @Valid UserNameDto userNameDto, BindingResult validateResult,
+    public @ResponseBody ResultDto register2(@RequestBody @Valid RegisterUserDto registerUserDto, BindingResult validateResult,
                                           HttpSession session) {
         ResultDto resultDto = new ResultDto();
         if (validateResult.hasErrors()) {
@@ -110,7 +108,7 @@ public class UserController {
             resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
         } else {
             //validate validateCode
-            if (!captchaService.validate(session.getId(), userNameDto.getValidateCode())) {
+            if (!captchaService.validate(session.getId(), registerUserDto.getValidateCode())) {
                 Map<String, Object> result = new HashMap<>();
                 result.put("validateCode", "验证码错误!");
                 resultDto.setStatus(StatusConstant.SERVER_ERROR);
@@ -119,7 +117,7 @@ public class UserController {
             }
 
             boolean needEmail = false; //whether need send email
-            String username = userNameDto.getUsername();
+            String username = registerUserDto.getUsername();
             UserSerialKey userSerialKey = userSerialKeyService.getUserSerialKeyByUsername(username);
             if (userSerialKey != null) {
                 if (Objects.equals(UserSerialKey.SUCCESS, userSerialKey.getStatus())) {
@@ -139,7 +137,7 @@ public class UserController {
 
             //send activate email.
             if (needEmail) {
-                String activateUrl = settings.HOST + "?key" + userSerialKey.getKeyId()
+                String activateUrl = settings.HOST + "/activate?key=" + userSerialKey.getKeyId()
                         + "&uid=" + userSerialKey.getKey();
                 String emailContent = generateActivateEmailContent(activateUrl);
                 LOGGER.info(String.format("send activate email, activateUrl = %s", activateUrl));
@@ -166,15 +164,11 @@ public class UserController {
                 resultDto.setErrors(errors);
             } else if (validateResult.hasErrors()) {
                 resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
-            } else if (Objects.equals(registerUserDto.getPassword(), registerUserDto.getPasswordConfirm())) {
-                errors.put("passwordConfirm", "两次输入的密码不一致!");
-                resultDto.setErrors(errors);
-            } else {
+            }  else {
                 resultDto.setStatus(StatusConstant.SUCCESS);
                 UserDto newUser = new UserDto();
                 Timestamp currentTime = DateUtil.getCurrentTime();
                 newUser.setUsername(registerUserDto.getUsername());
-                newUser.setPassword(registerUserDto.getPassword());
                 newUser.setCreateTime(currentTime);
                 userService.createUser(newUser);
             }
@@ -254,7 +248,9 @@ public class UserController {
         StringBuilder builder = new StringBuilder();
         builder.append("请将<a href='");
         builder.append(activateUrl);
-        builder.append("'>activeUrl</a>");
+        builder.append("'>");
+        builder.append(activateUrl);
+        builder.append("</a>");
         builder.append("激活链接复制到浏览器中,激活Teach-Assistance账户");
         return builder.toString();
     }

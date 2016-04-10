@@ -30,6 +30,6 @@
     Exception exception = (Exception)request.getAttribute("exception");
     ResultDto resultDto = new ResultDto();
     resultDto.setStatus(StatusConstant.SERVER_ERROR);
-    resultDto.setMessage(exception.getMessage() + " errorToJson");
+    resultDto.setMessage(exception.getMessage());
     renderJson(response, JSON.toJSONString(resultDto));
 %>

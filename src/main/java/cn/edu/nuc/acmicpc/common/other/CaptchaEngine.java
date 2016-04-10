@@ -19,6 +19,7 @@ import java.awt.*;
  * Created with IDEA
  * User: chuninsane
  * Date: 16/4/9
+ * Captcha engine.
  */
 public class CaptchaEngine extends ListImageCaptchaEngine {
 
@@ -30,13 +31,13 @@ public class CaptchaEngine extends ListImageCaptchaEngine {
         TextPaster textPaster = new RandomTextPaster(4, 5, Color.BLACK);
         // 图片的大小
         BackgroundGenerator backgroundGenerator = new FunkyBackgroundGenerator(
-                80, 30);
+                140, 35);
         // 字体格式
         Font[] fontsList = new Font[] { new Font("Arial", 0, 10),
                 new Font("Tahoma", 0, 10), new Font("Verdana", 0, 10)};
         // 文字的大小
-        FontGenerator fontGenerator = new RandomFontGenerator(new Integer(16),
-                new Integer(20), fontsList);
+        FontGenerator fontGenerator = new RandomFontGenerator(new Integer(20),
+                new Integer(23), fontsList);
 
         WordToImage wordToImage = new ComposedWordToImage(fontGenerator,
                 backgroundGenerator, textPaster);

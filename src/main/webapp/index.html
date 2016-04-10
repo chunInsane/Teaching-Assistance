@@ -30,18 +30,18 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Teach-Assistance</a>
+            <a class="navbar-brand" href=" ">Teach-Assistance</a >
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">考前练习</a></li>
-                <li><a href="#">编程比赛</a></li>
+                <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a ></li>
+                <li><a href="#">考前练习</a ></li>
+                <li><a href="#">编程比赛</a ></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">学生入口</a></li>
+                <li><a href="#">学生入口</a ></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -68,7 +68,7 @@
                     <span class="red" for="exampleInputPassword1">{{ errInfoPwd }}</span>
                 </div>
                 <div class="form-group text-right">
-                    <a class="" href="#">忘记密码?</a>
+                    <a class="" href="#">忘记密码?</a >
                 </div>
                 <button type="button" class="btn btn-primary btn-block" v-on:click="login" >登&nbsp;录</button>
             </form>
@@ -87,7 +87,7 @@
                     <span class="red">{{ errInfoVCode }}</span>
                 </div>
                 <div class="form-group">
-                    <img class="img center-block" onclick="this.src='http://www.acmcoder.com/account/captcha.php?'+Math.random();" src="http://www.acmcoder.com/account/captcha.php?0.3877142474111007" alt="">
+                    <img class="img center-block" onclick="this.src='/captcha?'+Math.random();" src="/captcha?0.3877142474111007" alt="">
                 </div>
                 <button v-on:click="register" type="button" class="btn btn-primary btn-block">立即注册</button>
             </form>
@@ -101,7 +101,7 @@
     <!-- <hr class="colorful"> -->
     <div class="container text-center">
         <span>All Rights Reversed.</span>
-        <span>邮箱：<a href="mailto:teach_assistance@163.com">teach_assistance@163.com</a></span>
+        <span>邮箱：<a href="mailto:teach_assistance@163.com">teach_assistance@163.com</a ></span>
         <span>联系地址：山西省太原市尖草坪区学院路3号</span>
     </div>
 </footer>
@@ -215,13 +215,13 @@
              */
             register: function(){
                 let data = {
-                    "userName" : this.register_email,
-                    "verifyCode": this.register_verifycode,
+                    "username" : this.register_email,
+                    "validateCode": this.register_verifycode,
                 };
-                if( typeof data.email === "undefined" ||
-                        typeof data.verifyCode === "undefined" ||
-                        data.email.length <= 0 ||
-                        data.verifyCode.length <= 0){
+                if( typeof data.username === "undefined" ||
+                        typeof data.validateCode === "undefined" ||
+                        data.username.length <= 0 ||
+                        data.validateCode.length <= 0){
                     layer.msg("输入不能为空!");
                     return false;
                 }

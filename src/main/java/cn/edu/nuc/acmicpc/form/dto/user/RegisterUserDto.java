@@ -1,45 +1,22 @@
 package cn.edu.nuc.acmicpc.form.dto.user;
 
+import org.hibernate.validator.constraints.Email;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * Created with IDEA
  * User: chuninsane
  * Date: 2016/3/8
+ * Register user dto.
  */
 public class RegisterUserDto {
 
-    private Integer userId;
+    @NotNull(message = "请输入用户名!")
+    @Email(message = "格式不合法!")
+    private String username;
 
-    private String username; //user email
-
-    private String password;
-
-    private String passwordConfirm;
-
-    @Override
-    public String toString() {
-        return "RegisterUserDto{" +
-                "userId=" + userId +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", passwordConfirm='" + passwordConfirm + '\'' +
-                '}';
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+    private String validateCode;
 
     public String getUsername() {
         return username;
@@ -49,11 +26,11 @@ public class RegisterUserDto {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getValidateCode() {
+        return validateCode;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setValidateCode(String validateCode) {
+        this.validateCode = validateCode;
     }
 }
