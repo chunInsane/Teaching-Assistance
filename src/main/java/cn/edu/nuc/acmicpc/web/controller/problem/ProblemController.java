@@ -5,12 +5,15 @@ import cn.edu.nuc.acmicpc.common.enums.ProblemSolvedStatusType;
 import cn.edu.nuc.acmicpc.common.exception.AppException;
 import cn.edu.nuc.acmicpc.common.settings.Settings;
 import cn.edu.nuc.acmicpc.common.util.SessionUtil;
-import cn.edu.nuc.acmicpc.dto.*;
-import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
+import cn.edu.nuc.acmicpc.dto.ProblemDto;
+import cn.edu.nuc.acmicpc.dto.ProblemListDto;
+import cn.edu.nuc.acmicpc.dto.UserDto;
 import cn.edu.nuc.acmicpc.form.condition.ProblemCondition;
+import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
 import cn.edu.nuc.acmicpc.service.*;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
-import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +37,8 @@ import java.util.Objects;
 @RequestMapping("/problem")
 public class ProblemController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProblemController.class);
+
     @Autowired
     private ProblemService problemService;
     @Autowired
@@ -50,13 +55,15 @@ public class ProblemController {
     private Settings settings;
 
     @RequestMapping("/data/{problemId}")
-    public @ResponseBody String data(@PathVariable("problemId") Long problemId, HttpSession session) {
+    public @ResponseBody ResultDto data(@PathVariable("problemId") Long problemId, HttpSession session) {
         ProblemDto problemDto = problemService.getProblemDtoByProblemId(problemId);
         if (null == problemDto) {
+            LOGGER.error(String.format("不存在该题目, problemId = %s!", problemId));
             throw new AppException("不存在该题目!");
         }
         if (!SessionUtil.isAdmin(session)) {
             if (!problemDto.getIsVisible()) {
+                LOGGER.error(String.format("不存在该题目, problemId = %s!", problemId));
                 throw new AppException("不存在该题目!");
             }
         }
@@ -65,11 +72,11 @@ public class ProblemController {
         Map<String, Object> result = new HashMap<>();
         result.put("problem", problemDto);
         resultDto.setResult(result);
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 
     @RequestMapping("/search")
-    public @ResponseBody String search(HttpSession session, @RequestBody ProblemCondition condition) {
+    public @ResponseBody ResultDto search(HttpSession session, @RequestBody(required = false) ProblemCondition condition) {
         ResultDto resultDto = new ResultDto();
         if (!SessionUtil.isAdmin(session)) {
             condition.isVisible = true;
@@ -94,11 +101,11 @@ public class ProblemController {
         result.put("pageInfo", pageInfo);
         result.put("list", problemListDtos);
         resultDto.setResult(result);
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 
     /**
-     *
+     * Get current login user problem status.
      * @param currentUser
      * @param session
      * @return

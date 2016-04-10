@@ -24,6 +24,7 @@ import java.util.Map;
  * Created with IDEA
  * User: chuninsane
  * Date: 16/4/5
+ * Index controller.
  */
 @Controller
 @RequestMapping("/")
@@ -52,18 +53,18 @@ public class IndexController {
     }
 
     @RequestMapping("data")
-    public @ResponseBody String data(HttpSession session) {
+    public @ResponseBody ResultDto data(HttpSession session) {
         ResultDto resultDto = new ResultDto();
         UserDto currentUser = SessionUtil.getCurrentLoginUser(session);
         if (currentUser == null) {
             resultDto.setStatus(StatusConstant.UNAUTHERIZED);
-            return JSON.toJSONString(resultDto);
+            return resultDto;
         }
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 
     @RequestMapping("globalData")
-    public @ResponseBody String globalData() {
+    public @ResponseBody ResultDto globalData() {
         ResultDto resultDto = new ResultDto();
         Map<String, Object> result = new HashMap<>();
         result.put("departmentList", departmentService.getDepartments());
@@ -72,6 +73,6 @@ public class IndexController {
         result.put("contestTypeList", ContestType.values());
         result.put("genderTypeList", GenderType.values());
         resultDto.setResult(result);
-        return JSON.toJSONString(resultDto);
+        return resultDto;
     }
 }
