@@ -135,6 +135,15 @@ hr.colorful {
 .grey-900 {
   color: #212121; }
 
+.red {
+  color: #F44336; }
+
+.blue {
+  color: #2196F3; }
+
+.green {
+  color: #4CAF50; }
+
 body a {
   cursor: pointer; }
 body .table * {
@@ -153,5 +162,23 @@ body .container .pagination li {
     color: #FFFFFF; }
   body .container .pagination li a.disable {
     cursor: default; }
+body .no-display {
+  display: none; }
+body div.body {
+  margin-top: 70px;
+  margin-bottom: 50px;
+  min-height: 600px; }
+  body div.body .search-bar {
+    margin: 20px 0; }
+body footer.footer {
+  position: relative;
+  overflow: hidden;
+  bottom: 0;
+  height: 60px;
+  padding: 20px 0;
+  background-color: #424242;
+  color: #9d9d9d; }
+  body footer.footer span {
+    margin-right: 30px; }
 
 /*# sourceMappingURL=main.css.map */

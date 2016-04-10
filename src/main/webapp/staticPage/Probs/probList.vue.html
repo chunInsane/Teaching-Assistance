@@ -1,0 +1,56 @@
+<script type="text/html" id="list">
+    <!-- 分页工具 start-->
+    <div class="row">
+        <nav class="col-md-12">
+            <ul class="pagination elevation-1">
+                <li v-on:click="setPage(page.minPage)">
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li v-for="n in 10" v-if="page.minPage + n > 0 && page.minPage + n <= page.totalPage" v-on:click="setPage(page.minPage + n)">
+                    <a v-if="page.minPage + n == page.currentPage" class="active disable">{{ page.minPage + n }}</a>
+                    <a v-else>{{ page.minPage + n }}</a>
+                </li>
+                <li v-on:click="setPage(page.maxPage)">
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!-- 分页工具 end-->
+
+    <!-- 查询框 start -->
+    <div class="row">
+        <div class="col-md-12 search-bar">
+            <form class="form-inline" v-on:submit.prevent="search">
+                <div class="form-group">
+                    <input v-model="searchKeyWord" type="text" class="form-control" placeholder="id 或 关键字">
+                </div>
+                <button  type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+        </div>
+    </div>
+    <!-- 查询框 end -->
+
+    <!-- 题目列表 start -->
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover table-bordered elevation-1" >
+                <tr>
+                    <th class="col-md-2">ID</th>
+                    <th class="col-md-8">Problem</th>
+                    <th class="col-md-2">Solved</th>
+                </tr>
+
+                <tr v-for="item in problemsList">
+                    <td>{{ item.problemId }}</td>
+                    <td><a v-link="{name: 'probDetails', parmas:{ probId: item.problemId }}">{{ item.title }}</a>&nbsp;-&nbsp;{{ item.source }}</td>
+                    <td><a>{{ item.solved }}</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</script>

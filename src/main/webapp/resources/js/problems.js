@@ -1,7 +1,80 @@
 "use strict"
 Vue.config.debug = true;     // 上线后关闭
 
+// 定义题目详情组件
+let probDetails = Vue.extend({
+    data:function(){
+        return {
+            probId:1,
+            probDetails:{
+                title:"AAAAAAA",
+                language:"c",
+            },
+        };
+    },
+    ready:function(){
 
+    },
+    template:"#problem-details",
+});
+
+let list = Vue.extend({
+    data: function(){
+        return {
+            page:{
+                currentPage: 1, // 当前页
+                totalPage:1,    // 总页数
+                maxPage:1,      // 分页列表中最大页码值
+                minPage:1,      // 分页列表中最小页码值
+            },
+            problemsList:[],    // 题目列表
+            searchKeyWord:"",   // 查询关键字(题名/id)
+        }
+    },
+    ready:function(){
+        let pageInfo = getPageList1(1);
+        // let pageInfo = getPageList(1); 正式
+        setPage(pageInfo, this);
+    },
+    methods:{
+        setPage: function(index){
+            console.log(index);
+            this.page = {};
+            let pageInfo = getPageList1(index);
+            setPage(pageInfo, this);
+        },
+        search: function(){
+            let keyWord = this.searchKeyWord;
+            let pageInfo = getPageList1(6);
+            // let pageInfo = searchPageList(keyWord); 正式
+            setPage(pageInfo, this);
+        },
+    },
+    template:"#list"
+});
+
+var App = Vue.extend({})
+
+// 创建一个路由器实例
+// 创建实例时可以传入配置参数进行定制，为保持简单，这里使用默认配置
+var router = new VueRouter()
+
+router.map({
+    '/list': {
+        name:'list',
+        component: list
+    },
+    '/probDetails': {
+        name:'probDetails',
+        component: probDetails
+    },
+})
+
+// 现在我们可以启动应用了！
+// 路由器会创建一个 App 实例，并且挂载到选择符 #app 匹配的元素上。
+router.start(App, '#app');
+router.go({name:'list'});
+/*
 let app = new Vue({
     el: "#app",
     data:{
@@ -33,7 +106,7 @@ let app = new Vue({
             setPage(pageInfo, this);
         },
     },
-});
+});*/
 
 /**
  * 根据 页码 获取题目列表详情

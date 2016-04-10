@@ -1,6 +1,14 @@
 @import "base";
 @import "base-color";
-
+.red {
+    color:$red-500;
+}
+.blue {
+    color:$blue-500;
+}
+.green {
+    color:$green-500;
+}
 body {
     a {
         cursor: pointer;
@@ -29,4 +37,32 @@ body {
             }
         }
     }
+    .no-display {
+        display:none;
+    }
+
+    nav.navbar {
+    }
+    div.body {
+        margin-top: 70px;
+        margin-bottom: 50px;
+        min-height: 600px;
+        .search-bar {
+            margin: 20px 0;
+        }
+    }
+    footer.footer {
+        position: relative;
+        overflow: hidden;
+        bottom: 0;
+        height: 60px;
+        padding: 20px 0;
+        background-color: $grey-800;
+        color:$theme-font-color;
+
+        span {
+            margin-right: 30px;
+        }
+    }
+
 }

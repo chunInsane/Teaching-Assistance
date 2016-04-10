@@ -20,7 +20,7 @@
         <![endif]-->
     </head>
     <body id="app">
-        <nav class="navbar navbar-inverse elevation-4">
+        <nav class="navbar navbar-inverse navbar-fixed-top elevation-4">
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -36,10 +36,10 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="./index.html"><span class="glyphicon glyphicon-home"></span>首页 <span class="sr-only">(current)</span></a></li>
-                        <li><a href="./problems.html"><span class="glyphicon glyphicon-edit"></span>考前练习</a></li>
-                        <li class="active"><a href="contests.html"><span class="glyphicon glyphicon-fire"></span>编程比赛</a></li>
-                        <li><a href="./status.html"><span class="glyphicon glyphicon-th-list"></span>status</a></li>
+                        <li><a href="../../staticPage/Index"><span class="glyphicon glyphicon-home"></span>首页 <span class="sr-only">(current)</span></a></li>
+                        <li><a href="../../staticPage/Probs"><span class="glyphicon glyphicon-edit"></span>考前练习</a></li>
+                        <li class="active"><a href="../../staticPage/Contests"><span class="glyphicon glyphicon-fire"></span>编程比赛</a></li>
+                        <li><a href="../../staticPage/Status"><span class="glyphicon glyphicon-th-list"></span>status</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
@@ -50,7 +50,7 @@
         <!-- nav bar end -->
 
         <!-- body container start -->
-        <div class="container">
+        <div class="container body">
             <!-- 分页工具 start-->
             <div class="row">
                 <nav class="col-md-12">
@@ -92,20 +92,34 @@
                 <div class="col-md-12">
                     <table class="table table-hover table-bordered elevation-1">
                         <tr>
-                            <th class="col-md-2">ID</th>
-                            <th class="col-md-4">Contests</th>
+                            <th class="col-md-1">ID</th>
+                            <th class="col-md-5">Contests</th>
                             <th class="col-md-2">Start time</th>
-                            <th class="col-md-2">length</th>
+                            <th class="col-md-2">Length</th>
                             <th class="col-md-2">Type</th>
                         </tr>
 
-                        <tr v-for="item in problemsList">
-                            <td>{{ item.title }}</td>
+                        <tr v-for="item in contestsList" v-if="item.isVisible == true">
+                            <td class="text-center">{{ item.contestId }}</td>
                             <td><a>{{ item.title }}</a></td>
-                            <td><a>{{ item.solved }}</a></td>
-                            <td><a>{{ item.solved }}</a></td>
-                            <td>
-                                <a>{{ item.solved }}</a>
+                            <td class="text-center">
+                                <span>{{ new Date(item.time).getYear() + 1900  }}-{{  new Date(item.time).getMonth() }}-{{  new Date(item.time).getDate() }}&nbsp;{{  new Date(item.time).getHours() }}:{{  new Date(item.time).getMinutes() }}:{{  new Date(item.time).getSeconds() }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span v-if="item.length < 3600000">{{ item.length  / (60*1000) }} minutes</span>
+                                <span v-if="item.length >= 3600000 && (item.length / (60*1000)) % 60 == 0">{{ Math.floor(item.length  / (60*60*1000)) }} hours</span>
+                                <span v-if="item.length >= 3600000 && (item.length / (60*1000)) % 60 != 0">{{ Math.floor(item.length  / (60*60*1000)) }} hours&nbsp;{{ (item.length / (60*1000)) % 60 }} minutes</span>
+                                <!-- <span v-if="item.length == 3600000">1 hour</span> -->
+                                <!-- <span>{{ item.length  / (60*1000) }} minutes</span> -->
+
+                            </td>
+                            <td class="text-center">
+                                <span v-if="item.type == 0" class="green text-center">{{ item.typeName }}</span>
+                                <span v-if="item.type == 1" class="red">{{ item.typeName }}</span>
+                                <span v-if="item.type == 2" class="green">{{ item.typeName }}</span>
+                                <span v-if="item.type == 3" class="red">{{ item.typeName }}</span>
+                                <span v-if="item.type == 4" class="red">{{ item.typeName }}</span>
+                                <span v-if="item.type == 5" class="red">{{ item.typeName }}</span>
                             </td>
                         </tr>
                     </table>
@@ -132,7 +146,7 @@
         <script src="/resources/lib/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="/resources/lib/vue/dist/vue.js"></script>
         <script src="/resources/lib/layer/layer.js"></script>
-        <script src="/resources/js/main.js"></script>
+        <script src="/resources/js/main_home.js"></script>
         <script src="/resources/js/contests.js"></script>
     </body>
 </html>
