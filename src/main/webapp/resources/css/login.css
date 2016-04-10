@@ -134,6 +134,15 @@ hr.colorful {
 .grey-900 {
   color: #212121; }
 
+.red {
+  color: #F44336; }
+
+.blue {
+  color: #2196F3; }
+
+.green {
+  color: #4CAF50; }
+
 body {
   background-color: #64B5F6; }
 
@@ -152,7 +161,6 @@ body {
     padding: 0 0 50px 0;
     color: #616161;
     background-color: #FFFFFF;
-    line-height: 0;
     border-radius: 6px; }
     .container #login .btngroup {
       font-size: 0;

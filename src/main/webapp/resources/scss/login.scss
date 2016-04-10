@@ -1,6 +1,14 @@
 @import "base";
 @import "base-color";
-
+.red {
+    color:$red-500;
+}
+.blue {
+    color:$blue-500;
+}
+.green {
+    color:$green-500;
+}
 body {
     background-color: $blue-300;
 }
@@ -21,7 +29,6 @@ body {
         padding:0 0 50px 0;
         color: $grey-700;
         background-color: $white;
-        line-height: 0;
         border-radius: 6px;
 
         .btngroup {
