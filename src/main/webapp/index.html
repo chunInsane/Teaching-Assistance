@@ -175,7 +175,7 @@
                 }).done(function(msg){
                     if(msg.status === 200){
                         layer.msg("登录成功!")
-                        window.location.href = "/staticPage/Home";
+                        window.location.href = "/home/index.html";
                     }else{
                         switch (msg.status) {
                             case 401:
@@ -198,8 +198,8 @@
                                 break;
 
                             case 500:
-                                this.errInfoEmail = msg.errors.userName;
-                                this.errInfoPwd = msg.errors.password;
+                                app.errInfoEmail = msg.errors.userName;
+                                app.errInfoPwd = msg.errors.password;
                                 break;
 
                             default:
@@ -259,8 +259,8 @@
                                 break;
 
                             case 500:
-                                this.errInfoRE = msg.errors.username;
-                                this.errInfoVCode = msg.errors.validateCode;
+                                app.errInfoRE = msg.errors.username;
+                                app.errInfoVCode = msg.errors.validateCode;
                                 break;
 
                             default:

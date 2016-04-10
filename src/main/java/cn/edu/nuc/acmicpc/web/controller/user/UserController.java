@@ -79,7 +79,7 @@ public class UserController {
             resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
         } else {
             UserDto userDto = userService.getUserByUsername(loginUser.getUserName());
-            if (userDto == null || EncryptUtil.checkPassword(loginUser.getPassword(), userDto.getPassword())) {
+            if (userDto == null || !EncryptUtil.checkPassword(loginUser.getPassword(), userDto.getPassword())) {
                 Map<String, String> errors = new HashMap<>();
                 errors.put("password", "用户名和密码不匹配!");
                 resultDto.setStatus(StatusConstant.SERVER_ERROR);

@@ -10,7 +10,7 @@
         <!-- Bootstrap -->
         <link href="/resources/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/css/main.css" rel="stylesheet">
-        <link href="/resources/css/home.css" rel="stylesheet">
+        <link href="/resources/css/problems.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,7 +19,7 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body id="app">
+    <body>
         <nav class="navbar navbar-inverse navbar-fixed-top elevation-4">
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -36,10 +36,10 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="../../staticPage/Index"><span class="glyphicon glyphicon-home"></span>首页 <span class="sr-only">(current)</span></a></li>
-                        <li><a href="../../staticPage/Probs"><span class="glyphicon glyphicon-edit"></span>考前练习</a></li>
-                        <li><a href="../../staticPage/Contests"><span class="glyphicon glyphicon-fire"></span>编程比赛</a></li>
-                        <li><a href="../../staticPage/Status"><span class="glyphicon glyphicon-th-list"></span>status</a></li>
+                        <li><a href="/home/index.html"><span class="glyphicon glyphicon-home"></span>首页 <span class="sr-only">(current)</span></a></li>
+                        <li class="active"><a href="/problem/index.html"><span class="glyphicon glyphicon-edit"></span>考前练习</a></li>
+                        <li><a href="/contest/index.html"><span class="glyphicon glyphicon-fire"></span>编程比赛</a></li>
+                        <li><a href="/status/index.html"><span class="glyphicon glyphicon-th-list"></span>status</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
@@ -50,8 +50,8 @@
         <!-- nav bar end -->
 
         <!-- body container start -->
-        <div class="container body">
-            <h1 class="text-center font-blod">Teach-Assistance</h1>
+        <div class="container body" id="app">
+            <router-view></router-view>
         </div>
         <!-- body container end -->
 
@@ -66,14 +66,22 @@
         </footer>
         <!-- footer end -->
 
+        <div id="component1"></div>
+        <div id="component2"></div>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="/resources/lib/jquery/dist/jquery.min.js"></script>
+        <script>
+            $("#component1").load("./probList.vue.html");
+            $("#component2").load("./probDetails.vue.html");
+        </script>
+
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="/resources/lib/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="/resources/lib/vue/dist/vue.js"></script>
+        <script src="/resources/lib/vue-router/dist/vue-router.js"></script>
         <script src="/resources/lib/layer/layer.js"></script>
         <script src="/resources/js/main_home.js"></script>
-        <script src="/resources/js/home.js"></script>
+        <script src="/resources/js/problems.js"></script>
     </body>
 </html>

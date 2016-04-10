@@ -24,4 +24,10 @@ public class EncryptUtilTest {
         System.out.println("encodeStr = " + encodeStr);
         Assert.assertTrue(EncryptUtil.checkPassword(originalStr, EncryptUtil.encoderByMd5(originalStr)));
     }
+
+    @Test
+    public void test1() {
+        String str = "111111";
+        System.out.println(EncryptUtil.encoderByMd5(str));
+    }
 }
