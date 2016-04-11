@@ -47,7 +47,8 @@
 
                 <tr v-for="item in problemsList">
                     <td>{{ item.problemId }}</td>
-                    <td><a v-link="{name: 'probDetails', parmas:{ probId: item.problemId }}">{{ item.title }}</a>&nbsp;-&nbsp;{{ item.source }}</td>
+                    <!-- v-link="{ name: 'probDetails', params: { userId: 123 }}" -->
+                    <td><a v-link="{ name: 'probDetails', params: { probId: item.problemId }}" >{{ item.title }}</a>&nbsp;-&nbsp;{{ item.source }}</td>
                     <td><a>{{ item.solved }}</a></td>
                 </tr>
             </table>

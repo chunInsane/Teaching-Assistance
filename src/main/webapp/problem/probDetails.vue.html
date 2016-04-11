@@ -1,41 +1,68 @@
 <script type="text/html" id="problem-details">
     <div class="problem-details">
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#submitProb">submit</button>
+
         <div class="modal fade" id="submitProb">
             <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">{{ probDetails.title }}</h4>
+                    <h4 class="modal-title">{{ problem.title }}</h4>
                 </div>
                 <div class="modal-body">
-                        <textarea class="form-control" rows="15"></textarea>
+                        <textarea v-model="code" class="form-control" rows="15"></textarea>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="lan" id="c" checked="checked">
+                                <input v-model="language" type="radio" name="lan" id="c" checked="checked" value="C">
                                 C
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="lan" id="c++">
+                                <input v-model="language" type="radio" name="lan" id="c++" value="C++">
                                 C++
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="lan" id="java">
+                                <input v-model="language" type="radio" name="lan" id="java" value="Java">
                                 Java
                             </label>
                         </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Submit</button>
+                    <button v-on:click="submit(problemId)" type="button" class="btn btn-primary">Submit</button>
                 </div>
             </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+        <div class="col-md-12 text-center">
+            <h1>{{ problem.title }}</h1>
+            <p>Time Limit:{{ problem.javaTimeLimit }}/{{ problem.timeLimit }}(Java/Others)&nbsp;&nbsp;Memory Limit:{{ problem.javaMemoryLimit }}/{{ problem.memoryLimit }}(Java/Others)</p>
+            <button type="button" class="btn btn-primary btn-md block-center" data-toggle="modal" data-target="#submitProb">submit</button>
+        </div>
+        <div class="col-md-12">
+            <p>{{ problem.description }}</p>
+            <h2>Input</h2>
+            <p>{{ problem.input }}</p>
+            <h2>output</h2>
+            <p>{{ problem.output }}</p>
+            <h2>Sample input and output</h2>
+            <table class="table table-border">
+                <tr>
+                    <th>Sample Input</th>
+                    <th>Sample Output</th>
+                </tr>
+                <tr v-for="item in problem.sampleLen">
+                    <td>{{ problem.sampleInput[item] }}</td>
+                    <td>{{ problem.sampleOutput[item] }}</td>
+                </tr>
+            </table>
+            <h2>Hint</h2>
+            <p id="hint"></p>
+            <h2>source</h2>
+            <p>{{ problem.source }}</p>
+        </div>
     </div>
 </script>
