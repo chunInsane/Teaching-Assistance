@@ -8,13 +8,13 @@ import cn.edu.nuc.acmicpc.common.util.DateUtil;
 import cn.edu.nuc.acmicpc.common.util.EncryptUtil;
 import cn.edu.nuc.acmicpc.common.util.UUIDUtil;
 import cn.edu.nuc.acmicpc.common.util.ValidateUtil;
+import cn.edu.nuc.acmicpc.dto.TypeAheadUserDto;
 import cn.edu.nuc.acmicpc.dto.UserDto;
 import cn.edu.nuc.acmicpc.form.condition.UserCondition;
 import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
 import cn.edu.nuc.acmicpc.form.dto.user.BasicInfoDto;
 import cn.edu.nuc.acmicpc.form.dto.user.LoginUserDto;
 import cn.edu.nuc.acmicpc.form.dto.user.RegisterUserDto;
-import cn.edu.nuc.acmicpc.dto.TypeAheadUserDto;
 import cn.edu.nuc.acmicpc.model.UserSerialKey;
 import cn.edu.nuc.acmicpc.service.*;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
@@ -93,29 +93,29 @@ public class UserController {
     }
 
     @RequestMapping("/logout")
-    public @ResponseBody ResultDto logout(HttpSession session) {
+    public String logout(HttpSession session) {
         session.removeAttribute(SessionConstant.CURRENT_LOGIN_USER_KEY);
-        ResultDto resultDto = new ResultDto();
-        return resultDto;
+        return "redirect:/index.html";
     }
 
     @RequestMapping("/register")
-    public @ResponseBody ResultDto register2(@RequestBody @Valid RegisterUserDto registerUserDto, BindingResult validateResult,
-                                          HttpSession session) {
+    public @ResponseBody ResultDto register(@RequestBody @Valid RegisterUserDto registerUserDto,
+                                         BindingResult validateResult, HttpSession session) {
         ResultDto resultDto = new ResultDto();
+
+        //validate validateCode
+        if (!captchaService.validate(session.getId(), registerUserDto.getValidateCode())) {
+            Map<String, String> result = new HashMap<>();
+            result.put("validateCode", "验证码错误!");
+            resultDto.setStatus(StatusConstant.SERVER_ERROR);
+            resultDto.setErrors(result);
+            return resultDto;
+        }
+
         if (validateResult.hasErrors()) {
             resultDto.setStatus(StatusConstant.SERVER_ERROR);
             resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
         } else {
-            //validate validateCode
-            if (!captchaService.validate(session.getId(), registerUserDto.getValidateCode())) {
-                Map<String, Object> result = new HashMap<>();
-                result.put("validateCode", "验证码错误!");
-                resultDto.setStatus(StatusConstant.SERVER_ERROR);
-                resultDto.setResult(result);
-                return resultDto;
-            }
-
             boolean needEmail = false; //whether need send email
             String username = registerUserDto.getUsername();
             UserSerialKey userSerialKey = userSerialKeyService.getUserSerialKeyByUsername(username);
@@ -137,7 +137,7 @@ public class UserController {
 
             //send activate email.
             if (needEmail) {
-                String activateUrl = settings.HOST + "/activate?key=" + userSerialKey.getKeyId()
+                String activateUrl = settings.HOST + "activate?key=" + userSerialKey.getKeyId()
                         + "&uid=" + userSerialKey.getKey();
                 String emailContent = generateActivateEmailContent(activateUrl);
                 LOGGER.info(String.format("send activate email, activateUrl = %s", activateUrl));
@@ -254,5 +254,4 @@ public class UserController {
         builder.append("激活链接复制到浏览器中,激活Teach-Assistance账户");
         return builder.toString();
     }
-
 }

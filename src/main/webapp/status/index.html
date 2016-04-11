@@ -36,13 +36,13 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="/index/index.html"><span class="glyphicon glyphicon-home"></span>首页 <span class="sr-only">(current)</span></a></li>
+                        <li><a href="/home/index.html"><span class="glyphicon glyphicon-home"></span>首页 <span class="sr-only">(current)</span></a></li>
                         <li><a href="/problem/index.html"><span class="glyphicon glyphicon-edit"></span>考前练习</a></li>
                         <li><a href="/contest/index.html"><span class="glyphicon glyphicon-fire"></span>编程比赛</a></li>
                         <li class="active"><a href="/status/index.html"><span class="glyphicon glyphicon-th-list"></span>status</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
+                        <li><a href="/index/logout"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
@@ -51,28 +51,6 @@
 
         <!-- body container start -->
         <div class="container body">
-            <!-- 分页工具 start-->
-            <div class="row">
-                <nav class="col-md-12">
-                    <ul class="pagination elevation-1">
-                        <li v-on:click="setPage(page.minPage)">
-                            <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li v-for="n in 10" v-if="page.minPage + n > 0 && page.minPage + n <= page.totalPage" v-on:click="setPage(page.minPage + n)">
-                            <a v-if="page.minPage + n == page.currentPage" class="active disable">{{ page.minPage + n }}</a>
-                            <a v-else>{{ page.minPage + n }}</a>
-                        </li>
-                        <li v-on:click="setPage(page.maxPage)">
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <!-- 分页工具 end-->
 
             <!-- 查询框 start -->
             <div class="row">
@@ -119,6 +97,29 @@
             </div>
             <!-- 查询框 end -->
 
+            <!-- 分页工具 start-->
+            <div class="row">
+                <nav class="col-md-12">
+                    <ul class="pagination elevation-1">
+                        <li v-on:click="setPage(page.minPage)">
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li v-for="n in 10" v-if="page.minPage + n > 0 && page.minPage + n <= page.totalPage" v-on:click="setPage(page.minPage + n)">
+                            <a v-if="page.minPage + n == page.currentPage" class="active disable">{{ page.minPage + n }}</a>
+                            <a v-else>{{ page.minPage + n }}</a>
+                        </li>
+                        <li v-on:click="setPage(page.maxPage)">
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- 分页工具 end-->
+
             <!-- 题目列表 start -->
             <div class="row">
                 <div class="col-md-12">
@@ -136,15 +137,15 @@
                         </tr>
 
                         <tr v-for="item in problemsList">
-                            <td>{{ item.title }}</td>
-                            <td><a>{{ item.title }}</a>&nbsp;-&nbsp;{{ item.source }}</td>
-                            <td><a>{{ item.solved }}</a></td>
-                            <td><a>{{ item.solved }}</a></td>
-                            <td><a>{{ item.solved }}</a></td>
-                            <td><a>{{ item.solved }}</a></td>
-                            <td><a>{{ item.solved }}</a></td>
-                            <td><a>{{ item.solved }}</a></td>
-                            <td><a>{{ item.solved }}</a></td>
+                            <td>{{ item.statusId }}</td>
+                            <td><a>{{ item.nickName }}</a></td>
+                            <td><a>{{ item.problemId }}</a></td>
+                            <td>{{ item.returnType }}</td>
+                            <td>{{ item.memory }}</td>
+                            <td>{{ item.time }}</td>
+                            <td>{{ item.language }}</td>
+                            <td>{{ item.length }}</td>
+                            <td>{{ item.time }}</td>
                         </tr>
                     </table>
                 </div>

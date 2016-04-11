@@ -42,7 +42,7 @@
                         <li><a href="/status/index.html"><span class="glyphicon glyphicon-th-list"></span>status</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
+                        <li><a href="/user/logout"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
@@ -51,6 +51,20 @@
 
         <!-- body container start -->
         <div class="container body">
+
+            <!-- 查询框 start -->
+            <div class="row">
+                <div class="col-md-12 search-bar">
+                    <form class="form-inline" v-on:submit.prevent="search">
+                        <div class="form-group">
+                            <input v-model="searchKeyWord" type="text" class="form-control" placeholder="关键字">
+                        </div>
+                        <button  type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                </div>
+            </div>
+            <!-- 查询框 end -->
+
             <!-- 分页工具 start-->
             <div class="row">
                 <nav class="col-md-12">
@@ -73,19 +87,6 @@
                 </nav>
             </div>
             <!-- 分页工具 end-->
-
-            <!-- 查询框 start -->
-            <div class="row">
-                <div class="col-md-12 search-bar">
-                    <form class="form-inline" v-on:submit.prevent="search">
-                        <div class="form-group">
-                            <input v-model="searchKeyWord" type="text" class="form-control" placeholder="关键字">
-                        </div>
-                        <button  type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-                    </form>
-                </div>
-            </div>
-            <!-- 查询框 end -->
 
             <!-- 题目列表 start -->
             <div class="row">

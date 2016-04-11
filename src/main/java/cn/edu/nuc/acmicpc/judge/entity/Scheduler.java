@@ -24,7 +24,7 @@ import java.util.concurrent.BlockingQueue;
  * Date: 2016/3/9
  * Judge scheduler
  */
-@Service
+@Service("scheduler")
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class Scheduler implements Runnable, ApplicationContextAware {
 

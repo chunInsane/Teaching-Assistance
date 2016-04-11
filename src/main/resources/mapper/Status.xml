@@ -7,7 +7,7 @@
     <!--resultMap-->
     <resultMap id="statusDtoResultMap" type="StatusDto">
         <id column="status_id" property="statusId"/>
-        <result column="result" property="result"/>
+        <result column="result" property="resultId"/>
         <result column="memory_cost" property="memoryCost"/>
         <result column="time_cost" property="timeCost"/>
         <result column="length" property="length"/>
@@ -112,7 +112,7 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="userId != null">`user_id` = #{userId}, </if>
             <if test="problemId != null">`problem_id` = #{problemId}, </if>
-            <if test="result != null">`result` = #{result}, </if>
+            <if test="resultId != null">`result` = #{resultId}, </if>
             <if test="memoryCost != null">`memory_cost` = #{memoryCost}, </if>
             <if test="timeCost != null">`time_cost` = #{timeCost}, </if>
             <if test="languageId != null">`language_id` = #{languageId}, </if>

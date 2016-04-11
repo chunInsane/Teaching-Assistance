@@ -16,12 +16,18 @@ let probDetails = Vue.extend({
         let pid =  this.$route.params.probId;
         this.problemId = pid;
         this.problem = getProbDetails(pid);
-        if(this.problem.problemId){
+        if(this.problem.problemId) {
             this.problem.hint = transMd(this.problem.hint);
+            this.problem.description = transMd(this.problem.description);
+            this.problem.input = transMd(this.problem.input);
+            this.problem.output = transMd(this.problem.output);
             this.problem.sampleInput = JSON.parse(this.problem.sampleInput);
             this.problem.sampleOutput = JSON.parse(this.problem.sampleOutput);
             this.problem.sampleLen = this.problem.sampleOutput.length;
-            $('#hint').html( this.problem.hint )
+            $('#hint').html(this.problem.hint);
+            $('#description').html(this.problem.description);
+            $('#input').html(this.problem.input);
+            $('#output').html(this.problem.output);
         }
     },
     methods:{
@@ -318,16 +324,16 @@ function getProbDetails(pid){
     });*/
     return { // 测试
             dataCount:3,
-            description:"Calculate $a+b$",
+            description:"Calculate _a + b_",
             difficulty:1,
             hint:"####For GNU C\n```\n#include <stdio.h>\n\nint main() \n{\n    int a, b;\n    scanf(\"%d %d\",&a, &b);\n    printf(\"%d\", a+b);\n    return 0;\n}\n```\n\n####For GNU C++\n```\n#include <iostream>\nusing namespace std;  \n\nint main()\n{ \n    int a,b;  \n    cin >> a >> b; \n    cout << a+b << endl; \n    return 0;  \n}\n```\n\n####For Java\n```\nimport java.io.*; \nimport java.util.*;  \n\npublic class Main { \n\n    public static void main(String[] args) throws Exception {  \n        Scanner cin=new Scanner(System.in); \n        int a=cin.nextInt(), b=cin.nextInt();  \n        System.out.println (a + b); \n    }  \n}\n```",
-            input:"Two integer $a$,$b$ ($0<a,b<10$)",
+            input:"Two integer _a,b_ (0< a,b<10)",
             isSpj:false,
             isVisible:true,
             javaMemoryLimit:65535,
             javaTimeLimit:3000,
             memoryLimit:65535,
-            output:"Output $a+b$",
+            output:"Output _a+b_",
             outputLimit:8192,
             problemId:1,
             sampleInput:"[\"1 2\",\"2 3\"]",

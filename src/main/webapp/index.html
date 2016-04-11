@@ -76,15 +76,15 @@
         <div class="register row" v-bind:class="{ 'no-display': disshowregister}">
             <form class="col-md-10 col-md-offset-1">
                 <div class="form-group">
-                    <input v-model="register_email" type="email" class="form-control" id="exampleInputEmail1" placeholder="请输入常用邮箱" minlength="6" maxlength="20" required>
-                    <span class="red">{{ errInfoRE }}</span>
+                    <input v-model="register_email" type="email" class="form-control" id="exampleInputEmail2" placeholder="请输入常用邮箱" minlength="6" maxlength="20" required>
+                    <span class="red" for="exampleInputEmail2">{{ errInfoRE }}</span>
                 </div>
                 <!-- <div class="form-group">
                     <input v-model="register_password" type="password" class="form-control" id="exampleInputPassword1" placeholder="请输入密码" minlength="6" maxlength="12" required>
                 </div> -->
                 <div class="form-group">
-                    <input v-model="register_verifycode" type="text" class="form-control" id="exampleInputAmount" placeholder="验证码" maxlength="4" minlength="4">
-                    <span class="red">{{ errInfoVCode }}</span>
+                    <input v-model="register_verifycode" type="text" class="form-control" id="exampleInputAmount" placeholder="验证码" maxlength="5" minlength="4">
+                    <span class="red" for="exampleInputAmount">{{ errInfoVCode }}</span>
                 </div>
                 <div class="form-group">
                     <img class="img center-block" onclick="this.src='/captcha?'+Math.random();" src="/captcha?0.3877142474111007" alt="">

@@ -68,6 +68,8 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <bean id="judgeService" class="cn.edu.nuc.acmicpc.judge.JudgeService" lazy-init="false"/>
+
     <bean id="mailAuthentication" class="cn.edu.nuc.acmicpc.model.MailAuthentication">
         <property name="username" value="teach_assistance@163.com"/>
         <property name="password" value="chuninsane314"/>
