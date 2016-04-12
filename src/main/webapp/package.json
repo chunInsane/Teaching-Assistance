@@ -9,6 +9,7 @@
   "author": "joe223",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.15.0",
     "bower": "^1.7.9",
     "express": "^4.13.4",
     "fis": "^1.9.46"
