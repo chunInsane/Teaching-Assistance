@@ -1,5 +1,6 @@
 "use strict"
 Vue.config.debug = true;     // 上线后关闭
+// var  aa= {};
 
 // 定义题目详情组件
 let probDetails = Vue.extend({
@@ -96,7 +97,6 @@ let list = Vue.extend({
     ready:function(){
         //let pageInfo = getPageList1(1); //test
         let pageInfo = getPageList(1); //正式
-        console.log(pageInfo);
         setPage(pageInfo, this);
     },
     methods:{
@@ -138,7 +138,6 @@ router.map({
 // 路由器会创建一个 App 实例，并且挂载到选择符 #app 匹配的元素上。
 router.start(App, '#app');
 router.go({name:'list'});
-
 /**
  * 根据 页码 获取题目列表详情
  *
@@ -149,6 +148,8 @@ function getPageList(p){
     let data = {
         currentPage: p,
     };
+    let result = {};
+
     $.ajax({
         method:"post",
         data:JSON.stringify(data),
@@ -162,15 +163,22 @@ function getPageList(p){
         },
     }).done(function(msg){
         if(msg.status === 200){
-            console.log(msg.result);
-            return msg.result;
+            result = msg.result;
+            console.log("getPageList-->"+msg.result);
+            return true;
         }else{
             showAjaxMsg(msg);
             return false;
         }
     });
+
+    return result;
 }
 
+function t(){
+    let a = {};
+    return a;
+}
 /**
  * 根据关键词查询题目
  *
@@ -182,7 +190,7 @@ function searchPageList(k){
         keyword: k,
     };
     console.log(k);
-    $.ajax({
+    /*$.ajax({
         method:"post",
         data:JSON.stringify(data),
         dataType:"json",
@@ -200,7 +208,46 @@ function searchPageList(k){
             showAjaxMsg(msg);
             return false;
         }
-    });
+    });*/
+
+    let page = {
+        "errors":{},
+        "result":
+            {
+                "pageInfo":{
+                    "countPerPage":15,
+                    "currentPage":index,
+                    "displayDistance":2,
+                    "firstNo":0,
+                    "totalItems":2,
+                    "totalPages":32
+                },
+                "list":[
+                    {
+                        "difficulty":1,
+                        "isSpj":false,
+                        "isVisible":true,
+                        "problemId":1,
+                        "solved":0,
+                        "source":"Classic Problem",
+                        "title":"A+B Problem",
+                        "tried":0
+                    },
+                    {
+                        "difficulty":1,
+                        "isSpj":false,
+                        "isVisible":false,
+                        "problemId":2,
+                        "solved":0,
+                        "source":"中北大学校赛!",
+                        "title":"a - b",
+                        "tried":0
+                    }
+                ]
+            },
+            "status":200
+        };
+        return page.result;
 }
 
 /**
@@ -213,10 +260,10 @@ function searchPageList(k){
 function setPage(pageInfo, _this ){
     let _this_ = _this;
     if(pageInfo){
-        _this_.page.currentPage = pageInfo.result.pageInfo.currentPage;
-        _this_.page.totalPage = pageInfo.result.pageInfo.totalPages;
-        _this_.problemsList = pageInfo.result.list;
-        console.log(pageInfo.result.list);
+        _this_.page.currentPage = pageInfo.pageInfo.currentPage;
+        _this_.page.totalPage = pageInfo.pageInfo.totalPages;
+        _this_.problemsList = pageInfo.list;
+        console.log(pageInfo.list);
     }
     if(_this_.page.currentPage > _this_.page.totalPage){
         console.log("页码参数错误!");
