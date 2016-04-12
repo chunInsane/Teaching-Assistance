@@ -15,8 +15,8 @@ let app = new Vue({
         searchKeyWord:"",   // 查询关键字(题名/id)
     },
     ready:function(){
-        let pageInfo = getPageList1(1);
-        // let pageInfo = getPageList(1); 正式
+        //let pageInfo = getPageList1(1);
+         let pageInfo = getPageList(1); //正式
         setPage(pageInfo, this);
     },
     methods:{
@@ -28,8 +28,8 @@ let app = new Vue({
         },
         search: function(){
             let keyWord = this.searchKeyWord;
-            let pageInfo = getPageList1(6);
-            // let pageInfo = searchPageList(keyWord); 正式
+            //let pageInfo = getPageList1(6);
+            let pageInfo = searchPageList(keyWord); //正式
             setPage(pageInfo, this);
         },
     },

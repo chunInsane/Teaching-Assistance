@@ -11,6 +11,7 @@
     <link href="/resources/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- <link href="/resources/css/main.css" rel="stylesheet"> -->
     <link href="/resources/css/login.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/resources/img/head.ico">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -41,7 +42,6 @@
                 <li><a href="#">编程比赛</a ></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">学生入口</a ></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -87,7 +87,7 @@
                     <span class="red" for="exampleInputAmount">{{ errInfoVCode }}</span>
                 </div>
                 <div class="form-group">
-                    <img class="img center-block" onclick="this.src='/captcha?'+Math.random();" src="/captcha?0.3877142474111007" alt="">
+                    <img id="captcha" class="img center-block" onclick="this.src='/captcha?'+Math.random();" src="/captcha?0.3877142474111007" alt="">
                 </div>
                 <button v-on:click="register" type="button" class="btn btn-primary btn-block">立即注册</button>
             </form>
@@ -261,6 +261,8 @@
                             case 500:
                                 app.errInfoRE = msg.errors.username;
                                 app.errInfoVCode = msg.errors.validateCode;
+                                console.log('/captcha?'+Math.random());
+                                $("#captcha").attr("src", '/captcha?'+Math.random());
                                 break;
 
                             default:

@@ -61,6 +61,7 @@ let probDetails = Vue.extend({
                 data:JSON.stringify(data),
                 dataType:"json",
                 contentType:"application/json",
+                async:false,
                 url:"/submitproblem",
                 error: function(msg){
                     layer.msg("提交数据失败!" + msg.message);
@@ -93,8 +94,9 @@ let list = Vue.extend({
         }
     },
     ready:function(){
-        let pageInfo = getPageList1(1);
-        // let pageInfo = getPageList(1); 正式
+        //let pageInfo = getPageList1(1); //test
+        let pageInfo = getPageList(1); //正式
+        console.log(pageInfo);
         setPage(pageInfo, this);
     },
     methods:{
@@ -102,12 +104,13 @@ let list = Vue.extend({
             console.log(index);
             this.page = {};
             let pageInfo = getPageList(index);
+            console.log(pageInfo);
             setPage(pageInfo, this);
         },
         search: function(){
             let keyWord = this.searchKeyWord;
-            let pageInfo = getPageList1(6);
-            // let pageInfo = searchPageList(keyWord);// 正式
+            //let pageInfo = getPageList1(6); //test
+            let pageInfo = searchPageList(keyWord);// 正式
             setPage(pageInfo, this);
         },
     },
@@ -144,20 +147,22 @@ router.go({name:'list'});
  */
 function getPageList(p){
     let data = {
-        pagination: p,
+        currentPage: p,
     };
     $.ajax({
-        method:"get",
+        method:"post",
         data:JSON.stringify(data),
         dataType:"json",
         contentType:"application/json",
-        url:"",
+        async:false,
+        url:"/problem/search",
         error: function(msg){
             layer.msg("获取数据失败!" + msg.message);
             return false;
         },
     }).done(function(msg){
         if(msg.status === 200){
+            console.log(msg.result);
             return msg.result;
         }else{
             showAjaxMsg(msg);
@@ -182,7 +187,8 @@ function searchPageList(k){
         data:JSON.stringify(data),
         dataType:"json",
         contentType:"application/json",
-        url:"",
+        async:false,
+        url:"/problem/search",
         error: function(msg){
             layer.msg("获取数据失败!" + msg.message);
             return false;

@@ -15,7 +15,7 @@ import java.util.Random;
  */
 public class FakeCore implements JudgeCore {
 
-    private static final Logger logger = LoggerFactory.getLogger(FakeCore.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FakeCore.class);
 
     @Override
     public JudgeResult judge(int currentCase, JudgeItem judgeItem) {
@@ -30,6 +30,7 @@ public class FakeCore implements JudgeCore {
         } else {
             judgeResult.setResult(JudgeReturnType.getReturnType(2 + random.nextInt(14)));
             if (judgeResult.getResult() == JudgeReturnType.JUDGE_CE) {
+                LOGGER.info(String.format("compile information: %s", "Hello, World"));
                 judgeResult.setCompileInfo("Hello World!");
             }
         }
