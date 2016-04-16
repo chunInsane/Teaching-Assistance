@@ -41,17 +41,17 @@
         <div class="col-md-12">
             <table class="table table-hover table-bordered elevation-1" >
                 <tr>
-                    <th class="col-md-2">ID</th>
-                    <th class="col-md-6">Problem</th>
+                    <th class="col-md-1">ID</th>
+                    <th class="col-md-8">Problem</th>
                     <th class="col-md-2">Ratio(Accepted/Tried)</th>
-                    <th class="col-md-2">Difficulty</th>
+                    <th class="col-md-1">Difficulty</th>
                 </tr>
 
                 <tr v-for="item in problemsList">
                     <td>{{ item.problemId }}</td>
                     <!-- v-link="{ name: 'probDetails', params: { userId: 123 }}" -->
                     <td><a v-link="{ name: 'probDetails', params: { probId: item.problemId }}" >{{ item.title }}</a>&nbsp;-&nbsp;{{ item.source }}</td>
-                    <td>{{ item.solved }} / {{ item.tried }}</td>
+                    <td>{{ item.solved }}/{{ item.tried }}</td>
                     <td>{{ item.difficulty }}</td>
                 </tr>
             </table>

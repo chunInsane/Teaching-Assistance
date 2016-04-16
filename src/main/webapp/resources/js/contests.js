@@ -1,7 +1,295 @@
 "use strict"
 Vue.config.debug = true;     // 上线后关闭
 
+// 比赛列表 组件
+let contestsList = Vue.extend({
+    data:function (){
+        return {
+            page:{
+                currentPage: 1, // 当前页
+                totalPage:1,    // 总页数
+                maxPage:1,      // 分页列表中最大页码值
+                minPage:1,      // 分页列表中最小页码值
+            },
+            contestsList:[],    // 题目列表
+        };
+    },
+    ready:function(){
+        //let pageInfo = getPageList1(1);
+        let pageInfo = getPageList(1); //正式
+        setPage(pageInfo, this);
+    },
+    methods:{
+        setPage: function(index){
+            console.log(index);
+            this.page = {};
+            let pageInfo = getPageList1(index);
+            setPage(pageInfo, this);
+        },
+        search: function(){
+            let keyWord = this.searchKeyWord;
+            //let pageInfo = getPageList1(2);
+            let pageInfo = searchPageList(keyWord); //正式
+            setPage(pageInfo, this);
+        },
+        //  根据 $("#tab_1 a").eq().tab('show')
+        //  切换 tab 选项卡
+    }, 
+    template:"#contestsList",
+});
 
+// 定义题目详情组件
+let contestDetails = Vue.extend({
+    data:function(){
+        return {
+            contestId: this.$route.params.contestId || 0, // url 传入 题目 id
+            userId: 0,
+            privateCode: "", // private contest login password
+            problemList: [],
+            problemListLen: 1,
+            hightlightProb: 0,
+            problem: {},
+            contest: {},         // 向服务器请求的 比赛题目 详情
+            submitProbId: this.problem ? this.problem.problemId : 0,
+        };
+    },
+    ready:function(){
+        // 初始加载页面的数据
+
+        let _this = this;
+        let data = {
+            contestId: _this.contestId,
+            password: _this.privateCode,
+        };
+        let isFrist = 0;
+        // let self = {
+        //     self:_this,
+        //     data: {},
+        //     isFrist:isFrist,
+        // };
+        function isPrivate(self){
+            $.ajax({
+                url:'/contest/loginContest',
+                data: JSON.stringify(data),
+                method:'post',
+                dataType:'json',
+                contentType:'application/json',
+                async:false,
+                error: function(msg){
+                    layer.msg("获取数据失败!" + msg.message+_this.userId);
+                    return false;
+                },
+            }).done(function(msg){
+                if (msg.status === 200){
+                    console.log("ready function 1");
+                    $.ajax({
+                        url:'/contest/data/' + _this.contestId,
+                        data: JSON.stringify(data),
+                        method:'post',
+                        dataType:'json',
+                        contentType:'application/json',
+                        async:false,
+                        error: function(msg){
+                            layer.msg("获取数据失败!" + msg.message+_this.userId);
+                            return false;
+                        },
+                    }).done(function(msg){
+                        if (msg.status === 200){
+                            _this.contest = msg.result.contest;
+                            _this.problemList = msg.result.problemList;
+                            _this.problemListLen = msg.result.problemList.length;
+                            _this.problem = msg.result.problemList[_this.hightlightProb];
+                            _this.submitProbId = _this.problem.problemId;
+                            console.log (_this.problem);
+                            setProbAttr(_this.problem);
+                            
+                            // test
+                            // $("#isPrivate").click();
+
+                            return true;
+                        }else {
+                            showAjaxMsg(msg);
+                            return false;
+                        }
+                    });
+
+                    return true;
+                }else {
+                    console.log("ready function 0");
+                    if( isFrist ){
+                        showAjaxMsg(msg);
+                        isFrist ++;
+                    }
+                    $("#isPrivate").click();
+                    // isPrivate();
+                    return false;
+                }
+            });
+        }
+        
+        isPrivate();
+        
+    },
+    methods:{
+        /*
+         * 根据 索引号 显示比赛题目详情
+         */
+        checkPrivate: function(){
+            // 初始加载页面的数据
+
+            let _this = this;
+            let data = {
+                contestId: _this.contestId,
+                password: _this.privateCode,
+            };
+            let isFrist = 0;
+            // let self = {
+            //     self:_this,
+            //     data: {},
+            //     isFrist:isFrist,
+            // };
+            function isPrivate(self){
+                $.ajax({
+                    url:'/contest/loginContest',
+                    data: JSON.stringify(data),
+                    method:'post',
+                    dataType:'json',
+                    contentType:'application/json',
+                    async:false,
+                    error: function(msg){
+                        layer.msg("获取数据失败!" + msg.message+_this.userId);
+                        return false;
+                    },
+                }).done(function(_msg){
+                    if (_msg.status === 200){
+                        $.ajax({
+                            url:'/contest/data/' + _this.contestId,
+                            data: JSON.stringify(data),
+                            method:'post',
+                            dataType:'json',
+                            contentType:'application/json',
+                            async:false,
+                            error: function(msg){
+                                layer.msg("获取数据失败!" + msg.message+_this.userId);
+                                return false;
+                            },
+                        }).done(function(msg){
+                            if (msg.status === 200){
+                                _this.contest = msg.result.contest;
+                                _this.problemList = msg.result.problemList;
+                                _this.problemListLen = msg.result.problemList.length;
+                                _this.problem = msg.result.problemList[_this.hightlightProb];
+                                _this.submitProbId = _this.problem.problemId;
+                                console.log (_this.problem);
+                                setProbAttr(_this.problem);
+                                return true;
+                            }else {
+                                showAjaxMsg(msg);
+                                return false;
+                            }
+                        });
+                        $("#isPrivate").click(); // 此次点击则模态框隐藏
+                        return true;
+                    }else {
+                        showAjaxMsg(_msg);
+                        return false;
+                    }
+                });
+                console.log("checkPrivate function");
+                
+            }
+            isPrivate();       
+        },
+        /*
+         * 根据 索引号 显示比赛题目详情
+         */
+        checkProbDetails: function (index){
+            this.hightlightProb = index; // from 0
+            console.log(index);
+            $("#tab_1 a").eq(1).tab('show');
+            this.problem = this.problemList[index];
+            this.submitProbId = this.problem.problemId;
+            setProbAttr(this.problem);
+        },
+        /**
+         * 提交题目
+         *
+         * @param
+         * @returns
+         */
+        submit: function(problemId, contestId){
+            let data = {
+                problemId: this.submitProbId,
+                contestId: this.contestId,
+                languageId:this.language,
+                codeContent:this.code,
+            };
+            console.log(data);
+            if(typeof data.contestId === "undefined" || data.contestId === "" || data.contestId == 0){
+                layer.msg("未选择比赛!");
+                return false;
+            }
+
+            if(typeof data.problemId === "undefined" || data.problemId === "" || data.problemId == 0){
+                layer.msg("未选择题目!");
+                return false;
+            }
+            if(typeof data.languageId === "undefined" || data.languageId === ""){
+                layer.msg("选择语言类型!");
+                return false;
+            }
+            if(typeof data.codeContent === "undefined" || data.codeContent === ""){
+                layer.msg("请填写代码!");
+                return false;
+            }
+            $.ajax({
+                method:"post",
+                data:JSON.stringify(data),
+                dataType:"json",
+                contentType:"application/json",
+                async:false,
+                url:"/status/submit",
+                error: function(msg){
+                    layer.msg("提交数据失败!" + msg.message);
+                    return false;
+                },
+            }).done(function(msg){
+                if(msg.status === 200){
+                    layer.msg("提交成功!");
+                    setTimeout(function () {
+                        window.location.href = "/status/index.html?probId="+data.problemId;
+                        //console.log("status");
+                    },2000)
+                }else{
+                    showAjaxMsg(msg);
+                    return false;
+                }
+            });
+        }
+    },
+    template:"#contestDetails",
+});
+
+
+let App = Vue.extend({});
+let router = new VueRouter();
+router.map({
+    "/": {
+        name:"list",
+        component:contestsList
+    },
+    "/list": {
+        name:"List",
+        component:contestsList
+    },
+    "/detail/:contestId/": {
+        name:"Details",
+        component:contestDetails
+    }
+})
+router.start(App, "#app");
+
+/*
 let app = new Vue({
     el: "#app",
     data:{
@@ -143,64 +431,80 @@ function setPage(pageInfo, _this ){
     }
 }
 
-// 测试
-function getPageList1(index){
-    let page = {
-        "errors":{},
-        "result":
-            {
-                "pageInfo":{
-                    "countPerPage":15,
-                    "currentPage":index,
-                    "displayDistance":2,
-                    "firstNo":0,
-                    "totalItems":2,
-                    "totalPages":2
-                },
-                "list":[
-                    {
-                        "contestId":92,"isVisible":true,"length":60000,"status":"Pending","time":1467385200000,"title":"2016年ACM-ICPC暑假前集训报名","type":3,"typeName":"Invited"},
-                    {
-                        "contestId":94,"isVisible":true,"length":18000000,"status":"Ended","time":1460174400000,"title":"The 14th UESTC Programming Contest Final 重现赛","type":0,"typeName":"Public"},
-                    {
-                        "contestId":90,"isVisible":true,"length":18000000,"status":"Ended","time":1459569600000,"title":"The 14th UESTC Programming Contest Final","type":5,"typeName":"Onsite"},
-                    {
-                        "contestId":91,"isVisible":true,"length":3600000,"status":"Ended","time":1459562400000,"title":"The 14th UESTC Programming Contest Final Warmup","type":0,"typeName":"Public"},
-                    {
-                        "contestId":89,"isVisible":true,"length":43200000,"status":"Ended","time":1458954000000,"title":"The 14th UESTC Programming Contest Preliminary","type":3,"typeName":"Invited"},
-                    {
-                        "contestId":86,"isVisible":true,"length":43200000,"status":"Ended","time":1458349200000,"title":"The 14th UESTC Programming Contest Warmup #1","type":0,"typeName":"Public"},
-                    {
-                        "contestId":88,"isVisible":true,"length":864000000,"status":"Ended","time":1457311440000,"title":"练习","type":1,"typeName":"Private"},
-                    {
-                        "contestId":87,"isVisible":true,"length":10800000,"status":"Ended","time":1450591200000,"title":"第七届ACM趣味程序设计竞赛第四场（正式赛）","type":0,"typeName":"Public"},
-                    {
-                        "contestId":80,"isVisible":true,"length":86400000,"status":"Ended","time":1450332000000,"title":"人要有梦想，万一实现了呢？","type":1,"typeName":"Private"},
-                    {
-                        "contestId":79,"isVisible":true,"length":11400000,"status":"Ended","time":1450090200000,"title":"数学科学学院2015级C语言第七次上机","type":1,"typeName":"Private"},
-                    {
-                        "contestId":52,"isVisible":true,"length":10800000,"status":"Ended","time":1449900000000,"title":"第七届ACM趣味程序设计竞赛第三场（正式赛）","type":0,"typeName":"Public"},
-                    {
-                        "contestId":85,"isVisible":true,"length":86400000,"status":"Ended","time":1449727200000,"title":"山有榛，隰有苓。云谁之思？","type":1,"typeName":"Private"},
-                    {
-                        "contestId":78,"isVisible":true,"length":11400000,"status":"Ended","time":1449485400000,"title":"数学科学学院2015级C语言第六次上机","type":1,"typeName":"Private"},
-                    {
-                        "contestId":83,"isVisible":true,"length":10800000,"status":"Ended","time":1449295200000,"title":"第七届ACM趣味程序设计竞赛第二场（正式赛）","type":0,"typeName":"Public"},
-                    {
-                        "contestId":77,"isVisible":true,"length":11400000,"status":"Ended","time":1448880600000,"title":"数学科学学院2015级C语言第五次上机","type":1,"typeName":"Private"},
-                    {
-                        "contestId":81,"isVisible":true,"length":10800000,"status":"Ended","time":1448690400000,"title":"第七届ACM趣味程序设计竞赛第一场（热身赛）","type":0,"typeName":"Public"},
-                    {
-                        "contestId":76,"isVisible":true,"length":11400000,"status":"Ended","time":1448275800000,"title":"数学科学学院2015级C语言第四次上机","type":1,"typeName":"Private"},
-                    {
-                        "contestId":72,"isVisible":true,"length":18000000,"status":"Ended","time":1448271300000,"title":"The 2015 China Collegiate Programming Contest","type":1,"typeName":"Private"},
-                    {
-                        "contestId":71,"isVisible":true,"length":18000000,"status":"Ended","time":1448164800000,"title":"人生苦短","type":1,"typeName":"Private"},
-                    {
-                        "contestId":75,"isVisible":true,"length":11400000,"status":"Ended","time":1447066200000,"title":"数学科学学院2015级C语言第三次上机","type":1,"typeName":"Private"}
-                ]
-            },
-            "status":200
-        };
-    return page;
+
+
+/**
+ *
+ * 将 problem 指定属性 转换由 MD格式 转为 HTML
+ * @parma <Object> problem
+ * @return <Object> problem
+ */
+function setProbAttr(problem){
+    if(typeof problem === 'object'){
+        if(problem.problemId) {
+            problem.hint = transMd(problem.hint);
+            problem.description = transMd(problem.description);
+            problem.input = transMd(problem.input);
+            problem.output = transMd(problem.output);
+            problem.sampleInput = JSON.parse(problem.sampleInput);
+            problem.sampleOutput = JSON.parse(problem.sampleOutput);
+            problem.sampleLen = problem.sampleOutput.length;
+            $('#hint').html(problem.hint);
+            $('#description').html(problem.description);
+            $('#input').html(problem.input);
+            $('#output').html(problem.output);
+            return true;
+        }else{
+            console.error(" problem is not exist");
+            return false;
+        }
+    }else{
+        console.error("传入参数不是对象！");
+        return false;
+    }
 }
+/**
+ *
+ * 检测比赛是否是 私有的 <private>
+ * @parma <Object> contestAttribute
+ * @return <Object> contest
+ */
+function isPrivate(self){
+            $.ajax({
+                url:'/contest/data/' + _this.contestId,
+                data: JSON.stringify(data),
+                method:'post',
+                dataType:'json',
+                contentType:'application/json',
+                async:true,
+                error: function(msg){
+                    layer.msg("获取数据失败!" + msg.message+_this.userId);
+                    return false;
+                },
+            }).done(function(msg){
+                if (msg.status === 200){
+                    _this.contest = msg.result.contest;
+                    _this.problemList = msg.result.problemList;
+                    _this.problemListLen = msg.result.problemList.length;
+                    _this.problem = msg.result.problemList[_this.hightlightProb];
+                    _this.submitProbId = _this.problem.problemId;
+                    console.log (_this.problem);
+                    setProbAttr(_this.problem);
+                    
+                    // test
+                    // $("#isPrivate").click();
+
+                    return true;
+                }else {
+                    if( isFrist ){
+                        showAjaxMsg(msg);
+                        isFrist ++;
+                    }
+                    $("#isPrivate").click();
+                    isPrivate();
+                    return false;
+                }
+            });
+        }
+
+

@@ -64,3 +64,18 @@ function showAjaxMsg(msg){
             break;
     }
 }
+
+
+/**
+ * 将MD内容转换为 html
+ *
+ * @param <String> MD
+ * @returns <String> html
+ */
+function transMd(md){
+    let converter = new showdown.Converter();
+    let text      = md;
+    let html      = converter.makeHtml(text);
+    converter = null;
+    return html;
+}

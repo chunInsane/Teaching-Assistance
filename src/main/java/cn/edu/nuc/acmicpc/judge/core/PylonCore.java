@@ -18,7 +18,7 @@ import java.io.*;
  */
 public class PylonCore implements JudgeCore {
 
-    private static final Logger logger = LoggerFactory.getLogger(PylonCore.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PylonCore.class);
 
     /**judge core work path*/
     private final String workPath;
@@ -103,12 +103,12 @@ public class PylonCore implements JudgeCore {
             stringBuilder.append(" -C");
         }
 
+        LOGGER.info("shell command :" + stringBuilder.toString());
         return stringBuilder.toString();
     }
 
     /**
      * Get process's call back string with shell command
-     *
      * @param shellCommand
      * @return
      */
@@ -123,8 +123,9 @@ public class PylonCore implements JudgeCore {
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
             }
-        } catch (IOException e) {
-            logger.error("execute shell command of judge fail", e);
+        } catch (Exception e) {
+            LOGGER.error("execute shell command of judge fail", e);
+            throw new AppException(e);
         }
         callbackString = stringBuilder.toString();
         return callbackString.split(" ");
@@ -157,7 +158,7 @@ public class PylonCore implements JudgeCore {
                     stringBuilder.append(line).append('\n');
                 }
             } catch (IOException e) {
-                logger.error("read compile error information fail", e);
+                LOGGER.error("read compile error information fail", e);
             } finally {
                 closeResource(br);
             }

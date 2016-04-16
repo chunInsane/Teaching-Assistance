@@ -1,6 +1,7 @@
 package cn.edu.nuc.acmicpc.service;
 
 import cn.edu.nuc.acmicpc.common.BasicTest;
+import cn.edu.nuc.acmicpc.dto.ContestDto;
 import cn.edu.nuc.acmicpc.form.condition.ContestCondition;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
 import junit.framework.Assert;
@@ -45,6 +46,7 @@ public class ContestServiceTest extends BasicTest {
 
     @Test
     public void test4() {
-
+        ContestDto contestDto = contestService.getContestDtoByContestId(1L);
+        Assert.assertEquals(true, contestDto.isVisible());
     }
 }

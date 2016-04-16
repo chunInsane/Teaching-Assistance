@@ -49,7 +49,7 @@
         where `is_visible` = #{value}
     </select>
 
-    <select id="getContestDtoByContestId" parameterType="long" resultType="ContestDto">
+    <select id="getContestDtoByContestId" parameterType="long" resultMap="contestDtoResultMap">
         select `contest_id`, `title`, `description`, `time`, `type`, `length`, `is_visible`,
         `password`, `frozen_time`
         from tb_contest

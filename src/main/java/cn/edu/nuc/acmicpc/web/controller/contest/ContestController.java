@@ -143,7 +143,6 @@ public class ContestController {
             LOGGER.error(String.format("不存在该比赛! contestId = %s", contestId));
             throw new AppException("不存在该比赛!");
         }
-
         if (!contestDto.isVisible() && !SessionUtil.isAdmin(session)) {
             LOGGER.error(String.format("不存在该比赛! contestId = %s", contestId));
             throw new AppException("不存在该比赛!");

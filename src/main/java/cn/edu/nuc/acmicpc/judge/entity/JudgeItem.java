@@ -26,7 +26,7 @@ import java.util.Map;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class JudgeItem {
 
-    private static final Logger logger = LoggerFactory.getLogger(JudgeItem.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JudgeItem.class);
 
     private StatusDto status;
     private String compileInfo;
@@ -80,7 +80,7 @@ public class JudgeItem {
                 params.put("tried", statusService.countUsersThatTriedProblem(problemId));
                 problemService.updateProblemByProblemId(problemId, params);
             } catch (Exception e) {
-                logger.error("update data about solved and tried number raise exception", e);
+                LOGGER.error("update data about solved and tried number raise exception", e);
             }
         }
     }

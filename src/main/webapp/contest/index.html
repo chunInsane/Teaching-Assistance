@@ -20,7 +20,7 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body id="app">
+    <body >
         <nav class="navbar navbar-inverse navbar-fixed-top elevation-4">
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -49,81 +49,234 @@
             </div><!-- /.container-fluid -->
         </nav>
         <!-- nav bar end -->
+        <div id="app">
+            <router-view></router-view>        
+        </div>
 
         <!-- body container start -->
-        <div class="container body">
+        <!-- 比赛列表 组件 -->
+        <script type="text/html" id="contestsList">
+            <div class="container body">
 
-            <!-- 查询框 start -->
-            <div class="row">
-                <div class="col-md-12 search-bar">
-                    <form class="form-inline" v-on:submit.prevent="search">
-                        <div class="form-group">
-                            <input v-model="searchKeyWord" type="text" class="form-control" placeholder="关键字">
-                        </div>
-                        <button  type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-                    </form>
+                <!-- 查询框 start -->
+                <div class="row">
+                    <div class="col-md-12 search-bar">
+                        <form class="form-inline" v-on:submit.prevent="search">
+                            <div class="form-group">
+                                <input v-model="searchKeyWord" type="text" class="form-control" placeholder="关键字">
+                            </div>
+                            <button  type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                        </form>
+                    </div>
+                </div>
+                <!-- 查询框 end -->
+
+                <!-- 分页工具 start-->
+                <div class="row">
+                    <nav class="col-md-12">
+                        <ul class="pagination elevation-1">
+                            <li v-on:click="setPage(page.minPage)">
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li v-for="n in 10" v-if="page.minPage + n > 0 && page.minPage + n <= page.totalPage" v-on:click="setPage(page.minPage + n)">
+                                <a v-if="page.minPage + n == page.currentPage" class="active disable">{{ page.minPage + n }}</a>
+                                <a v-else>{{ page.minPage + n }}</a>
+                            </li>
+                            <li v-on:click="setPage(page.maxPage)">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <!-- 分页工具 end-->
+
+                <!-- 题目列表 start -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover table-bordered elevation-1">
+                            <tr>
+                                <th class="col-md-1">ID</th>
+                                <th class="col-md-5">Contests</th>
+                                <th class="col-md-2">Start time</th>
+                                <th class="col-md-2">Length</th>
+                                <th class="col-md-2">Type</th>
+                            </tr>
+
+                            <tr v-for="item in contestsList">
+                                <td class="text-center">{{ item.contestId }}</td>
+                                <td><a v-link="{
+                                    name : 'Details',
+                                    params:{
+                                        contestId: item.contestId, 
+                                    }
+                                }">{{ item.title }}</a></td>
+                                <td class="text-center">
+                                    <span>{{ new Date(item.time).getYear() + 1900  }}-{{  new Date(item.time).getMonth() }}-{{  new Date(item.time).getDate() }}&nbsp;{{  new Date(item.time).getHours() }}:{{  new Date(item.time).getMinutes() }}:{{  new Date(item.time).getSeconds() }}</span>
+                                </td>
+                                <td class="text-center">
+                                    <span v-if="item.length < 3600000">{{ item.length  / (60*1000) }} minutes</span>
+                                    <span v-if="item.length >= 3600000 && (item.length / (60*1000)) % 60 == 0">{{ Math.floor(item.length  / (60*60*1000)) }} hours</span>
+                                    <span v-if="item.length >= 3600000 && (item.length / (60*1000)) % 60 != 0">{{ Math.floor(item.length  / (60*60*1000)) }} hours&nbsp;{{ (item.length / (60*1000)) % 60 }} minutes</span>
+                                    <!-- <span v-if="item.length == 3600000">1 hour</span> -->
+                                    <!-- <span>{{ item.length  / (60*1000) }} minutes</span> -->
+
+                                </td>
+                                <td class="text-center">
+                                    <span v-if="item.type == 0" class="green text-center">{{ item.typeName }}</span>
+                                    <span v-if="item.type == 1" class="red text-center">{{ item.typeName }}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <!-- 查询框 end -->
-
-            <!-- 分页工具 start-->
-            <div class="row">
-                <nav class="col-md-12">
-                    <ul class="pagination elevation-1">
-                        <li v-on:click="setPage(page.minPage)">
-                            <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li v-for="n in 10" v-if="page.minPage + n > 0 && page.minPage + n <= page.totalPage" v-on:click="setPage(page.minPage + n)">
-                            <a v-if="page.minPage + n == page.currentPage" class="active disable">{{ page.minPage + n }}</a>
-                            <a v-else>{{ page.minPage + n }}</a>
-                        </li>
-                        <li v-on:click="setPage(page.maxPage)">
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
+        </script>
+        <!-- 比赛详情 组件 -->
+        <script type="text/html" id="contestDetails">
+            <div class="container body">
+                <div>
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist" id="tab_1">
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Overview</a></li>
+                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Problems</a></li>
                     </ul>
-                </nav>
-            </div>
-            <!-- 分页工具 end-->
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <!-- 比赛概览 -->
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <br/>
+                            <dl class="dl-horizontal">
+                                <dt>Current Time:</dt>
+                                <dd>2016-04-16 16:25:18</dd>
+                                <dt>Start Time:</dt>
+                                <dd>2016-04-16 16:25:18</dd>
+                                <dt>End Time:</dt>
+                                <dd>2016-04-16 16:25:18</dd>
+                                <dt>Contest Status:</dt>
+                                <dd>{{ name }}</dd>
 
-            <!-- 题目列表 start -->
-            <div class="row">
-                <div class="col-md-12">
-                    <table class="table table-hover table-bordered elevation-1">
-                        <tr>
-                            <th class="col-md-1">ID</th>
-                            <th class="col-md-5">Contests</th>
-                            <th class="col-md-2">Start time</th>
-                            <th class="col-md-2">Length</th>
-                            <th class="col-md-2">Type</th>
-                        </tr>
-
-                        <tr v-for="item in contestsList">
-                            <td class="text-center">{{ item.contestId }}</td>
-                            <td><a>{{ item.title }}</a></td>
-                            <td class="text-center">
-                                <span>{{ new Date(item.time).getYear() + 1900  }}-{{  new Date(item.time).getMonth() }}-{{  new Date(item.time).getDate() }}&nbsp;{{  new Date(item.time).getHours() }}:{{  new Date(item.time).getMinutes() }}:{{  new Date(item.time).getSeconds() }}</span>
-                            </td>
-                            <td class="text-center">
-                                <span v-if="item.length < 3600000">{{ item.length  / (60*1000) }} minutes</span>
-                                <span v-if="item.length >= 3600000 && (item.length / (60*1000)) % 60 == 0">{{ Math.floor(item.length  / (60*60*1000)) }} hours</span>
-                                <span v-if="item.length >= 3600000 && (item.length / (60*1000)) % 60 != 0">{{ Math.floor(item.length  / (60*60*1000)) }} hours&nbsp;{{ (item.length / (60*1000)) % 60 }} minutes</span>
-                                <!-- <span v-if="item.length == 3600000">1 hour</span> -->
-                                <!-- <span>{{ item.length  / (60*1000) }} minutes</span> -->
-
-                            </td>
-                            <td class="text-center">
-                                <span v-if="item.type == 0" class="green text-center">{{ item.typeName }}</span>
-                                <span v-if="item.type == 1" class="red text-center">{{ item.typeName }}</span>
-                            </td>
-                        </tr>
-                    </table>
+                            </dl>
+                            <table class="table">
+                                <tr>
+                                    <th>Index</th>
+                                    <th>Title</th>
+                                </tr>
+                                <tr v-for="n in problemList.length">
+                                    <td class="col-xs-5">{{ problemList[n].solved }}&nbsp;/&nbsp;{{ problemList[n].tried }}&nbsp;&nbsp;&nbsp;Problem&nbsp;{{ n+1 }}</td>
+                                    <td class="col-xs-7">
+                                        <a v-on:click.prevent="checkProbDetails(n)">{{ problemList[n].title }}</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- Problems 列表-->
+                        <div role="tabpanel" class="tab-pane" id="profile">
+                            <!-- 题目序号 -->
+                            <nav>
+                                <ul class="pagination">
+                                    <li v-on:click.prevent="checkProbDetails($index)" v-for="n in problemListLen" >
+                                        <a v-if=" n == hightlightProb" class="active" href="#">{{ n+1 }}<span class="sr-only">(current)</span></a>
+                                        <a v-else href="#">{{ n+1 }}<span class="sr-only">(current)</span></a>
+                                    </li>
+                            </nav>
+                            <!-- 题目详情 -->
+                            <div class="col-md-12 text-center">
+                                <h1>{{ problem.title }}</h1>
+                                <p>Time Limit:{{ problem.javaTimeLimit }}/{{ problem.timeLimit }}(Java/Others)&nbsp;&nbsp;Memory Limit:{{ problem.javaMemoryLimit }}/{{ problem.memoryLimit }}(Java/Others)</p>
+                                <button type="button" class="btn btn-primary btn-md block-center" data-toggle="modal" data-target="#submitProb">submit</button>
+                                <a type="button" href="/status/index.html?problemId={{ problem.problemId }}" class="btn btn-primary btn-md block-center">status</a>
+                            </div>
+                            <div class="col-md-12">
+                                <p id="description"></p>
+                                <h3>Input</h3>
+                                <p id="input"></p>
+                                <h3>output</h3>
+                                <p id="output"></p>
+                                <h3>Sample input and output</h3>
+                                <table class="table table-border table-striped">
+                                    <tr>
+                                        <th>Sample Input</th>
+                                        <th>Sample Output</th>
+                                    </tr>
+                                    <tr v-for="item in problem.sampleLen">
+                                        <td>{{ problem.sampleInput[item] }}</td>
+                                        <td>{{ problem.sampleOutput[item] }}</td>
+                                    </tr>
+                                </table>
+                                <h3>Hint</h3>
+                                <p id="hint"></p>
+                                <h3>source</h3>
+                                <p>{{ problem.source }}</p>
+                            </div>
+                            <!-- 提交题目模态框 -->
+                                <div class="modal fade" id="submitProb">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title">{{ problem.title }}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                                <textarea v-model="code" class="form-control" rows="15"></textarea>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input v-model="language" type="radio" name="lan" id="c" checked="checked" value="1">
+                                                        C
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input v-model="language" type="radio" name="lan" id="c++" value="2">
+                                                        C++
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input v-model="language" type="radio" name="lan" id="java" value="3">
+                                                        Java
+                                                    </label>
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button v-on:click="submit(problemId)" type="button" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Button trigger modal -->
+            <button id="isPrivate" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#isprivatecontest" style="display:none;">
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="isprivatecontest" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">比赛密码</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input v-model="privateCode" type="password" class="form-control">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button v-on:click="checkPrivate()" type="button" class="btn btn-primary">Enter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </script>
         <!-- body container end -->
 
         <!-- footer start -->
@@ -142,7 +295,9 @@
         <script src="/resources/lib/jquery/dist/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="/resources/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/resources/lib/showdown/dist/showdown.js"></script>
         <script src="/resources/lib/vue/dist/vue.js"></script>
+        <script src="/resources/lib/vue-router/dist/vue-router.js"></script>
         <script src="/resources/lib/layer/layer.js"></script>
         <script src="/resources/js/main_home.js"></script>
         <script src="/resources/js/contests.js"></script>

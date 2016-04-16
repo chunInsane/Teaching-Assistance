@@ -5,6 +5,10 @@ Vue.config.debug = true;     // 上线后关闭
 let app = new Vue({
     el: "#app",
     data:{
+        probId:'',
+        userId:'',
+        languageId:0,
+        result:0,
         page:{
             currentPage: 1, // 当前页
             totalPage:1,    // 总页数
@@ -16,7 +20,28 @@ let app = new Vue({
     },
     ready:function() {
         let queryParam = {};
-        $.extend({
+        if (window.location.href.split("?")[1] && window.location.href.split("?")[1].indexOf("problemId") === 0){
+            let probId = parseInt(window.location.href.split("?")[1].split("=")[1]);
+            this.probId = probId;
+        } else {
+            console.error("根据 url 无法获取 problemId 参数！");
+        }
+        if(this.probId){
+            //TODO
+            let search = {
+                userId: this.userId,
+                problemId: this.probId,
+                languageId: this.languageId,
+                result: this.result,
+            };
+            let pageInfo = getPageList(1, search);
+            setPage(pageInfo, this);
+        }else {
+            let pageInfo = getPageList(1); //正式
+            console.log(pageInfo);
+            setPage(pageInfo, this);
+        }
+        /*$.extend({
             getUrlVars: function() {
                 var vars = [], hash;
                 var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -33,24 +58,32 @@ let app = new Vue({
             }
         });
         var problemId = $.getUrlVar("problemId");
-        queryParam[problemId] = problemId;
+        queryParam[problemId] = problemId;*/
         //let pageInfo = getPageList1(1);
-        let pageInfo = getPageList(1); //正式
-        console.log(pageInfo);
-        setPage(pageInfo, this);
+
     },
     methods:{
         setPage: function(index){
             console.log(index);
-            this.page = {};
+            /*this.page = {};
             let pageInfo = getPageList1(index);
+            setPage(pageInfo, this);*/
+            let pageInfo = getPageList(index);
             setPage(pageInfo, this);
         },
         search: function(){
-            let keyWord = this.searchKeyWord;
-            //let pageInfo = getPageList1(6);
+            /*let keyWord = this.searchKeyWord;
             let pageInfo = searchPageList(keyWord); //正式
+            setPage(pageInfo, this);*/
+            let search = {
+                userId: this.userId,
+                problemId: this.probId,
+                languageId: this.languageId,
+                result: this.result,
+            };
+            let pageInfo = getPageList(1, search);
             setPage(pageInfo, this);
+
         },
     },
 });
@@ -61,10 +94,14 @@ let app = new Vue({
  * @param <Number> pagination
  * @returns <Object> result
  */
-function getPageList(p){
+function getPageList( p, search ){
     let data = {
-        currentPage: p,
+        currentPage: p || 1,
     };
+    if(search){
+        data = search;
+        data.currentPage = p;
+    }
     let result = {};
 
     $.ajax({
@@ -161,66 +198,7 @@ function setPage(pageInfo, _this ){
     }
 }
 
-// 测试
-function getPageList1(index){
-    let page = {
-        "errors":{},
-        "result":
-            {
-                "pageInfo":{
-                    "countPerPage":15,
-                    "currentPage":index,
-                    "displayDistance":2,
-                    "firstNo":0,
-                    "totalItems":2,
-                    "totalPages":32
-                },
-                "list":[
-                    {
-                        "caseNumber": 1,
-                        "email": "virtual.judge.5@gmail.com",
-                        "language": "C++",
-                        "length": 2755,
-                        "name": "黄汉升",
-                        "nickName": "黄汉升",
-                        "problemId": 360,
-                        "returnType": "Wrong Answer on test 1",
-                        "returnTypeId": 5,
-                        "statusId": 185726,
-                        "time": 1460379379000,
-                        "userName": "Vjudge5"
-                    },
-                    {
-                        "caseNumber": 1,
-                        "email": "1125442950@qq.com",
-                        "language": "C++",
-                        "length": 1141,
-                        "name": "晴天",
-                        "nickName": "哈哈哈",
-                        "problemId": 1134,
-                        "returnType": "Wrong Answer on test 1",
-                        "returnTypeId": 5,
-                        "statusId": 185725,
-                        "time": 1460379190000,
-                        "userName": "smilesun"
-                    },
-                    {
-                        "caseNumber": 3,
-                        "email": "virtual.judge.1@gmail.com",
-                        "language": "C++",
-                        "length": 634,
-                        "name": "关云长",
-                        "nickName": "关云长",
-                        "problemId": 1063,
-                        "returnType": "Memory Limit Exceeded on test 3",
-                        "returnTypeId": 4,
-                        "statusId": 185724,
-                        "time": 1460379019000,
-                        "userName": "Vjudge1"
-                    }
-                ]
-            },
-            "status":200
-        };
-    return page;
+// 根据 probId 获取题目状态
+function getProbStatus( id ){
+
 }

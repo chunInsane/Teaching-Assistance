@@ -1,5 +1,7 @@
 package cn.edu.nuc.acmicpc.service.impl;
 
+import cn.edu.nuc.acmicpc.common.enums.ContestType;
+import cn.edu.nuc.acmicpc.common.util.DateUtil;
 import cn.edu.nuc.acmicpc.dto.ContestDto;
 import cn.edu.nuc.acmicpc.mapper.ContestMapper;
 import cn.edu.nuc.acmicpc.service.ContestService;
@@ -9,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created with IDEA
@@ -38,7 +42,9 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public ContestDto getContestDtoByContestId(Long contestId) {
-        return contestMapper.getContestDtoByContestId(contestId);
+        ContestDto contestDto = contestMapper.getContestDtoByContestId(contestId);
+        updateContestDto(contestDto);
+        return contestDto;
     }
 
     @Override
@@ -65,7 +71,46 @@ public class ContestServiceImpl implements ContestService {
         checkNotNull(pageInfo);
         conditions.put("firstNo", pageInfo.getFirstNo());
         conditions.put("pageSize", pageInfo.getCountPerPage());
-        return contestMapper.getContestList(conditions);
+        List<ContestDto> contestDtos = contestMapper.getContestList(conditions);
+        if (contestDtos != null && contestDtos.size() > 0) {
+            for (ContestDto contestDto : contestDtos) {
+                updateContestDto(contestDto);
+            }
+        }
+        return contestDtos;
     }
 
+    /**
+     * Set some contest field value.
+     * @param contest
+     * @return
+     */
+    private void updateContestDto(ContestDto contest) {
+        if (contest.getLength() != null) {
+            contest.setLength(contest.getLength() * 1000);
+        }
+        if (contest.getFrozenTime() != null) {
+            contest.setFrozenTime(contest.getFrozenTime() * 1000);
+        }
+        if (contest.getType() != null) {
+            contest.setTypeName(ContestType.values()[contest.getType()].getDescription());
+        }
+        if (contest.getTime() != null) {
+            contest.setStartTime(contest.getTime());
+        }
+        contest.setCurrentTime(DateUtil.getCurrentTime());
+        Timestamp endTime = new Timestamp(contest.getStartTime().getTime() + contest.getLength());
+        Long timeLeft = Math.max(endTime.getTime() - contest.getCurrentTime().getTime(), 0L);
+        String status;
+        if (timeLeft > contest.getLength()) {
+            status = "Pending";
+        } else if (timeLeft > 0) {
+            status = "Running";
+        } else {
+            status = "Ended";
+        }
+        contest.setEndTime(endTime);
+        contest.setTimeLeft(timeLeft);
+        contest.setStatus(status);
+    }
 }

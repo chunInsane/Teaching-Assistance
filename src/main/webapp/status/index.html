@@ -59,16 +59,16 @@
                     <form class="form-inline" v-on:submit.prevent="search">
                         <div class="form-group">
                             <label for="user">用户</label>
-                            <input v-model="user" type="text" class="form-control" placeholder="User" id="user">
+                            <input v-model="userId" type="text" class="form-control" placeholder="User" id="user">
                         </div>
                         <div class="form-group">
                             <label for="prob">题目</label>
-                            <input v-model="prob" type="text" class="form-control" placeholder="Prob" id="prob">
+                            <input v-model="probId" type="text" class="form-control" placeholder="Prob" id="prob">
                         </div>
                         <div class="form-group">
-                            <label for="result">状态</label>
+                        <label for="result">状态</label>
                             <select v-model="result" class="form-control" id="result">
-                                <option value="0"  selected="selected">All</option>
+                                <option value=""  selected="selected">All</option>
                                 <option value="1">Accepted</option>
                                 <option value="2">Presentation Error</option>
                                 <option value="3">Time Limit Exceeded</option>
@@ -85,7 +85,7 @@
                         </div>
                         <div class="form-group">
                             <label for="language">语言</label>
-                            <select v-model="language" class="form-control" id="language">
+                            <select v-model="languageId" class="form-control" id="language">
                                 <option value="" selected="selected">All</option>
                                 <option value="0">C</option>
                                 <option value="1" >C++</option>
@@ -129,8 +129,8 @@
                             <th class="col-md-1">ID</th>
                             <th class="col-md-2">User</th>
                             <th class="col-md-1">ProblemId</th>
-                            <th class="col-md-2">Result</th>
-                            <th class="col-md-2">Memory</th>
+                            <th class="col-md-3">Result</th>
+                            <th class="col-md-1">Memory</th>
                             <th class="col-md-1">Time</th>
                             <th class="col-md-1">Language</th>
                             <th class="col-md-1">Length</th>
@@ -146,7 +146,9 @@
                             <td>{{ item.timeCost }}</td>
                             <td>{{ item.language }}</td>
                             <td>{{ item.length }}</td>
-                            <td>{{ item.time }}</td>
+                            <td>
+                                <span>{{ new Date(item.time).getYear() + 1900  }}-{{  new Date(item.time).getMonth() }}-{{  new Date(item.time).getDate() }}&nbsp;{{  new Date(item.time).getHours() }}:{{  new Date(item.time).getMinutes() }}:{{  new Date(item.time).getSeconds() }}</span>
+                            </td>
                         </tr>
                     </table>
                 </div>

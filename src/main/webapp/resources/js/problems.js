@@ -6,7 +6,7 @@ Vue.config.debug = true;     // 上线后关闭
 let probDetails = Vue.extend({
     data:function(){
         return {
-            // probId:1,
+            probId:1,
             problem:{},
             code:"",
             language:"",
@@ -72,6 +72,10 @@ let probDetails = Vue.extend({
             }).done(function(msg){
                 if(msg.status === 200){
                     layer.msg("提交成功!");
+                    setTimeout(function () {
+                        window.location.href = "/status/index.html?probId="+data.problemId;
+                        //console.log("status");
+                    },2000)
                 }else{
                     showAjaxMsg(msg);
                     return false;
@@ -125,6 +129,10 @@ var App = Vue.extend({})
 var router = new VueRouter()
 
 router.map({
+    "/": {
+        name:'list',
+        component: list
+    },
     '/list': {
         name:'list',
         component: list
@@ -138,7 +146,7 @@ router.map({
 // 现在我们可以启动应用了！
 // 路由器会创建一个 App 实例，并且挂载到选择符 #app 匹配的元素上。
 router.start(App, '#app');
-router.go({name:'list'});
+//router.go({name:'list'});
 /**
  * 根据 页码 获取题目列表详情
  *
@@ -296,20 +304,6 @@ function getPageList1(index){
             "status":200
         };
     return page;
-}
-
-/**
- * 将MD内容转换为 html
- *
- * @param <String> MD
- * @returns <String> html
- */
-function transMd(md){
-    let converter = new showdown.Converter();
-    let text      = md;
-    let html      = converter.makeHtml(text);
-    converter = null;
-    return html;
 }
 
 
