@@ -6,6 +6,8 @@ import cn.edu.nuc.acmicpc.dto.StatusDto;
 import cn.edu.nuc.acmicpc.mapper.StatusMapper;
 import cn.edu.nuc.acmicpc.service.StatusService;
 import static com.google.common.base.Preconditions.*;
+
+import cn.edu.nuc.acmicpc.web.common.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,6 +84,20 @@ public class StatusServiceImpl implements StatusService {
     @Override
     public Long createStatus(StatusDto statusDto) {
         return statusMapper.createStatus(checkNotNull(statusDto));
+    }
+
+    @Override
+    public Long count(Map<String, Object> condition) {
+        return statusMapper.count(checkNotNull(condition));
+    }
+
+    @Override
+    public List<StatusDto> getShowStatusList(Map<String, Object> condition, PageInfo pageInfo) {
+        checkNotNull(condition);
+        checkNotNull(pageInfo);
+        condition.put("firstNo", pageInfo.getFirstNo());
+        condition.put("pageSize", pageInfo.getCountPerPage());
+        return statusMapper.getShowStatusList(condition);
     }
 
     private List<Long> findAllProblemIdsThatUser(Boolean solved, Long userId, Boolean isAdmin) {

@@ -4,6 +4,7 @@ package cn.edu.nuc.acmicpc.form.dto.status;
  * Created with IDEA
  * User: chuninsane
  * Date: 16/4/5
+ * Submit status dto.
  */
 public class SubmitStatusDto {
 

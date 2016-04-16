@@ -4,7 +4,7 @@ package cn.edu.nuc.acmicpc.common.enums;
  * Created with IDEA
  * User: chuninsane
  * Date: 2016/3/8
- * contest type
+ * Contest type.
  */
 public enum ContestType {
 

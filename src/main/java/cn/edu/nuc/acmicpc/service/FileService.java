@@ -32,7 +32,7 @@ public interface FileService {
      * @param problemId
      * @return
      */
-    public Integer moveProblemDataFile(String uploadFolder, Integer problemId);
+    public Integer moveProblemDataFile(String uploadFolder, Long problemId);
 
     /**
      * Upload contest archive ZIP file and return its FileInformationDto

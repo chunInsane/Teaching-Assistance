@@ -2,7 +2,8 @@
 <%@ page import="java.io.IOException" %>
 <%@ page import="cn.edu.nuc.acmicpc.form.dto.other.ResultDto" %>
 <%@ page import="cn.edu.nuc.acmicpc.common.constant.StatusConstant" %>
-<%@ page import="com.alibaba.fastjson.JSON" %><%--
+<%@ page import="com.alibaba.fastjson.JSON" %>
+<%--
   Created by IntelliJ IDEA.
   User: hzzhangliang1
   Date: 2016/3/13

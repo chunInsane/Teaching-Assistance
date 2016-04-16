@@ -5,27 +5,28 @@ import cn.edu.nuc.acmicpc.common.enums.ProblemSolvedStatusType;
 import cn.edu.nuc.acmicpc.common.exception.AppException;
 import cn.edu.nuc.acmicpc.common.settings.Settings;
 import cn.edu.nuc.acmicpc.common.util.SessionUtil;
+import cn.edu.nuc.acmicpc.common.util.ValidateUtil;
+import cn.edu.nuc.acmicpc.dto.FileUploadDto;
 import cn.edu.nuc.acmicpc.dto.ProblemDto;
 import cn.edu.nuc.acmicpc.dto.ProblemListDto;
 import cn.edu.nuc.acmicpc.dto.UserDto;
 import cn.edu.nuc.acmicpc.form.condition.ProblemCondition;
 import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
+import cn.edu.nuc.acmicpc.form.dto.problem.ProblemEditDto;
 import cn.edu.nuc.acmicpc.service.*;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import javax.validation.Valid;
+import javax.xml.transform.Result;
+import java.util.*;
 
 /**
  * Created with IDEA
@@ -51,6 +52,8 @@ public class ProblemController {
     private CodeService codeService;
     @Autowired
     private StatusService statusService;
+    @Autowired
+    private FileService fileService;
     @Autowired
     private Settings settings;
 
@@ -100,6 +103,67 @@ public class ProblemController {
         Map<String, Object> result = new HashMap<>();
         result.put("pageInfo", pageInfo);
         result.put("list", problemListDtos);
+        resultDto.setResult(result);
+        return resultDto;
+    }
+
+    @RequestMapping("edit")
+    public @ResponseBody ResultDto editProblem(@RequestBody @Valid ProblemEditDto problemEditDto, BindingResult validateResult) {
+        ResultDto resultDto = new ResultDto();
+        if (validateResult.hasErrors()) {
+            resultDto.setStatus(StatusConstant.SERVER_ERROR);
+            resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
+        } else {
+            ProblemDto problemDto;
+            if (Objects.equals(problemEditDto.getAction(), "new")) { //add new problem
+                Long problemId = problemService.createProblem();
+                problemDto = problemService.getProblemDtoByProblemId(problemId);
+                if (problemDto == null) {
+                    throw new AppException("创建题目失败!");
+                }
+            } else {
+                problemDto = problemService.getProblemDtoByProblemId(problemEditDto.getProblemId());
+                if (problemDto == null) {
+                    throw new AppException("没有该题目!");
+                }
+            }
+
+            Integer dataCount;
+            if (Objects.equals(problemEditDto.getAction(), "new")) {
+                dataCount = fileService.moveProblemDataFile("new",
+                        problemDto.getProblemId());
+            } else {
+                dataCount = fileService.moveProblemDataFile(problemDto.getProblemId().toString(),
+                        problemDto.getProblemId());
+            }
+            problemDto.setDataCount(dataCount);
+            problemDto = problemEditDto.toProblemDto(problemDto);
+            problemService.updateProblem(problemDto);
+        }
+        return resultDto;
+    }
+
+    @RequestMapping("/uploadDataFile/{problemId}")
+    public @ResponseBody ResultDto uploadProblemDataFile(@PathVariable("problemId") String problemId,
+                     @RequestParam(value = "uploadFile", required = true)MultipartFile[] files) {
+        ResultDto resultDto = new ResultDto();
+        if (!Objects.equals(problemId, "new")) {
+            Long pId ;
+            try {
+                pId = Long.valueOf(problemId);
+            } catch (NumberFormatException e) {
+                throw new AppException("题目Id不合法!");
+            }
+            if (!problemService.checkProblemExists(pId)) {
+                throw new AppException("不存在该题目!");
+            }
+        }
+
+        FileUploadDto fileUploadDto = new FileUploadDto();
+        fileUploadDto.setFiles(Arrays.asList(files));
+        Integer dataCount = fileService.uploadProblemDataFile(fileUploadDto, problemId);
+        Map<String, Object> result = new HashMap<>();
+        result.put("dataCount", dataCount);
         resultDto.setResult(result);
         return resultDto;
     }

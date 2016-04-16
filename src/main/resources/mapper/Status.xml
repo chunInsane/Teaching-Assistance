@@ -7,7 +7,7 @@
     <!--resultMap-->
     <resultMap id="statusDtoResultMap" type="StatusDto">
         <id column="status_id" property="statusId"/>
-        <result column="result" property="resultId"/>
+        <result column="result_id" property="resultId"/>
         <result column="memory_cost" property="memoryCost"/>
         <result column="time_cost" property="timeCost"/>
         <result column="length" property="length"/>
@@ -38,7 +38,7 @@
         <trim suffixOverrides=",">
             <if test="userId != null">`user_id` , </if>
             <if test="problemId != null">`problem_id` , </if>
-            <if test="result != null">`result` , </if>
+            <if test="resultId != null">`result_id` , </if>
             <if test="memoryCost != null">`memory_cost` , </if>
             <if test="timeCost != null">`time_cost` , </if>
             <if test="languageId != null">`language_id` , </if>
@@ -53,7 +53,7 @@
         <trim suffixOverrides=",">
             <if test="userId != null">#{userId} , </if>
             <if test="problemId != null">#{problemId} , </if>
-            <if test="result != null">#{result} , </if>
+            <if test="resultId != null">#{resultId} , </if>
             <if test="memoryCost != null">#{memoryCost} , </if>
             <if test="timeCost != null">#{timeCost} , </if>
             <if test="languageId != null">#{languageId} , </if>
@@ -69,7 +69,7 @@
 
     <select id="getStatusList" parameterType="map" resultMap="statusDtoResultMap">
         select
-        s.status_id, s.result, s.memory_cost, s.time_cost, s.length, s.time, s.case_number,
+        s.status_id, s.result_id, s.memory_cost, s.time_cost, s.length, s.time, s.case_number,
         s.code_id, s.compile_info_id, s.contest_id, s.language_id, s.problem_id, s.user_id,
         u.user_name, u.nickname, l.name as `language`, l.extension, c.content as `code_content`, p.data_count,
         p.java_memory_limit, p.java_time_limit, p.memory_limit, p.time_limit, p.output_limit, p.is_spj
@@ -85,9 +85,10 @@
                 <if test="problemId != null">`problem_id` = #{problemId} and </if>
                 <if test="languageId != null">`language_id` = #{languageId} and </if>
                 <if test="contestId != null">`contest_id` = #{contestId} and </if>
-                <if test="result != null">`result` = #{result} and </if>
+                <if test="contestId == null">`contest_id` is null and </if>
+                <if test="result != null">`result_id` = #{result} and </if>
                 <if test="results != null">
-                  `result` in
+                  `result_id` in
                   <foreach collection="results" open="(" close=")" separator="," item="obj" index="ind">
                       #{obj}
                   </foreach>
@@ -99,7 +100,7 @@
             from tb_user
             <trim prefix="where" suffixOverrides="and">
                 <if test="username != null">`username` like concat('%', #{username}, '%') and </if>
-                <if test="userType != null">`type` != #{userType} , </if>
+                <if test="userType != null">`type` != #{userType} and </if>
             </trim>
         ) as u on s.user_id = u.user_id
         left join tb_problem p on s.problem_id = p.problem_id
@@ -112,7 +113,7 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="userId != null">`user_id` = #{userId}, </if>
             <if test="problemId != null">`problem_id` = #{problemId}, </if>
-            <if test="resultId != null">`result` = #{resultId}, </if>
+            <if test="resultId != null">`result_id` = #{resultId}, </if>
             <if test="memoryCost != null">`memory_cost` = #{memoryCost}, </if>
             <if test="timeCost != null">`time_cost` = #{timeCost}, </if>
             <if test="languageId != null">`language_id` = #{languageId}, </if>
@@ -132,7 +133,7 @@
           select *
           from tb_status
           <trim suffixOverrides="and" prefix="where">
-              <if test="resultType != null">`result` = #{resultType} and </if>
+              <if test="resultType != null">`result_id` = #{resultType} and </if>
               <if test="userId != null">`user_id` = #{userId} and </if>
           </trim>
         )as s
@@ -150,7 +151,7 @@
         select count(user_id)
         from tb_status
         <trim prefix="where" suffixOverrides="and">
-            <if test="resultType != null">`result` = #{resultType} and </if>
+            <if test="resultType != null">`result_id` = #{resultType} and </if>
             <if test="problemId != null">`problem_id` = #{problemId} and </if>
         </trim>
     </select>
@@ -161,7 +162,7 @@
           select *
           from tb_status
           <trim prefix="where" suffixOverrides="and">
-              <if test="resultType != null">`result` = #{resultType} and </if>
+              <if test="resultType != null">`result_id` = #{resultType} and </if>
               <if test="userId != null">`user_id` = #{userId} and </if>
           </trim>
         ) as s
@@ -172,5 +173,69 @@
               <if test="adminType != null">`type` != #{adminType}</if>
           </trim>
         ) as u on s.user_id = u.user_id
+    </select>
+
+    <select id="count" parameterType="map" resultType="long">
+        select count(s.status_id)
+        from (
+        select *
+        from tb_status
+        <trim prefix="where" suffixOverrides="and">
+            <if test="startId != null"><![CDATA[`status_id` >= #{startId}]]> and </if>
+            <if test="endId != null"><![CDATA[`status_id` <= #{endId}]]> and </if>
+            <if test="startTime != null"><![CDATA[`time` >= #{startTime}]]> and </if>
+            <if test="endTime != null"><![CDATA[`time` <= #{endTime}]]> and </if>
+            <if test="userId != null">`user_id` = #{userId} and </if>
+            <if test="problemId != null">`problem_id` = #{problemId} and </if>
+            <if test="languageId != null">`language_id` = #{languageId} and </if>
+            <if test="contestId != null">`contest_id` = #{contestId} and </if>
+            <if test="contestId == null">`contest_id` is null and </if>
+            <if test="resultId != null">`result_id` = #{resultId} and </if>
+        </trim>
+        ) as s
+        left join (
+        select *
+        from tb_user
+        <trim prefix="where" suffixOverrides="and">
+            <if test="username != null">`username` like concat('%', #{username}, '%') and </if>
+            <if test="userType != null">`type` != #{userType} and  </if>
+        </trim>
+        ) as u on s.user_id = u.user_id
+    </select>
+
+    <select id="getShowStatusList" parameterType="map" resultMap="statusDtoResultMap">
+        select
+        s.status_id, s.result_id, s.memory_cost, s.time_cost, s.length, s.time, s.case_number,
+        s.contest_id, s.problem_id, u.user_name, u.nickname, l.name as `language`
+        from (
+        select *
+        from tb_status
+        <trim prefix="where" suffixOverrides="and">
+            <if test="startId != null"><![CDATA[`status_id` >= #{startId}]]> and </if>
+            <if test="endId != null"><![CDATA[`status_id` <= #{endId}]]> and </if>
+            <if test="startTime != null"><![CDATA[`time` >= #{startTime}]]> and </if>
+            <if test="endTime != null"><![CDATA[`time` <= #{endTime}]]> and </if>
+            <if test="userId != null">`user_id` = #{userId} and </if>
+            <if test="problemId != null">`problem_id` = #{problemId} and </if>
+            <if test="languageId != null">`language_id` = #{languageId} and </if>
+            <if test="contestId != null">`contest_id` = #{contestId} and </if>
+            <if test="contestId == null">`contest_id` is null and </if>
+            <if test="resultId != null">`result_id` = #{resultId} and </if>
+        </trim>
+        ) as s
+        left join (
+        select *
+        from tb_user
+        <trim prefix="where" suffixOverrides="and">
+            <if test="username != null">`username` like concat('%', #{username}, '%') and </if>
+            <if test="userType != null">`type` != #{userType} and </if>
+        </trim>
+        ) as u on s.user_id = u.user_id
+        left join tb_language l on s.language_id = l.language_id
+        order by s.status_id desc
+        <trim prefix="limit" suffixOverrides=",">
+            <if test="firstNo != null">#{firstNo} , </if>
+            <if test="pageSize != null">#{pageSize} , </if>
+        </trim>
     </select>
 </mapper>

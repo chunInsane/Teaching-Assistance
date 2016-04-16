@@ -32,6 +32,7 @@ public class BasicInfoDto {
     private Integer departmentId;
     private String mobilePhone;
     private String motto;
+    private String key; //user serial key
 
     public UserDto buildUserDto() {
         UserDto userDto = new UserDto();
@@ -58,6 +59,7 @@ public class BasicInfoDto {
                 ", departmentId=" + departmentId +
                 ", mobilePhone='" + mobilePhone + '\'' +
                 ", motto='" + motto + '\'' +
+                ", key='" + key + '\'' +
                 '}';
     }
 
@@ -131,5 +133,13 @@ public class BasicInfoDto {
 
     public void setMotto(String motto) {
         this.motto = motto;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

@@ -53,4 +53,18 @@ public interface StatusMapper {
      * @param statusDto
      */
     public void updateStatus(StatusDto statusDto);
+
+    /**
+     * Get the number of status fit in condition.
+     * @param condition
+     * @return
+     */
+    public Long count(Map<String, Object> condition);
+
+    /**
+     * Get these status fit in condition and page range.
+     * @param condition
+     * @return
+     */
+    public List<StatusDto> getShowStatusList(Map<String, Object> condition);
 }

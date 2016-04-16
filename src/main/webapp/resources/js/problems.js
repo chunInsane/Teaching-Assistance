@@ -38,22 +38,23 @@ let probDetails = Vue.extend({
          * @param
          * @returns
          */
-        submit: function(ProbId){
+        submit: function(problemId, contestId){
             let data = {
-                problemId:ProbId,
-                // userId:
-                language:this.language,
-                code:this.code,
+                problemId:problemId,
+                contestId:contestId,
+                languageId:this.language,
+                codeContent:this.code,
             };
+            console.log(data);
             if(typeof data.problemId === "undefined" || data.problemId === ""){
                 layer.msg("未选择题目!");
                 return false;
             }
-            if(typeof data.language === "undefined" || data.language === ""){
+            if(typeof data.languageId === "undefined" || data.languageId === ""){
                 layer.msg("选择语言类型!");
                 return false;
             }
-            if(typeof data.code === "undefined" || data.code === ""){
+            if(typeof data.codeContent === "undefined" || data.codeContent === ""){
                 layer.msg("请填写代码!");
                 return false;
             }
@@ -63,7 +64,7 @@ let probDetails = Vue.extend({
                 dataType:"json",
                 contentType:"application/json",
                 async:false,
-                url:"/submitproblem",
+                url:"/status/submit",
                 error: function(msg){
                     layer.msg("提交数据失败!" + msg.message);
                     return false;
@@ -164,7 +165,6 @@ function getPageList(p){
     }).done(function(msg){
         if(msg.status === 200){
             result = msg.result;
-            console.log("getPageList-->"+msg.result);
             return true;
         }else{
             showAjaxMsg(msg);
@@ -189,8 +189,10 @@ function searchPageList(k){
     let data = {
         keyword: k,
     };
+    let result = {};
+
     console.log(k);
-    /*$.ajax({
+    $.ajax({
         method:"post",
         data:JSON.stringify(data),
         dataType:"json",
@@ -203,51 +205,15 @@ function searchPageList(k){
         },
     }).done(function(msg){
         if(msg.status === 200){
-            return msg.result;
+            result = msg.result;
+            return true;
         }else{
             showAjaxMsg(msg);
             return false;
         }
-    });*/
+    });
 
-    let page = {
-        "errors":{},
-        "result":
-            {
-                "pageInfo":{
-                    "countPerPage":15,
-                    "currentPage":index,
-                    "displayDistance":2,
-                    "firstNo":0,
-                    "totalItems":2,
-                    "totalPages":32
-                },
-                "list":[
-                    {
-                        "difficulty":1,
-                        "isSpj":false,
-                        "isVisible":true,
-                        "problemId":1,
-                        "solved":0,
-                        "source":"Classic Problem",
-                        "title":"A+B Problem",
-                        "tried":0
-                    },
-                    {
-                        "difficulty":1,
-                        "isSpj":false,
-                        "isVisible":false,
-                        "problemId":2,
-                        "solved":0,
-                        "source":"中北大学校赛!",
-                        "title":"a - b",
-                        "tried":0
-                    }
-                ]
-            },
-            "status":200
-        };
-        return page.result;
+    return result;
 }
 
 /**
@@ -357,44 +323,26 @@ function getProbDetails(pid){
     let data = {
         problemId: pid,
     };
-    /*$.ajax({
-        method:"get",
-        data:JSON.stringify(data),
+
+    let result = {};
+    $.ajax({
+        method:"post",
         dataType:"json",
         contentType:"application/json",
-        url:"/problems",
+        async:false,
+        url:"/problem/data/" + data.problemId,
         error: function(msg){
             layer.msg("获取数据失败!" + msg.message);
             return false;
         },
     }).done(function(msg){
         if(msg.status === 200){
-            return msg.problem;
+            result = msg.result.problem;
+            return true;
         }else{
             showAjaxMsg(msg);
             return false;
         }
-    });*/
-    return { // 测试
-            dataCount:3,
-            description:"Calculate _a + b_",
-            difficulty:1,
-            hint:"####For GNU C\n```\n#include <stdio.h>\n\nint main() \n{\n    int a, b;\n    scanf(\"%d %d\",&a, &b);\n    printf(\"%d\", a+b);\n    return 0;\n}\n```\n\n####For GNU C++\n```\n#include <iostream>\nusing namespace std;  \n\nint main()\n{ \n    int a,b;  \n    cin >> a >> b; \n    cout << a+b << endl; \n    return 0;  \n}\n```\n\n####For Java\n```\nimport java.io.*; \nimport java.util.*;  \n\npublic class Main { \n\n    public static void main(String[] args) throws Exception {  \n        Scanner cin=new Scanner(System.in); \n        int a=cin.nextInt(), b=cin.nextInt();  \n        System.out.println (a + b); \n    }  \n}\n```",
-            input:"Two integer _a,b_ (0< a,b<10)",
-            isSpj:false,
-            isVisible:true,
-            javaMemoryLimit:65535,
-            javaTimeLimit:3000,
-            memoryLimit:65535,
-            output:"Output _a+b_",
-            outputLimit:8192,
-            problemId:1,
-            sampleInput:"[\"1 2\",\"2 3\"]",
-            sampleOutput:"[\"3\",\"5\"]",
-            solved:2263,
-            source:"Classic Problem",
-            timeLimit:1000,
-            title:"A+B Problem",
-            tried:2348
-        };
+    });
+    return result;
 }

@@ -16,8 +16,8 @@ let app = new Vue({
     },
     ready:function(){
         //let pageInfo = getPageList1(1);
-         let pageInfo = getPageList(1); //正式
-        setPage(pageInfo, this);
+        // let pageInfo = getPageList(1); //正式
+        //setPage(pageInfo, this);
     },
     methods:{
         setPage: function(index){
@@ -46,7 +46,7 @@ function getPageList(p){
         pagination: p,
     };
     $.ajax({
-        mehtod:"get",
+        method:"get",
         data:data,
         dataType:"json",
         url:"",

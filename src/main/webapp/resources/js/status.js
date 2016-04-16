@@ -14,9 +14,29 @@ let app = new Vue({
         problemsList:[],    // 题目列表
         searchKeyWord:"",   // 查询关键字(题名/id)
     },
-    ready:function(){
+    ready:function() {
+        let queryParam = {};
+        $.extend({
+            getUrlVars: function() {
+                var vars = [], hash;
+                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                for(var i = 0; i < hashes.length; i++)
+                {
+                    hash = hashes[i].split('=');
+                    vars.push(hash[0]);
+                    vars[hash[0]] = hash[1];
+                }
+                return vars;
+            },
+            getUrlVar: function(name) {
+                return $.getUrlVars()[name];
+            }
+        });
+        var problemId = $.getUrlVar("problemId");
+        queryParam[problemId] = problemId;
         //let pageInfo = getPageList1(1);
         let pageInfo = getPageList(1); //正式
+        console.log(pageInfo);
         setPage(pageInfo, this);
     },
     methods:{
@@ -43,25 +63,33 @@ let app = new Vue({
  */
 function getPageList(p){
     let data = {
-        pagination: p,
+        currentPage: p,
     };
+    let result = {};
+
     $.ajax({
-        mehtod:"get",
-        data:data,
+        method:"post",
+        data:JSON.stringify(data),
         dataType:"json",
-        url:"",
+        contentType:"application/json",
+        async:false,
+        url:"/status/search",
         error: function(msg){
             layer.msg("获取数据失败!" + msg.message);
             return false;
         },
     }).done(function(msg){
         if(msg.status === 200){
-            return msg.result;
+            console.log(msg.result);
+            result = msg.result;
+            return true;
         }else{
             showAjaxMsg(msg);
             return false;
         }
     });
+
+    return result;
 }
 
 /**
@@ -74,33 +102,39 @@ function searchPageList(k){
     let data = {
         keyword: k,
     };
-    console.log(k);
+
+    let result = {};
     $.ajax({
-        mehtod:"post",
-        data:data,
+        method:"post",
+        data:JSON.stringify(data),
         dataType:"json",
-        url:"",
+        contentType:"application/json",
+        async:false,
+        url:"/status/search",
         error: function(msg){
-            layer.msg("获取数据失败!" + msg.message);
-            return false;
-        },
+        layer.msg("获取数据失败!" + msg.message);
+        return false;
+    },
     }).done(function(msg){
         if(msg.status === 200){
-            return msg.result;
+            result = msg.result;
+            return true;
         }else{
             showAjaxMsg(msg);
             return false;
         }
     });
+
+    return result;
 }
 
 function setPage(pageInfo, _this ){
     let _this_ = _this;
     if(pageInfo){
-        _this_.page.currentPage = pageInfo.result.pageInfo.currentPage;
-        _this_.page.totalPage = pageInfo.result.pageInfo.totalPages;
-        _this_.problemsList = pageInfo.result.list;
-        console.log(pageInfo.result.list);
+        _this_.page.currentPage = pageInfo.pageInfo.currentPage;
+        _this_.page.totalPage = pageInfo.pageInfo.totalPages;
+        _this_.problemsList = pageInfo.list;
+        console.log(pageInfo.list);
     }
     if(_this_.page.currentPage > _this_.page.totalPage){
         console.log("页码参数错误!");

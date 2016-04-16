@@ -43,25 +43,33 @@ let app = new Vue({
  */
 function getPageList(p){
     let data = {
-        pagination: p,
+        currentPage: p,
     };
+
+    let result = {};
+
     $.ajax({
-        mehtod:"get",
-        data:data,
+        method:"post",
+        data:JSON.stringify(data),
         dataType:"json",
-        url:"",
+        contentType:"application/json",
+        url:"/contest/search",
+        async:false,
         error: function(msg){
             layer.msg("获取数据失败!" + msg.message);
             return false;
         },
     }).done(function(msg){
         if(msg.status === 200){
-            return msg.result;
+            result = msg.result;
+            return true
         }else{
             showAjaxMsg(msg);
             return false;
         }
     });
+
+    return result;
 }
 
 /**
@@ -74,33 +82,41 @@ function searchPageList(k){
     let data = {
         keyword: k,
     };
+
+    let result = {};
+
     console.log(k);
     $.ajax({
-        mehtod:"post",
-        data:data,
+        method:"post",
+        data:JSON.stringify(data),
         dataType:"json",
-        url:"",
+        contentType:"application/json",
+        url:"/contest/search",
+        async:false,
         error: function(msg){
             layer.msg("获取数据失败!" + msg.message);
             return false;
         },
     }).done(function(msg){
         if(msg.status === 200){
-            return msg.result;
+            result = msg.result;
+            return true;
         }else{
             showAjaxMsg(msg);
             return false;
         }
     });
+
+    return result;
 }
 
 function setPage(pageInfo, _this ){
     let _this_ = _this;
     if(pageInfo){
-        _this_.page.currentPage = pageInfo.result.pageInfo.currentPage;
-        _this_.page.totalPage = pageInfo.result.pageInfo.totalPages;
-        _this_.contestsList = pageInfo.result.list;
-        console.log(pageInfo.result.list);
+        _this_.page.currentPage = pageInfo.pageInfo.currentPage;
+        _this_.page.totalPage = pageInfo.pageInfo.totalPages;
+        _this_.contestsList = pageInfo.list;
+        console.log(pageInfo.list);
     }
     if(_this_.page.currentPage > _this_.page.totalPage){
         console.log("页码参数错误!");

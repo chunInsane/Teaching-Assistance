@@ -101,7 +101,7 @@
                             <th class="col-md-2">Type</th>
                         </tr>
 
-                        <tr v-for="item in contestsList" v-if="item.isVisible == true">
+                        <tr v-for="item in contestsList">
                             <td class="text-center">{{ item.contestId }}</td>
                             <td><a>{{ item.title }}</a></td>
                             <td class="text-center">
@@ -117,11 +117,7 @@
                             </td>
                             <td class="text-center">
                                 <span v-if="item.type == 0" class="green text-center">{{ item.typeName }}</span>
-                                <span v-if="item.type == 1" class="red">{{ item.typeName }}</span>
-                                <span v-if="item.type == 2" class="green">{{ item.typeName }}</span>
-                                <span v-if="item.type == 3" class="red">{{ item.typeName }}</span>
-                                <span v-if="item.type == 4" class="red">{{ item.typeName }}</span>
-                                <span v-if="item.type == 5" class="red">{{ item.typeName }}</span>
+                                <span v-if="item.type == 1" class="red text-center">{{ item.typeName }}</span>
                             </td>
                         </tr>
                     </table>

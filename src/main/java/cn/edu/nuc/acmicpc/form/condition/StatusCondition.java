@@ -54,7 +54,7 @@ public class StatusCondition extends BasicCondition {
         if (languageId != null) {
             conditionMap.put("languageId", languageId);
         }
-        if (contestId != null) {
+        if (contestId != null && contestId != -1) {
             conditionMap.put("contestId", contestId);
         }
         if (result != null) {

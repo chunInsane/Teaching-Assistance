@@ -2,17 +2,22 @@ package cn.edu.nuc.acmicpc.web.controller.status;
 
 import cn.edu.nuc.acmicpc.common.constant.StatusConstant;
 import cn.edu.nuc.acmicpc.common.enums.JudgeResultType;
+import cn.edu.nuc.acmicpc.common.enums.JudgeReturnType;
 import cn.edu.nuc.acmicpc.common.exception.AppException;
 import cn.edu.nuc.acmicpc.common.settings.Settings;
 import cn.edu.nuc.acmicpc.common.util.DateUtil;
 import cn.edu.nuc.acmicpc.common.util.SessionUtil;
+import cn.edu.nuc.acmicpc.common.util.StringUtil;
 import cn.edu.nuc.acmicpc.common.util.ValidateUtil;
 import cn.edu.nuc.acmicpc.dto.*;
 import cn.edu.nuc.acmicpc.form.condition.StatusCondition;
 import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
+import cn.edu.nuc.acmicpc.form.dto.status.ShowStatusDto;
 import cn.edu.nuc.acmicpc.form.dto.status.SubmitStatusDto;
 import cn.edu.nuc.acmicpc.service.*;
+import cn.edu.nuc.acmicpc.web.common.PageInfo;
 import com.alibaba.fastjson.JSON;
+import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * Created with IDEA
@@ -58,7 +64,7 @@ public class StatusController {
     private Settings settings;
 
     @RequestMapping("search")
-    public @ResponseBody String search(HttpSession session, @RequestBody StatusCondition condition) {
+    public @ResponseBody ResultDto search(HttpSession session, @RequestBody StatusCondition condition) {
         ResultDto resultDto = new ResultDto();
         if (condition.contestId == null) {
             condition.contestId = -1L;
@@ -74,18 +80,48 @@ public class StatusController {
                     LOGGER.error(String.format("不存在该比赛, contestId = %s", condition.contestId));
                     throw new AppException("不存在该比赛!");
                 }
+                //check permission
+                if (SessionUtil.checkContestPermission(session, condition.contestId)) {
+                    resultDto.setStatus(StatusConstant.UNAUTHORIZED);
+                    return resultDto;
+                }
+            } else {
+                condition.isProblemVisible = true;
+                //TODO
             }
-            //check permission
-            if (SessionUtil.checkContestPermission(session, condition.contestId)) {
-                resultDto.setStatus(StatusConstant.UNAUTHORIZED);
-                return JSON.toJSONString(resultDto);
+        } else {
+            if (condition.contestId != -1) {
+                ContestDto contestDto = contestService.getContestDtoByContestId(condition.contestId);
+                if (contestDto == null) {
+                    throw new AppException("不存在该比赛!");
+                }
             }
-            UserDto currentUser = SessionUtil.getCurrentLoginUser(session);
-            condition.userId = currentUser.getUserId();
-
         }
-        //TODO
-        return null;
+
+        Map<String, Object> conditionMap = condition.toConditionMap();
+        Long count = statusService.count(conditionMap);
+        PageInfo pageInfo = PageInfo.buildPageInfo(count, condition.currentPage, settings.RECORD_PER_PAGE, null);
+        List<StatusDto> statusDtos = statusService.getShowStatusList(conditionMap, pageInfo);
+
+        //convert statusDto list to showStatusDto list
+        List<ShowStatusDto> showStatusDtos = new ArrayList<>();
+        if (statusDtos != null && statusDtos.size() > 0) {
+            for (StatusDto statusDto : statusDtos) {
+                ShowStatusDto showStatusDto = new ShowStatusDto(statusDto);
+                String returnType = JudgeReturnType.getReturnType(statusDto.getResultId()).getDescription();
+                if (JudgeResultType.JUDGE_NOT_AC.getResults().contains(statusDto.getResultId())) {
+                    returnType = returnType.replace("$case", statusDto.getCaseNumber().toString());
+                }
+                showStatusDto.setReturnType(returnType);
+                showStatusDtos.add(showStatusDto);
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("pageInfo", pageInfo);
+        result.put("list", showStatusDtos);
+        resultDto.setResult(result);
+        return resultDto;
     }
 
     /**

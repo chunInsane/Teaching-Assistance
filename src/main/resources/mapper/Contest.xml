@@ -91,7 +91,7 @@
                 (`title` like concat('%', #{keyword}, '%') or `description` like concat('%', #{keyword}, '%')) and
             </if>
         </trim>
-        order by `contest_id` asc
+        order by `contest_id` desc
         <trim prefix="limit" suffixOverrides=",">
             <if test="firstNo != null">#{firstNo} , </if>
             <if test="pageSize != null">#{pageSize} , </if>

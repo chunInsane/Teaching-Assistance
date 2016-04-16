@@ -2,8 +2,10 @@ package cn.edu.nuc.acmicpc.service;
 
 
 import cn.edu.nuc.acmicpc.dto.StatusDto;
+import cn.edu.nuc.acmicpc.web.common.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IDEA
@@ -78,4 +80,19 @@ public interface StatusService {
      * @return
      */
     public Long createStatus(StatusDto status);
+
+    /**
+     *Get the number of status.
+     * @param condition
+     * @return
+     */
+    public Long count(Map<String, Object> condition);
+
+    /**
+     * Get status fit in condition and page range.
+     * @param condition
+     * @param pageInfo
+     * @return
+     */
+    public List<StatusDto> getShowStatusList(Map<String, Object> condition, PageInfo pageInfo);
 }

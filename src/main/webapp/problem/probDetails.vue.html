@@ -13,19 +13,19 @@
                         <textarea v-model="code" class="form-control" rows="15"></textarea>
                         <div class="radio">
                             <label>
-                                <input v-model="language" type="radio" name="lan" id="c" checked="checked" value="C">
+                                <input v-model="language" type="radio" name="lan" id="c" checked="checked" value="1">
                                 C
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input v-model="language" type="radio" name="lan" id="c++" value="C++">
+                                <input v-model="language" type="radio" name="lan" id="c++" value="2">
                                 C++
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input v-model="language" type="radio" name="lan" id="java" value="Java">
+                                <input v-model="language" type="radio" name="lan" id="java" value="3">
                                 Java
                             </label>
                         </div>
@@ -41,14 +41,15 @@
             <h1>{{ problem.title }}</h1>
             <p>Time Limit:{{ problem.javaTimeLimit }}/{{ problem.timeLimit }}(Java/Others)&nbsp;&nbsp;Memory Limit:{{ problem.javaMemoryLimit }}/{{ problem.memoryLimit }}(Java/Others)</p>
             <button type="button" class="btn btn-primary btn-md block-center" data-toggle="modal" data-target="#submitProb">submit</button>
+            <a type="button" href="/status/index.html?problemId={{ problem.problemId }}" class="btn btn-primary btn-md block-center">status</a>
         </div>
         <div class="col-md-12">
             <p id="description"></p>
-            <h2>Input</h2>
+            <h3>Input</h3>
             <p id="input"></p>
-            <h2>output</h2>
+            <h3>output</h3>
             <p id="output"></p>
-            <h2>Sample input and output</h2>
+            <h3>Sample input and output</h3>
             <table class="table table-border table-striped">
                 <tr>
                     <th>Sample Input</th>
@@ -59,9 +60,9 @@
                     <td>{{ problem.sampleOutput[item] }}</td>
                 </tr>
             </table>
-            <h2>Hint</h2>
+            <h3>Hint</h3>
             <p id="hint"></p>
-            <h2>source</h2>
+            <h3>source</h3>
             <p>{{ problem.source }}</p>
         </div>
     </div>

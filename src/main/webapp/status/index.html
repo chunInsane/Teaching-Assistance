@@ -43,7 +43,7 @@
                         <li class="active"><a href="/status/index.html"><span class="glyphicon glyphicon-th-list"></span>status</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/index/logout"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
+                        <li><a href="/user/logout"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
@@ -128,7 +128,7 @@
                         <tr>
                             <th class="col-md-1">ID</th>
                             <th class="col-md-2">User</th>
-                            <th class="col-md-1">Prob</th>
+                            <th class="col-md-1">ProblemId</th>
                             <th class="col-md-2">Result</th>
                             <th class="col-md-2">Memory</th>
                             <th class="col-md-1">Time</th>
@@ -139,11 +139,11 @@
 
                         <tr v-for="item in problemsList">
                             <td>{{ item.statusId }}</td>
-                            <td><a>{{ item.nickName }}</a></td>
-                            <td><a>{{ item.problemId }}</a></td>
+                            <td><a>{{ item.nickname }}</a></td>
+                            <td><a href="/problem/index.html#!/probDetails/{{ item.problemId }}">{{ item.problemId }}</a></td>
                             <td>{{ item.returnType }}</td>
-                            <td>{{ item.memory }}</td>
-                            <td>{{ item.time }}</td>
+                            <td>{{ item.memoryCost }}</td>
+                            <td>{{ item.timeCost }}</td>
                             <td>{{ item.language }}</td>
                             <td>{{ item.length }}</td>
                             <td>{{ item.time }}</td>

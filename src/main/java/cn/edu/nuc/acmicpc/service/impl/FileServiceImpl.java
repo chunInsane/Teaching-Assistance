@@ -77,7 +77,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Integer moveProblemDataFile(String uploadFolder, Integer problemId) {
+    public Integer moveProblemDataFile(String uploadFolder, Long problemId) {
         String dataPath = settings.DATA_PATH + "/" + problemId;
         String tempDirectory = settings.UPLOAD_FOLDER + "/" + uploadFolder;
         return moveProblemDataFile(tempDirectory, dataPath);

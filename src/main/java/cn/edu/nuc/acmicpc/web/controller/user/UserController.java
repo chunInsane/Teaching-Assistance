@@ -14,6 +14,7 @@ import cn.edu.nuc.acmicpc.form.condition.UserCondition;
 import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
 import cn.edu.nuc.acmicpc.form.dto.user.BasicInfoDto;
 import cn.edu.nuc.acmicpc.form.dto.user.LoginUserDto;
+import cn.edu.nuc.acmicpc.form.dto.user.ProfileUserDto;
 import cn.edu.nuc.acmicpc.form.dto.user.RegisterUserDto;
 import cn.edu.nuc.acmicpc.model.UserSerialKey;
 import cn.edu.nuc.acmicpc.service.*;
@@ -26,6 +27,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Timestamp;
@@ -46,7 +48,7 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    private static final String ACTIVATE_EMAIL_SUBJECT = "TEACH-ASSISTANCE账户激活邮件(重要)";
+    private static final String ACTIVATE_EMAIL_SUBJECT = "TEACH-ASSISTANCE账户激活邮件";
 
     @Autowired
     private UserService userService;
@@ -137,7 +139,7 @@ public class UserController {
 
             //send activate email.
             if (needEmail) {
-                String activateUrl = settings.HOST + "activate?key=" + userSerialKey.getKeyId()
+                String activateUrl = settings.HOST + "user/toActivate?key=" + userSerialKey.getKeyId()
                         + "&uid=" + userSerialKey.getKey();
                 String emailContent = generateActivateEmailContent(activateUrl);
                 LOGGER.info(String.format("send activate email, activateUrl = %s", activateUrl));
@@ -176,6 +178,24 @@ public class UserController {
         return resultDto;
     }
 
+    @RequestMapping("/toActivate")
+    public String toActivate(HttpServletRequest request, @RequestParam(value = "key", required = true) String key,
+                                              @RequestParam(value = "uid", required = true) String uid) {
+        Long userSerialId = Long.valueOf(key);
+        UserSerialKey userSerialKey = userSerialKeyService.getUserSerialKey(userSerialId);
+        if (userSerialKey == null) {
+            LOGGER.error(String.format("不存在该序列号! key = %s, uid = %s!", key, uid));
+            throw new AppException(String.format("不存在该序列号! key = %s, uid = %s!", key, uid));
+        }
+        if (!Objects.equals(uid, userSerialKey.getKey())) {
+            LOGGER.error(String.format("uid不合法! key = %s, uid = %s!", key, uid));
+            throw new AppException(String.format("uid不合法! key = %s, uid = %s!", key, uid));
+        }
+        request.setAttribute("username", userSerialKey.getUsername());
+        request.setAttribute("key", userSerialKey.getKey());
+        return "user/activate";
+    }
+
     @RequestMapping("/activate")
     public @ResponseBody ResultDto activate(@RequestBody @Valid BasicInfoDto basicInfoDto, BindingResult validateResult) {
         ResultDto resultDto = new ResultDto();
@@ -189,7 +209,7 @@ public class UserController {
             Map<String, String> errors = new HashMap<>();
             errors.put("repeatPassword", "两次输入的密码不一致!");
             resultDto.setStatus(StatusConstant.SERVER_ERROR);
-            resultDto.setResult(errors);
+            resultDto.setErrors(errors);
             return resultDto;
         }
 
@@ -203,6 +223,17 @@ public class UserController {
         userSerialKeyService.updateSerialKey(userSerialKey);
 
         userService.createUser(basicInfoDto.buildUserDto());
+        return resultDto;
+    }
+
+    @RequestMapping("/profile/{userId}")
+    public @ResponseBody ResultDto profile(@PathVariable("userId") Long userId) {
+        UserDto userDto = userService.getUserByUserId(userId);
+        ProfileUserDto profileUserDto = new ProfileUserDto(userDto);
+        ResultDto resultDto = new ResultDto();
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", profileUserDto);
+        resultDto.setResult(result);
         return resultDto;
     }
 
