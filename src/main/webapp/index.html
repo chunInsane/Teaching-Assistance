@@ -61,11 +61,11 @@
         <div class="login row" v-bind:class="{ 'no-display': disshowlogin}">
             <form class="col-md-10 col-md-offset-1">
                 <div class="form-group">
-                    <input v-model="login_email" type="email" class="form-control" id="exampleInputEmail1" placeholder="请输入常用邮箱" minlength="6" maxlength="20" required >
+                    <input v-model="login_email" type="email" class="form-control" id="exampleInputEmail1" placeholder="请输入常用邮箱" minlength="6" maxlength="20" required value="chuninsane@163.com">
                     <span class="red" for="exampleInputEmail1">{{ errInfoEmail }}</span>
                 </div>
                 <div class="form-group">
-                    <input v-model="login_password" type="password" class="form-control" id="exampleInputPassword1" placeholder="请输入密码" minlength="6" maxlength="12" required >
+                    <input v-model="login_password" type="password" class="form-control" id="exampleInputPassword1" placeholder="请输入密码" minlength="6" maxlength="12" required value="111111">
                     <span class="red" for="exampleInputPassword1">{{ errInfoPwd }}</span>
                 </div>
                 <div class="form-group text-right">
