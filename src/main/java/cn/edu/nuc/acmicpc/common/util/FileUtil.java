@@ -30,7 +30,7 @@ public class FileUtil {
             OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(filePath));
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
             bufferedOutputStream.write(content.getBytes());
-            outputStream.close();
+            bufferedOutputStream.close();
         } catch (IOException e) {
             throw new AppException(e);
         }

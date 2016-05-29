@@ -29,6 +29,7 @@ public class CodeServiceImpl implements CodeService {
 
     @Override
     public Long createCode(CodeDto codeDto) {
-        return codeMapper.createCode(checkNotNull(codeDto));
+        codeMapper.createCode(checkNotNull(codeDto));
+        return codeDto.getCodeId();
     }
 }

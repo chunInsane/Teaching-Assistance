@@ -27,7 +27,10 @@ public class CompileInfoServiceImpl implements CompileInfoService {
     @Override
     public Long createCompileInfo(String content) {
         checkArgument(StringUtils.isNotBlank(content), "content为空!");
-        return compileInfoMapper.createCompileInfo(content);
+        CompileInfo compileInfo = new CompileInfo();
+        compileInfo.setContent(content);
+        compileInfoMapper.createCompileInfo(compileInfo);
+        return compileInfo.getCompileInfoId();
     }
 
     @Override

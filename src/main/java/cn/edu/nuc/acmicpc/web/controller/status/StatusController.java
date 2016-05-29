@@ -7,7 +7,6 @@ import cn.edu.nuc.acmicpc.common.exception.AppException;
 import cn.edu.nuc.acmicpc.common.settings.Settings;
 import cn.edu.nuc.acmicpc.common.util.DateUtil;
 import cn.edu.nuc.acmicpc.common.util.SessionUtil;
-import cn.edu.nuc.acmicpc.common.util.StringUtil;
 import cn.edu.nuc.acmicpc.common.util.ValidateUtil;
 import cn.edu.nuc.acmicpc.dto.*;
 import cn.edu.nuc.acmicpc.form.condition.StatusCondition;
@@ -16,8 +15,6 @@ import cn.edu.nuc.acmicpc.form.dto.status.ShowStatusDto;
 import cn.edu.nuc.acmicpc.form.dto.status.SubmitStatusDto;
 import cn.edu.nuc.acmicpc.service.*;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
-import com.alibaba.fastjson.JSON;
-import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +27,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IDEA
@@ -169,16 +169,15 @@ public class StatusController {
                     submitDto.getContestId())) {
                 throw new AppException("错误的题目id.");
             }
-            //TODO fix the bug
-//            if (!SessionUtil.isAdmin(session)) {
-//                Timestamp currentTime = DateUtil.getCurrentTime();
-//                if (currentTime.before(contestDto.getStartTime()) || currentTime.after(contestDto.getEndTime())) {
-//                    throw new AppException("比赛已经结束!");
-//                }
-//                if (!SessionUtil.checkContestPermission(session, submitDto.getContestId())) {
-//                    throw new AppException("尚未注册该比赛!");
-//                }
-//            }
+            if (!SessionUtil.isAdmin(session)) {
+                Timestamp currentTime = DateUtil.getCurrentTime();
+                if (currentTime.before(contestDto.getStartTime()) || currentTime.after(contestDto.getEndTime())) {
+                    throw new AppException("比赛已经结束!");
+                }
+                if (!SessionUtil.checkContestPermission(session, submitDto.getContestId())) {
+                    throw new AppException("尚未注册该比赛!");
+                }
+            }
         } else { //status not in contest
             if (!SessionUtil.isAdmin(session)) {
                 if (!problemDto.getIsVisible()) {

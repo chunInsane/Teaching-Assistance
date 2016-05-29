@@ -26,7 +26,8 @@ public class ContestUserServiceImpl implements ContestUserService {
 
     @Override
     public Long createContestUser(ContestUserDto contestUserDto) {
-        return contestUserMapper.createContestUser(checkNotNull(contestUserDto));
+        contestUserMapper.createContestUser(checkNotNull(contestUserDto));
+        return contestUserDto.getContestUserId();
     }
 
     @Override

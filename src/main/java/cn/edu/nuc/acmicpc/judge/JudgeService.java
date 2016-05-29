@@ -51,8 +51,8 @@ public class JudgeService {
         for (int i = 0; i < judges.length; ++i) {
             judges[i] = applicationContext.getBean("judge", Judge.class);
             judges[i].setJudgeQueue(judgeQueue);
-            String workPath = settings.WORK_PATH + "/" + settings.JUDGES.get(i).getName() + "/";
-            String tempPath = settings.WORK_PATH + "/" + settings.JUDGES.get(i).getName() + "/temp/";
+            String workPath = settings.WORK_PATH + settings.JUDGES.get(i).getName() + "/";
+            String tempPath = settings.WORK_PATH + settings.JUDGES.get(i).getName() + "/temp/";
             if (settings.JUDGE_CORE.equals("pyloncore")) {
                 judges[i].setJudgeCore(new PylonCore(workPath, tempPath, settings));
             } else {

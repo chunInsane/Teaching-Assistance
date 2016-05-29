@@ -29,7 +29,8 @@ public class UserSerialKeyServiceImpl implements UserSerialKeyService {
     @Override
     public Long addUserSerialKey(UserSerialKey userSerialKey) {
         checkNotNull(userSerialKey);
-        return userSerialKeyMapper.addUserSerialKey(userSerialKey);
+        userSerialKeyMapper.addUserSerialKey(userSerialKey);
+        return userSerialKey.getKeyId();
     }
 
     @Override

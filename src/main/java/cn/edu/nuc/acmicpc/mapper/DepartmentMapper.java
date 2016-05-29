@@ -27,8 +27,8 @@ public interface DepartmentMapper {
 
     /**
      * Create new department record.
-     * @param name
+     * @param departmentDto
      * @return
      */
-    public Long createDepartment(String name);
+    public Long createDepartment(DepartmentDto departmentDto);
 }

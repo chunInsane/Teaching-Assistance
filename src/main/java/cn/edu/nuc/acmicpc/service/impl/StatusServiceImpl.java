@@ -83,7 +83,8 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     public Long createStatus(StatusDto statusDto) {
-        return statusMapper.createStatus(checkNotNull(statusDto));
+        statusMapper.createStatus(checkNotNull(statusDto));
+        return statusDto.getStatusId();
     }
 
     @Override

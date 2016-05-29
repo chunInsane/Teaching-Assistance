@@ -25,7 +25,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Long createDepartment(String name) {
-        return departmentMapper.createDepartment(name);
+        DepartmentDto departmentDto = new DepartmentDto();
+        departmentDto.setName(checkNotNull(name));
+        departmentMapper.createDepartment(departmentDto);
+        return departmentDto.getDepartmentId();
     }
 
     @Override

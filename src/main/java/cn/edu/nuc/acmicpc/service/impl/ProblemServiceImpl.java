@@ -88,7 +88,8 @@ public class ProblemServiceImpl implements ProblemService {
         problemDto.setJavaMemoryLimit(65535);
         problemDto.setDataCount(0);
         problemDto.setDifficulty(1);
-        return problemMapper.createProblem(problemDto);
+        problemMapper.createProblem(problemDto);
+        return problemDto.getProblemId();
     }
 
     @Override

@@ -55,7 +55,7 @@ public class PylonCore implements JudgeCore {
         stringBuilder.append(" -T "); // SPJ time
         stringBuilder.append(10000);
         stringBuilder.append(" -L "); // log file
-        stringBuilder.append(workPath + "/log.log");
+        stringBuilder.append(workPath + "log.log");
 
         stringBuilder.append(" -u ");
         stringBuilder.append(judgeItem.getStatus().getStatusId());
@@ -65,8 +65,7 @@ public class PylonCore implements JudgeCore {
         stringBuilder.append(judgeItem.getStatus().getProblemId());
         stringBuilder.append(" -D ");
         stringBuilder.append(settings.DATA_PATH);
-        stringBuilder.append("/")
-                .append(judgeItem.getStatus().getProblemId())
+        stringBuilder.append(judgeItem.getStatus().getProblemId())
                 .append("/");
         stringBuilder.append(" -d ");
         stringBuilder.append(tempPath);
@@ -92,11 +91,11 @@ public class PylonCore implements JudgeCore {
         stringBuilder.append(" -l ");
         stringBuilder.append(judgeItem.getStatus().getLanguageId());
         stringBuilder.append(" -I ");
-        stringBuilder.append(settings.DATA_PATH).append("/")
+        stringBuilder.append(settings.DATA_PATH)
                 .append(judgeItem.getStatus().getProblemId()).append("/")
                 .append(currentTestCase).append(".in");
         stringBuilder.append(" -O ");
-        stringBuilder.append(settings.DATA_PATH).append("/")
+        stringBuilder.append(settings.DATA_PATH)
                 .append(judgeItem.getStatus().getProblemId()).append("/")
                 .append(currentTestCase).append(".out");
         if (currentTestCase == 1) {

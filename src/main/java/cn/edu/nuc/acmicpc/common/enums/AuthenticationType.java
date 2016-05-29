@@ -8,7 +8,9 @@ package cn.edu.nuc.acmicpc.common.enums;
  */
 public enum AuthenticationType {
 
-    NORMAL("Normal"), ADMIN("Administrator"), CONSTANT("Constant"), INTERNAL("Internal");
+    NORMAL("Normal"),
+    TEACHER("Teacher"),
+    ADMIN("Administrator");
 
     private String description;
 

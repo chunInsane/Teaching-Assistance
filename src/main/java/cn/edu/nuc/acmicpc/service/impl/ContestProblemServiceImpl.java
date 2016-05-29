@@ -43,7 +43,8 @@ public class ContestProblemServiceImpl implements ContestProblemService {
 
     @Override
     public Long createContestProblem(ContestProblemDto contestProblemDto) {
-        return contestProblemMapper.createContestProblem(checkNotNull(contestProblemDto));
+        contestProblemMapper.createContestProblem(checkNotNull(contestProblemDto));
+        return contestProblemDto.getContestProblemId();
     }
 
     @Override

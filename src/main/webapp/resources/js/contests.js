@@ -506,5 +506,3 @@ function isPrivate(self){
                 }
             });
         }
-
-

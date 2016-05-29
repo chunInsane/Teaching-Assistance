@@ -139,6 +139,7 @@
         <script type="text/html" id="contestDetails">
             <div class="container body">
                 <div>
+                    <h2 class="text-center">{{ contest.title }}</h2>
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist" id="tab_1">
                         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Overview</a></li>
@@ -151,13 +152,13 @@
                             <br/>
                             <dl class="dl-horizontal">
                                 <dt>Current Time:</dt>
-                                <dd>2016-04-16 16:25:18</dd>
+                                <dd>{{ new Date(contest.currentTime).toLocaleString()}}</dd>
                                 <dt>Start Time:</dt>
-                                <dd>2016-04-16 16:25:18</dd>
+                                <dd>{{ new Date(contest.startTime).toLocaleString() }}</dd>
                                 <dt>End Time:</dt>
-                                <dd>2016-04-16 16:25:18</dd>
+                                <dd>{{ new Date(contest.endTime).toLocaleString() }}</dd>
                                 <dt>Contest Status:</dt>
-                                <dd>{{ name }}</dd>
+                                <dd>{{ contest.status }}</dd>
 
                             </dl>
                             <table class="table">

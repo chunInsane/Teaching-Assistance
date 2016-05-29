@@ -13,10 +13,10 @@ public interface CompileInfoMapper {
     /**
      * Create a new compile info record.
      *
-     * @param content
+     * @param compileInfo
      * @return
      */
-    public Long createCompileInfo(String content);
+    public Long createCompileInfo(CompileInfo compileInfo);
 
     /**
      * Get compile info by compile info id.

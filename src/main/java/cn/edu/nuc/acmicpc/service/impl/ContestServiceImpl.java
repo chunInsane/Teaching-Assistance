@@ -32,7 +32,8 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public Long createContest() {
         ContestDto contestDto = new ContestDto();
-        return contestMapper.createContest(contestDto);
+        contestMapper.createContest(contestDto);
+        return contestDto.getContestId();
     }
 
     @Override

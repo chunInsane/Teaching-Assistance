@@ -50,7 +50,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long createUser(UserDto userDto) {
-        return userMapper.createUser(checkNotNull(userDto));
+        userMapper.createUser(checkNotNull(userDto));
+        return userDto.getUserId();
     }
 
     @Override
