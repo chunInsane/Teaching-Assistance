@@ -104,7 +104,7 @@ let addProb = Vue.extend({
             prob.source = this.source;
             prob.timeLimit = this.TimeLimit;
             prob.title = this.title;
-            prob.TotalData = this.TotalData;    // 上传文件名
+            // prob.TotalData = this.TotalData;    // 上传文件名
             console.log(prob);
             for(let item in prob){
                 if(!(item === "isSpj" || item === "isVisible")){
@@ -131,11 +131,8 @@ let addProb = Vue.extend({
                 layer.msg("请添加sampleInput、sampleOutput！");
                 this.canSubmit = false;
             }
-            prob.file = document.getElementById('TotalData').files[0];
-            if(prob.file && prob.file.type !== "application/x-zip-compressed"){
-                layer.msg("文件格式必须为zip");
-                this.canSubmit = false;
-            }
+
+
             if(this.canSubmit){
                 // TODO 提交
                 $.ajax({
@@ -161,6 +158,37 @@ let addProb = Vue.extend({
             }else{
                 return false;
             }
+        },
+        uploadFile: function(){
+            let problemId = "new";
+            let file = document.getElementById('TotalData').files[0];
+            if(file){
+                if(file.type !== "application/x-zip-compressed"){
+                    layer.msg("文件格式必须为zip");
+                }else{
+                    let formData = new FormData();
+                    formData.append('upload', file);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', "/uploadDataFile/"+problemId);
+                    // 定义上传完成后的回调函数
+                    xhr.onload = function (msg) {
+                        if (xhr.status === 200 && msg.status === 200) {
+                            layer.msg('上传成功');
+                            return true;
+                        } else {
+                            layer.msg('文件上传出错');
+                            showAjaxMsg(msg);
+                            return false;
+                        }
+            　　　　};
+            　　　　xhr.send(formData);
+                }
+            }else{
+                layer.msg("请选择文件！");
+            }
+
+            console.log("uploadFile function!"+file);
+
         },
     },
     template:"#add-problems",

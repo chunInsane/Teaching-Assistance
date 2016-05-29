@@ -13,3 +13,8 @@ body {
 label.control-label {
   text-align: right;
 }
+
+.file-input button.fileinput-upload,
+.file-input .file-preview {
+    display: none;
+}

@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({            //此项必须在 bodyParser.json 下
 app.use('/resources', express.static("resources"));
 app.use('/', express.static("problem"));
 app.use('/public', express.static('public'));
+app.use('/manage', express.static('manage'));
 
 // app.get("/", function(req, res){
 //     res.
