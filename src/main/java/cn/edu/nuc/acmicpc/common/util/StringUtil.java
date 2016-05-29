@@ -1,5 +1,9 @@
 package cn.edu.nuc.acmicpc.common.util;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created with IDEA
  * User: chuninsane
@@ -16,5 +20,14 @@ public class StringUtil {
         return str == null ? str : str.replaceAll("^[\\s]*|[\\s]*$", "");
     }
 
+    public static String generateFileName(String filename) {
+        DateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String formatDate = format.format(new Date());
+        return formatDate + getFilenameExt(filename);
+    }
 
+    private static String getFilenameExt(String filename) {
+        int position = filename.lastIndexOf('.');
+        return position > -1 ? filename.substring(position) : "";
+    }
 }

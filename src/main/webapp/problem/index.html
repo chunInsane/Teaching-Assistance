@@ -74,9 +74,140 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="/resources/lib/jquery/dist/jquery.min.js"></script>
         <script src="/resources/lib/vue/dist/vue.js"></script>
-        <script>
+        <!-- <script>
             $("#component1").load("./probList.vue.html");
             $("#component2").load("./probDetails.vue.html");
+        </script> -->
+
+        <script type="text/html" id="problem-details">
+            <div class="problem-details">
+                <!-- Button trigger modal -->
+
+                <div class="modal fade" id="submitProb">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">{{ problem.title }}</h4>
+                        </div>
+                        <div class="modal-body">
+                                <textarea v-model="code" class="form-control" rows="15"></textarea>
+                                <div class="radio">
+                                    <label>
+                                        <input v-model="language" type="radio" name="lan" id="c" checked="checked" value="1">
+                                        C
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input v-model="language" type="radio" name="lan" id="c++" value="2">
+                                        C++
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input v-model="language" type="radio" name="lan" id="java" value="3">
+                                        Java
+                                    </label>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button v-on:click="submit(problemId)" type="button" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+                <div class="col-md-12 text-center">
+                    <h1>{{ problem.title }}</h1>
+                    <p>Time Limit:{{ problem.javaTimeLimit }}/{{ problem.timeLimit }}(Java/Others)&nbsp;&nbsp;Memory Limit:{{ problem.javaMemoryLimit }}/{{ problem.memoryLimit }}(Java/Others)</p>
+                    <button type="button" class="btn btn-primary btn-md block-center" data-toggle="modal" data-target="#submitProb">submit</button>
+                    <a type="button" href="/status/index.html?problemId={{ problem.problemId }}" class="btn btn-primary btn-md block-center">status</a>
+                </div>
+                <div class="col-md-12">
+                    <p id="description"></p>
+                    <h3>Input</h3>
+                    <p id="input"></p>
+                    <h3>output</h3>
+                    <p id="output"></p>
+                    <h3>Sample input and output</h3>
+                    <table class="table table-border table-striped">
+                        <tr>
+                            <th>Sample Input</th>
+                            <th>Sample Output</th>
+                        </tr>
+                        <tr v-for="item in problem.sampleLen">
+                            <td>{{ problem.sampleInput[item] }}</td>
+                            <td>{{ problem.sampleOutput[item] }}</td>
+                        </tr>
+                    </table>
+                    <h3>Hint</h3>
+                    <p id="hint"></p>
+                    <h3>source</h3>
+                    <p>{{ problem.source }}</p>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/html" id="list">
+
+            <!-- 查询框 start -->
+            <div class="row">
+                <div class="col-md-12 search-bar">
+                    <form class="form-inline" v-on:submit.prevent="search">
+                        <div class="form-group">
+                            <input v-model="searchKeyWord" type="text" class="form-control" placeholder="id 或 关键字">
+                        </div>
+                        <button  type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                </div>
+            </div>
+            <!-- 查询框 end -->
+
+            <!-- 分页工具 start-->
+            <div class="row">
+                <nav class="col-md-12">
+                    <ul class="pagination elevation-1">
+                        <li v-on:click="setPage(page.minPage)">
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li v-for="n in 10" v-if="page.minPage + n > 0 && page.minPage + n <= page.totalPage" v-on:click="setPage(page.minPage + n)">
+                            <a v-if="page.minPage + n == page.currentPage" class="active disable">{{ page.minPage + n }}</a>
+                            <a v-else>{{ page.minPage + n }}</a>
+                        </li>
+                        <li v-on:click="setPage(page.maxPage)">
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- 分页工具 end-->
+
+            <!-- 题目列表 start -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover table-bordered elevation-1" >
+                        <tr>
+                            <th class="col-md-1">ID</th>
+                            <th class="col-md-8">Problem</th>
+                            <th class="col-md-2">Ratio(Accepted/Tried)</th>
+                            <th class="col-md-1">Difficulty</th>
+                        </tr>
+
+                        <tr v-for="item in problemsList">
+                            <td>{{ item.problemId }}</td>
+                            <!-- v-link="{ name: 'probDetails', params: { userId: 123 }}" -->
+                            <td><a v-link="{ name: 'probDetails', params: { probId: item.problemId }}" >{{ item.title }}</a>&nbsp;-&nbsp;{{ item.source }}</td>
+                            <td>{{ item.solved }}/{{ item.tried }}</td>
+                            <td>{{ item.difficulty }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </script>
 
         <!-- Include all compiled plugins (below), or include individual files as needed -->

@@ -1,0 +1,103 @@
+
+@mixin box-shadow($shadow...){
+    -webkit-box-shadow:$shadow;
+    -moz-box-shadow:$shadow;
+    -o-box-shadow:$shadow;
+    box-shadow: $shadow;
+}
+
+@mixin background-color($color, $opacity:1){
+    background-color: $color; /* fallback */
+    background-color: rgba($color, $opacity);
+}
+
+@mixin transition($time){
+    transition: all $time cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    -webkit-transition: all $time cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    -moz-transition: all $time cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    -o-transition: all $time cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+}
+
+/**
+ * elevation end
+ **/
+ $elevation-1: 0 1px 6px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.12);
+ $elevation-2: 0 2px 8px rgba(0,0,0,0.13), 0 2px 6px rgba(0,0,0,0.13);
+ $elevation-3: 0 3px 10px rgba(0,0,0,0.16), 0 3px 10px rgba(0,0,0,0.23);
+ $elevation-4: 0 4px 12px rgba(0,0,0,0.17), 0 4px 10px rgba(0,0,0,0.24);
+ $elevation-6: 0 6px 18px rgba(0,0,0,0.175), 0 5px 10px rgba(0,0,0,0.24);
+ $elevation-8: 0 8px 24px rgba(0,0,0,0.18), 0 5px 10px rgba(0,0,0,0.24);
+ $elevation-9: 0 9px 27px rgba(0,0,0,0.185), 0 6px 10px rgba(0,0,0,0.235);
+ $elevation-12:0 12px 36px rgba(0,0,0,0.24), 0 8px 17px rgba(0,0,0,0.23);
+ $elevation-16:0 16px 50 px rgba(0,0,0,0.275), 0 11px 18px rgba(0,0,0,0.22);
+ $elevation-24:0 24px 72px rgba(0,0,0,0.33), 0 16px 24px rgba(0,0,0,0.24);
+
+
+
+body{
+    font-family: Arial, Microsoft Yahei, SimSun, 'Helvetica Neue', 'Liberation Sans', FreeSans, sans-serif;
+    color:#222;
+}
+
+.font-blod{
+    font-weight: 700 !important;
+}
+.font-sm{
+    font-size: 0.5em !important;
+}
+.font-lg{
+    font-size: 1.5em !important;
+}
+.glyphicon {
+    margin-right: 0.3em;
+}
+hr.colorful {
+    height: 3px;
+    border-top: 0;
+    background: #c4e17f;
+    background-image: -webkit-linear-gradient(left,#c4e17f,#c4e17f 12.5%,#f7fdca 12.5%,#f7fdca 25%,#fecf71 25%,#fecf71 37.5%,#f0776c 37.5%,#f0776c 50%,#db9dbe 50%,#db9dbe 62.5%,#c49cde 62.5%,#c49cde 75%,#669ae1 75%,#669ae1 87.5%,#62c2e4 87.5%,#62c2e4);
+    background-image: -moz-linear-gradient(left,#c4e17f,#c4e17f 12.5%,#f7fdca 12.5%,#f7fdca 25%,#fecf71 25%,#fecf71 37.5%,#f0776c 37.5%,#f0776c 50%,#db9dbe 50%,#db9dbe 62.5%,#c49cde 62.5%,#c49cde 75%,#669ae1 75%,#669ae1 87.5%,#62c2e4 87.5%,#62c2e4);
+    background-image: -o-linear-gradient(left,#c4e17f,#c4e17f 12.5%,#f7fdca 12.5%,#f7fdca 25%,#fecf71 25%,#fecf71 37.5%,#f0776c 37.5%,#f0776c 50%,#db9dbe 50%,#db9dbe 62.5%,#c49cde 62.5%,#c49cde 75%,#669ae1 75%,#669ae1 87.5%,#62c2e4 87.5%,#62c2e4);
+    background-image: linear-gradient(to right,#c4e17f,#c4e17f 12.5%,#f7fdca 12.5%,#f7fdca 25%,#fecf71 25%,#fecf71 37.5%,#f0776c 37.5%,#f0776c 50%,#db9dbe 50%,#db9dbe 62.5%,#c49cde 62.5%,#c49cde 75%,#669ae1 75%,#669ae1 87.5%,#62c2e4 87.5%,#62c2e4);
+}
+
+
+/**
+ * elevation start
+ **/
+.elevation-1{
+    @include box-shadow( 0 1px 6px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.12));
+}
+.elevation-2{
+    @include box-shadow(0 2px 8px rgba(0,0,0,0.13), 0 2px 6px rgba(0,0,0,0.13));
+}
+.elevation-3{
+    @include box-shadow(0 3px 10px rgba(0,0,0,0.16), 0 3px 10px rgba(0,0,0,0.23));
+}
+.elevation-4{
+    @include box-shadow(0 4px 12px rgba(0,0,0,0.17), 0 4px 10px rgba(0,0,0,0.24));
+}
+.elevation-6{
+    @include box-shadow(0 6px 18px rgba(0,0,0,0.175), 0 5px 10px rgba(0,0,0,0.24));
+}
+.elevation-8{
+    @include box-shadow(0 8px 24px rgba(0,0,0,0.18), 0 5px 10px rgba(0,0,0,0.24));
+}
+.elevation-9{
+    @include box-shadow(0 9px 27px rgba(0,0,0,0.185), 0 6px 10px rgba(0,0,0,0.235));
+}
+.elevation-12{
+    @include box-shadow(0 12px 36px rgba(0,0,0,0.24), 0 8px 17px rgba(0,0,0,0.23));
+}
+/*.elevation-14{
+    box-shadow: 0 14px 45px rgba(0,0,0,0.25), 0 10px 18px rgba(0,0,0,0.22);
+}*/
+.elevation-16{
+    @include box-shadow(0 16px 50 px rgba(0,0,0,0.275), 0 11px 18px rgba(0,0,0,0.22));
+}
+/*.elevation-19{
+    box-shadow: 0 19px 60px rgba(0,0,0,0.3), 0 15px 20px rgba(0,0,0,0.22);
+}*/
+.elevation-24{
+    @include box-shadow(0 24px 72px rgba(0,0,0,0.33), 0 16px 24px rgba(0,0,0,0.24));
+}

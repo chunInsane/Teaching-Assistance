@@ -1,0 +1,15 @@
+@charset "UTF-8";
+/*
+ * 后台管理界面
+ */
+body {
+  padding-top: 60px;
+}
+
+.form-group .textarea {
+  padding-bottom: 15px;
+}
+
+label.control-label {
+  text-align: right;
+}

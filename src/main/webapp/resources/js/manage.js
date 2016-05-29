@@ -127,7 +127,7 @@ let addProb = Vue.extend({
                         this.canSubmit = false;
                     }
                 }
-            }else{
+            } else {
                 layer.msg("请添加sampleInput、sampleOutput！");
                 this.canSubmit = false;
             }

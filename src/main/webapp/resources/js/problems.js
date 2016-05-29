@@ -14,7 +14,12 @@ let probDetails = Vue.extend({
         };
     },
     ready:function(){
-        let pid =  this.$route.params.probId;
+        let pid = '';
+        if (this.$route.params.probId) {
+            pid =  this.$route.params.probId;
+        } else {
+            pid = window.location.href.split("probDetails/")[1];
+        }
         this.problemId = pid;
         this.problem = getProbDetails(pid);
         if(this.problem.problemId) {

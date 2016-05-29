@@ -45,7 +45,7 @@ public class FileServiceImpl implements FileService {
     public Integer uploadProblemDataFile(FileUploadDto fileUploadDto, String problemId) {
         List<MultipartFile> files = fileUploadDto.getFiles();
         if (files == null || files.size() > 1) {
-            throw new AppException("Fetch uploaded file error.");
+            throw new AppException("获取上传文件出现错误!");
         }
         MultipartFile file = files.get(0);
         File targetFile = new File(getDataZipFileName(problemId));

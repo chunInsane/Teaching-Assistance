@@ -43,13 +43,7 @@ public class ProblemController {
     @Autowired
     private ProblemService problemService;
     @Autowired
-    private LanguageService languageService;
-    @Autowired
-    private ContestService contestService;
-    @Autowired
-    private ContestProblemService contestProblemService;
-    @Autowired
-    private CodeService codeService;
+    private PictureService pictureService;
     @Autowired
     private StatusService statusService;
     @Autowired
@@ -121,6 +115,17 @@ public class ProblemController {
                 if (problemDto == null) {
                     throw new AppException("创建题目失败!");
                 }
+                // Move pictures
+                String oldPicDir = "problem/new/";
+                String newPicDir = "problem/" + problemId + "/";
+                problemEditDto.setDescription(pictureService.modifyPictureLocation(
+                        problemEditDto.getDescription(), oldPicDir, newPicDir));
+                problemEditDto.setInput(pictureService.modifyPictureLocation(
+                        problemEditDto.getInput(), oldPicDir ,newPicDir));
+                problemEditDto.setOutput(pictureService.modifyPictureLocation(
+                        problemEditDto.getOutput(), oldPicDir, newPicDir));
+                problemEditDto.setHint(pictureService.modifyPictureLocation(
+                        problemEditDto.getHint(), oldPicDir, newPicDir));
             } else {
                 problemDto = problemService.getProblemDtoByProblemId(problemEditDto.getProblemId());
                 if (problemDto == null) {
@@ -128,7 +133,22 @@ public class ProblemController {
                 }
             }
 
-            Integer dataCount;
+            problemDto.setTitle(problemEditDto.getTitle());
+            problemDto.setDescription(problemEditDto.getDescription());
+            problemDto.setInput(problemEditDto.getInput());
+            problemDto.setOutput(problemEditDto.getOutput());
+            problemDto.setSampleInput(problemEditDto.getSampleInput());
+            problemDto.setSampleOutput(problemEditDto.getSampleOutput());
+            problemDto.setHint(problemEditDto.getHint());
+            problemDto.setSource(problemEditDto.getSource());
+            problemDto.setTimeLimit(problemEditDto.getTimeLimit());
+            problemDto.setJavaTimeLimit(problemEditDto.getJavaTimeLimit());
+            problemDto.setMemoryLimit(problemEditDto.getMemoryLimit());
+            problemDto.setJavaMemoryLimit(problemEditDto.getJavaMemoryLimit());
+            problemDto.setOutputLimit(problemEditDto.getOutputLimit());
+            problemDto.setIsSpj(problemEditDto.getIsSpj());
+
+            Integer dataCount = 0;
             if (Objects.equals(problemEditDto.getAction(), "new")) {
                 dataCount = fileService.moveProblemDataFile("new",
                         problemDto.getProblemId());
@@ -143,6 +163,12 @@ public class ProblemController {
         return resultDto;
     }
 
+    /**
+     * Upload problem data file.
+     * @param problemId
+     * @param files
+     * @return
+     */
     @RequestMapping("/uploadDataFile/{problemId}")
     public @ResponseBody ResultDto uploadProblemDataFile(@PathVariable("problemId") String problemId,
                      @RequestParam(value = "uploadFile", required = true)MultipartFile[] files) {
@@ -162,6 +188,7 @@ public class ProblemController {
         FileUploadDto fileUploadDto = new FileUploadDto();
         fileUploadDto.setFiles(Arrays.asList(files));
         Integer dataCount = fileService.uploadProblemDataFile(fileUploadDto, problemId);
+
         Map<String, Object> result = new HashMap<>();
         result.put("dataCount", dataCount);
         resultDto.setResult(result);

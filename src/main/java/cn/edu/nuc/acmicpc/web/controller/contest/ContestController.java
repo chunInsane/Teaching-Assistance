@@ -9,6 +9,7 @@ import cn.edu.nuc.acmicpc.common.util.EncryptUtil;
 import cn.edu.nuc.acmicpc.common.util.SessionUtil;
 import cn.edu.nuc.acmicpc.common.util.ValidateUtil;
 import cn.edu.nuc.acmicpc.dto.ContestDto;
+import cn.edu.nuc.acmicpc.dto.ContestProblemDto;
 import cn.edu.nuc.acmicpc.dto.ContestUserDto;
 import cn.edu.nuc.acmicpc.dto.UserDto;
 import cn.edu.nuc.acmicpc.dto.contest.ContestProblemDetailDto;
@@ -17,10 +18,7 @@ import cn.edu.nuc.acmicpc.form.dto.contest.LoginContestDto;
 import cn.edu.nuc.acmicpc.form.dto.contest.ShowContestDto;
 import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
 import cn.edu.nuc.acmicpc.model.Contest;
-import cn.edu.nuc.acmicpc.service.ContestProblemService;
-import cn.edu.nuc.acmicpc.service.ContestService;
-import cn.edu.nuc.acmicpc.service.ContestUserService;
-import cn.edu.nuc.acmicpc.service.UserService;
+import cn.edu.nuc.acmicpc.service.*;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +51,10 @@ public class ContestController {
     private Settings settings;
     @Autowired
     private ContestService contestService;
+    @Autowired
+    private PictureService pictureService;
+
+    private ProblemService problemService;
     @Autowired
     private ContestProblemService contestProblemService;
     @Autowired
@@ -216,5 +218,95 @@ public class ContestController {
             throw new AppException("unexpected type!");
         }
         return errors;
+    }
+
+    @RequestMapping("edit")
+    public @ResponseBody ResultDto edit(@RequestBody @Valid ContestDto contestEditDto,
+                    BindingResult validateResult) {
+        ResultDto resultDto = new ResultDto();
+        if (validateResult.hasErrors()) {
+            resultDto.setStatus(StatusConstant.SERVER_ERROR);
+            resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
+        } else {
+            Map<String, String> errors = new HashMap<>();
+            if (contestEditDto.getType() == ContestType.PRIVATE.ordinal()) {
+                if (!Objects.equals(contestEditDto.getPassword(), contestEditDto.getPasswordRepeat())) {
+                    errors.put("passwordRepeat", "两次输入的密码不一致!");
+                }
+            }
+            if (!errors.isEmpty()) {
+                resultDto.setStatus(StatusConstant.SERVER_ERROR);
+                resultDto.setErrors(errors);
+                return resultDto;
+            }
+        }
+        ContestDto contestDto;
+        if (Objects.equals(contestEditDto.getAction(), "new")) {
+            Long contestId = contestService.createContest();
+            contestDto = contestService.getContestDtoByContestId(contestId);
+            if (contestDto == null || !Objects.equals(contestId, contestDto.getContestId())) {
+                throw new AppException("创建比赛出现错误!");
+            }
+            if (contestEditDto.getDescription() == null)
+                contestEditDto.setDescription("");
+
+            //move picture
+            String oldPicDir = "contest/new";
+            String newPicDir = "contest/" + contestId + "/";
+            contestEditDto.setDescription(pictureService.modifyPictureLocation(
+                    contestEditDto.getDescription(), oldPicDir, newPicDir));
+        } else {
+            contestDto = contestService.getContestDtoByContestId(contestEditDto.getContestId());
+            if (contestDto == null) {
+                throw new AppException("不存在该比赛!");
+            }
+        }
+
+        List<Long> problemIds = new ArrayList<>();
+        String[] problemList = contestEditDto.getProblemList().split(",");
+        for (String problemIdStr : problemList) {
+            if (problemIdStr.length() <= 0) {
+                continue;
+            }
+            Long problemId;
+            try {
+                problemId = Long.parseLong(problemIdStr);
+            } catch (NumberFormatException e) {
+                throw new AppException("题目格式出现错误!");
+            }
+            if (!problemService.checkProblemExists(problemId)) {
+                throw new AppException("题目不存在!");
+            }
+            problemIds.add(problemId);
+        }
+
+        contestProblemService.removeContestProblemByContestId(contestEditDto.getContestId());
+        for (int order = 0; order < problemIds.size(); ++order) {
+            ContestProblemDto contestProblemDto = new ContestProblemDto();
+            contestProblemDto.setContestId(contestDto.getContestId());
+            contestProblemDto.setProblemId(problemIds.get(order));
+            contestProblemDto.setOrder(order);
+            contestProblemService.createContestProblem(contestProblemDto);
+        }
+        contestDto.setType(contestEditDto.getType());
+        if (contestEditDto.getType() == ContestType.PRIVATE.ordinal()) {
+            contestDto.setPassword(contestEditDto.getPassword());
+        }
+        contestDto.setDescription(contestEditDto.getDescription());
+        contestDto.setTitle(contestEditDto.getTitle());
+        int contestLength = contestEditDto.getLengthDays() * 24 * 60 * 60 + contestEditDto.getLengthHours() * 60 * 60
+                            + contestEditDto.getFrozenLengthMinutes() * 60;
+        contestDto.setLength(contestLength);
+        contestDto.setTime(DateUtil.getCurrentTime());
+        if (contestEditDto.getNeedFrozen()) {
+            int contestFrozenLength = contestEditDto.getFrozenLengthDays() * 24 * 60 * 60 + contestEditDto.getFrozenLengthHours() * 60 * 60
+                            + contestEditDto.getFrozenLengthMinutes() * 60;
+            contestDto.setFrozenTime(contestFrozenLength);
+        } else {
+            contestDto.setFrozenTime(0);
+        }
+
+        contestService.updateContest(contestDto);
+        return resultDto;
     }
 }
