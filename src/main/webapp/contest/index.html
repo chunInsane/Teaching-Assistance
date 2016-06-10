@@ -19,6 +19,19 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <style>
+            table.table * {
+                text-align: center;
+            }
+            table.table td {
+                padding: 0 !important;
+            }
+            table.table td > div {
+                width: 100%;
+                height: 100%;
+                padding: 10px;
+            }
+        </style>
     </head>
     <body >
         <nav class="navbar navbar-inverse navbar-fixed-top elevation-4">
@@ -50,7 +63,7 @@
         </nav>
         <!-- nav bar end -->
         <div id="app">
-            <router-view></router-view>        
+            <router-view></router-view>
         </div>
 
         <!-- body container start -->
@@ -111,7 +124,7 @@
                                 <td><a v-link="{
                                     name : 'Details',
                                     params:{
-                                        contestId: item.contestId, 
+                                        contestId: item.contestId,
                                     }
                                 }">{{ item.title }}</a></td>
                                 <td class="text-center">
@@ -144,6 +157,8 @@
                     <ul class="nav nav-tabs" role="tablist" id="tab_1">
                         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Overview</a></li>
                         <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Problems</a></li>
+                        <li role="presentation"><a href="#status" aria-controls="profile" role="tab" data-toggle="tab">Status</a></li>
+                        <li role="presentation"><a href="#rank" aria-controls="profile" role="tab" data-toggle="tab">Rank</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -249,6 +264,110 @@
                                     </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
+                        </div>
+                        <!-- 题目通过状态 -->
+                        <div role="tabpanel" class="tab-pane row" id="status">
+                            <!-- 分页工具 start-->
+                            <div class="row">
+                                <nav class="col-md-12">
+                                    <ul class="pagination elevation-1">
+                                        <li v-on:click="setPage(page.minPage)">
+                                            <a href="#" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <li v-for="n in 10" v-if="page.minPage + n > 0 && page.minPage + n <= page.totalPage" v-on:click="setPage(page.minPage + n)">
+                                            <a v-if="page.minPage + n == page.currentPage" class="active disable">{{ page.minPage + n }}</a>
+                                            <a v-else>{{ page.minPage + n }}</a>
+                                        </li>
+                                        <li v-on:click="setPage(page.maxPage)">
+                                            <a href="#" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <!-- 分页工具 end-->
+                            <!-- 题目列表 start -->
+                            <div class="col-md-12">
+                                <table class="table table-hover table-bordered elevation-1">
+                                    <tr>
+                                        <th class="col-md-1">ID</th>
+                                        <th class="col-md-2">User</th>
+                                        <th class="col-md-1">ProblemId</th>
+                                        <th class="col-md-3">Result</th>
+                                        <th class="col-md-1">Memory</th>
+                                        <th class="col-md-1">Time</th>
+                                        <th class="col-md-1">Language</th>
+                                        <th class="col-md-1">Length</th>
+                                        <th class="col-md-1">Submit Time</th>
+                                    </tr>
+
+                                    <tr v-for="item in submitList">
+                                        <td>{{ item.statusId }}</td>
+                                        <td><a>{{ item.nickname }}</a></td>
+                                        <!-- <td><a v-on:click.prevent="checkProbDetails(item.problemId)">{{ item.problemId }}</a></td> -->
+                                        <td>{{ item.problemId }}</a></td>
+                                        <td>{{ item.returnType }}</td>
+                                        <td>{{ item.memoryCost }}</td>
+                                        <td>{{ item.timeCost }}</td>
+                                        <td>{{ item.language }}</td>
+                                        <td>{{ item.length }}</td>
+                                        <td>
+                                            <span>{{ new Date(item.time).getYear() + 1900  }}-{{  new Date(item.time).getMonth() }}-{{  new Date(item.time).getDate() }}&nbsp;{{  new Date(item.time).getHours() }}:{{  new Date(item.time).getMinutes() }}:{{  new Date(item.time).getSeconds() }}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- 排行榜 -->
+                        <div role="tabpanel" class="tab-pane" id="rank">
+                            <br>
+                            <table class="table">
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>ID</th>
+                                    <th>Solved</th>
+                                    <th>Penalty</th>
+                                    <th v-for="i in problemListLen">{{ i + 1 }}</th>
+                                </tr>
+                                <tr v-for="item in rankList.rankList" class="bg-blue-100">
+                                    <td>
+                                        <div>
+                                            {{ item.rank }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ item.nickName }} / {{ item.name }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ item.solved }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ item.penalty }}
+                                        </div>
+                                    </td>
+                                    <td v-for="it in item.itemList" class="bg-red-300">
+                                        <!-- <div v-if="it.solved" class="bg-green-200">
+                                            <span v-if="it.firstBlood"  class="bg-green-500">{{ it.solvedTime }}</span>
+                                            <span v-else>{{ it.solvedTime }}</span>
+                                        </div>
+                                        <div v-else class="bg-red-200">
+                                            {{ it.solvedTime }}
+                                        </div> -->
+                                        <div v-bind:class="{'bg-green-200': it.solved, 'bg-green-500': it.firstBlood}">
+                                            {{ Math.floor(it.solvedTime / 1000 / (60*60)) }} : {{ Math.floor((it.solvedTime / 1000 % (60*60)) / 60) }} : {{ Math.floor((it.solvedTime / 1000 % (60*60)) % 60) }}
+                                            <span v-if="it.tried != 0">&nbsp;({{ it.tried }})</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>

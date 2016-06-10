@@ -12,6 +12,7 @@ let contestsList = Vue.extend({
                 minPage:1,      // 分页列表中最小页码值
             },
             contestsList:[],    // 题目列表
+            searchKeyWord: "",  // 补充
         };
     },
     ready:function(){
@@ -34,7 +35,7 @@ let contestsList = Vue.extend({
         },
         //  根据 $("#tab_1 a").eq().tab('show')
         //  切换 tab 选项卡
-    }, 
+    },
     template:"#contestsList",
 });
 
@@ -51,6 +52,15 @@ let contestDetails = Vue.extend({
             problem: {},
             contest: {},         // 向服务器请求的 比赛题目 详情
             submitProbId: this.problem ? this.problem.problemId : 0,
+            language: '',
+            submitList: [],     // 提交状态列表
+            rankList: {},       // 比赛排名
+            page:{
+                currentPage: 1, // 当前页
+                totalPage:1,    // 总页数
+                maxPage:1,      // 分页列表中最大页码值
+                minPage:1,      // 分页列表中最小页码值
+            },
         };
     },
     ready:function(){
@@ -67,7 +77,9 @@ let contestDetails = Vue.extend({
         //     data: {},
         //     isFrist:isFrist,
         // };
+
         function isPrivate(self){
+            // 验证比赛权限
             $.ajax({
                 url:'/contest/loginContest',
                 data: JSON.stringify(data),
@@ -80,8 +92,10 @@ let contestDetails = Vue.extend({
                     return false;
                 },
             }).done(function(msg){
+                // 200 = public
                 if (msg.status === 200){
                     console.log("ready function 1");
+                    // 获取比赛详情
                     $.ajax({
                         url:'/contest/data/' + _this.contestId,
                         data: JSON.stringify(data),
@@ -100,12 +114,23 @@ let contestDetails = Vue.extend({
                             _this.problemListLen = msg.result.problemList.length;
                             _this.problem = msg.result.problemList[_this.hightlightProb];
                             _this.submitProbId = _this.problem.problemId;
+                            // 获取提交状态列表 & rank 列表
+                            if(_this.contestId){
+                                // 获取提交状态列表
+                                let search = {
+                                    contestId: _this.contestId,
+                                };
+                                let pageInfo = getPageList2(1, search);
+                                setPage2(pageInfo, _this);
+                                // 设置 rank 列表（此处初始化 ）
+                                setRankList(_this);
+                            }else {
+                                let pageInfo = getPageList2(1); //正式
+                                console.log(pageInfo);
+                                setPage2(pageInfo, _this);
+                            }
                             console.log (_this.problem);
                             setProbAttr(_this.problem);
-                            
-                            // test
-                            // $("#isPrivate").click();
-
                             return true;
                         }else {
                             showAjaxMsg(msg);
@@ -126,9 +151,9 @@ let contestDetails = Vue.extend({
                 }
             });
         }
-        
+
         isPrivate();
-        
+
     },
     methods:{
         /*
@@ -196,9 +221,9 @@ let contestDetails = Vue.extend({
                     }
                 });
                 console.log("checkPrivate function");
-                
+
             }
-            isPrivate();       
+            isPrivate();
         },
         /*
          * 根据 索引号 显示比赛题目详情
@@ -221,7 +246,7 @@ let contestDetails = Vue.extend({
             let data = {
                 problemId: this.submitProbId,
                 contestId: this.contestId,
-                languageId:this.language,
+                languageId: this.language,
                 codeContent:this.code,
             };
             console.log(data);
@@ -265,7 +290,17 @@ let contestDetails = Vue.extend({
                     return false;
                 }
             });
-        }
+        },
+        /**
+         * 设置提交状态列表页码
+         * @param  {[type]} index [description]
+         * @return {[type]}       [description]
+         */
+        setPage: function(index){
+            console.log(index);
+            let pageInfo = getPageList2(index);
+            setPage(pageInfo, this);
+        },
     },
     template:"#contestDetails",
 });
@@ -360,6 +395,7 @@ function getPageList(p){
     return result;
 }
 
+
 /**
  * 根据关键词查询题目
  *
@@ -431,6 +467,41 @@ function setPage(pageInfo, _this ){
     }
 }
 
+/**
+ * 根据比赛ID设置题目列表
+ */
+function setPage2(pageInfo, _this ){
+     let _this_ = _this;
+     if(pageInfo){
+         _this_.page.currentPage = pageInfo.pageInfo.currentPage;
+         _this_.page.totalPage = pageInfo.pageInfo.totalPages;
+         _this_.submitList = pageInfo.list;
+         console.log(pageInfo.list);
+     }
+     if(_this_.page.currentPage > _this_.page.totalPage){
+         console.log("页码参数错误!");
+         _this_.page.minPage = 1;
+         _this_.page.currentPage = _this_.page.totalPage;
+         // this.page
+         return false;
+     }
+     if(_this_.totalPages > 10){
+         _this_.page.maxPage = _this_.page.currentPage;
+     }else{
+         if(_this_.page.currentPage > 4){
+             if(_this_.page.currentPage + 5 <= _this_.page.totalPage){
+                 _this_.page.minPage = _this_.page.currentPage - 4;
+                 _this_.page.maxPage = _this_.page.minPage + 10;
+             }else{
+                 _this_.page.maxPage = _this_.page.totalPage;
+                 _this_.page.minPage = _this_.page.totalPage - 9;
+             }
+         }else{
+             _this_.page.minPage = 1;
+             _this_.page.maxPage = 10;
+         }
+     }
+}
 
 
 /**
@@ -470,39 +541,111 @@ function setProbAttr(problem){
  * @return <Object> contest
  */
 function isPrivate(self){
-            $.ajax({
-                url:'/contest/data/' + _this.contestId,
-                data: JSON.stringify(data),
-                method:'post',
-                dataType:'json',
-                contentType:'application/json',
-                async:true,
-                error: function(msg){
-                    layer.msg("获取数据失败!" + msg.message+_this.userId);
-                    return false;
-                },
-            }).done(function(msg){
-                if (msg.status === 200){
-                    _this.contest = msg.result.contest;
-                    _this.problemList = msg.result.problemList;
-                    _this.problemListLen = msg.result.problemList.length;
-                    _this.problem = msg.result.problemList[_this.hightlightProb];
-                    _this.submitProbId = _this.problem.problemId;
-                    console.log (_this.problem);
-                    setProbAttr(_this.problem);
-                    
-                    // test
-                    // $("#isPrivate").click();
+    $.ajax({
+        url:'/contest/data/' + _this.contestId,
+        data: JSON.stringify(data),
+        method:'post',
+        dataType:'json',
+        contentType:'application/json',
+        async:true,
+        error: function(msg){
+            layer.msg("获取数据失败!" + msg.message+_this.userId);
+            return false;
+        },
+    }).done(function(msg){
+        if (msg.status === 200){
+            _this.contest = msg.result.contest;
+            _this.problemList = msg.result.problemList;
+            _this.problemListLen = msg.result.problemList.length;
+            _this.problem = msg.result.problemList[_this.hightlightProb];
+            _this.submitProbId = _this.problem.problemId;
+            console.log (_this.problem);
+            setProbAttr(_this.problem);
 
-                    return true;
-                }else {
-                    if( isFrist ){
-                        showAjaxMsg(msg);
-                        isFrist ++;
-                    }
-                    $("#isPrivate").click();
-                    isPrivate();
-                    return false;
-                }
-            });
+            // test
+            // $("#isPrivate").click();
+
+            return true;
+        }else {
+            if( isFrist ){
+                showAjaxMsg(msg);
+                isFrist ++;
+            }
+            $("#isPrivate").click();
+            isPrivate();
+            return false;
         }
+    });
+}
+
+
+/**
+ * 根据 页码 获取题目提交状态列表详情
+ *
+ * @param <Number> pagination
+ * @returns <Object> result
+ */
+function getPageList2( p, search ){
+    let data = {
+        currentPage: p || 1,
+    };
+    if(search){
+        data = search;
+        data.currentPage = p;
+    }
+    let result = {};
+
+    $.ajax({
+        method:"post",
+        data:JSON.stringify(data),
+        dataType:"json",
+        contentType:"application/json",
+        async:false,
+        url:"/status/search",
+        error: function(msg){
+            layer.msg("获取数据失败!" + msg.message);
+            return false;
+        },
+    }).done(function(msg){
+        if(msg.status === 200){
+            console.log(msg.result);
+            result = msg.result;
+            return true;
+        }else{
+            showAjaxMsg(msg);
+            return false;
+        }
+    });
+
+    return result;
+}
+/**
+ * 设置rank list 列表
+ */
+function setRankList(_this){
+    let rank = {};
+    // 比赛 id 存在则查询 rank 列表
+    if(_this.contestId){
+        $.ajax({
+            method: 'get',
+            async:false,
+            url:"/contest/rankList/" + _this.contestId,
+            error: function(msg){
+                layer.msg("获取数据失败!" + msg.message);
+                return false;
+            },
+        }).done(function(msg){
+            if(msg.status === 200){
+                console.log("msg.result");
+                console.log(msg.result);
+                rank = msg.result;
+                _this.problemListLen = rank.rankList.problemList.length; // 设置比赛题目数
+                _this.rankList = rank.rankList;
+                return true;
+            }else{
+                showAjaxMsg(msg);
+                return false;
+            }
+        });
+    }
+}
