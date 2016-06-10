@@ -93,7 +93,7 @@ app.post('/contest/search', function(req, res){
                         "currentPage":2,
                         "displayDistance":2,
                         "totalItems":98,
-                        "totalPages":5
+                        "totalPages":2
                     },
             },
             "status":200,
@@ -176,49 +176,17 @@ app.post('/contest/loginContest', function(req, res){
 })
 
 app.post('/status/search', function(req, res){
+    console.log("problemId" + req.body.problemId);
+    console.log("languageId" + req.body.languageId);
     let status = {
         "result":{
             "list":[
-                {
-                    "caseNumber":26,
-                    "email":"virtual.judge.2@gmail.com",
-                    "language":"C++",
-                    "length":1203,
-                    "memoryCost":16604,
-                    "name":"张翼德",
-                    "nickName":"张翼德",
-                    "problemId":1,
-                    "returnType":"Accepted",
-                    "returnTypeId":1,
-                    "statusId":207781,
-                    "time":1465530904000,
-                    "timeCost":627,
-                    "userName":"Vjudge2"
-                },
                 {"caseNumber":2,"email":"virtual.judge.3@gmail.com","language":"C++","length":1030,"name":"赵子龙","nickName":"赵子龙","problemId":2,"returnType":"Wrong Answer on test 2","returnTypeId":5,"statusId":207780,"time":1465530869000,"userName":"Vjudge3"},
-                {"caseNumber":132,"email":"849199382@qq.com","language":"C++","length":1075,"memoryCost":1300,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Accepted","returnTypeId":1,"statusId":207778,"time":1465529784000,"timeCost":78,"userName":"FirstLast"},
-                {"caseNumber":82,"email":"1182563586@qq.com","language":"C++","length":1681,"memoryCost":2064,"name":"zxy","nickName":"just_sort","problemId":2,"returnType":"Accepted","returnTypeId":1,"statusId":207776,"time":1465527841000,"timeCost":5,"userName":"just_sort"},
-                {"caseNumber":15,"email":"849199382@qq.com","language":"C++","length":548,"memoryCost":63356,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Accepted","returnTypeId":1,"statusId":207775,"time":1465525864000,"timeCost":70,"userName":"FirstLast"},
-                {"caseNumber":2,"email":"849199382@qq.com","language":"C++","length":548,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Runtime Error on test 2","returnTypeId":8,"statusId":207773,"time":1465525594000,"userName":"FirstLast"},
-                {"caseNumber":50,"email":"849199382@qq.com","language":"C++","length":812,"memoryCost":1876,"name":"Chuck","nickName":"Evian Semitemos","problemId":2,"returnType":"Accepted","returnTypeId":1,"statusId":207772,"time":1465523578000,"timeCost":22,"userName":"FirstLast"},
-                {"caseNumber":1,"email":"490168650@qq.com","language":"C++","length":3998,"name":"陈俊杰","nickName":"俊杰","problemId":2,"returnType":"Time Limit Exceeded on test 1","returnTypeId":3,"statusId":207771,"time":1465523481000,"userName":"cjj490168650"},
-                {"caseNumber":1,"email":"849199382@qq.com","language":"C++","length":786,"name":"Chuck","nickName":"Evian Semitemos","problemId":2,"returnType":"Wrong Answer on test 1","returnTypeId":5,"statusId":207770,"time":1465523468000,"userName":"FirstLast"},
-                {"caseNumber":1,"email":"490168650@qq.com","language":"C++","length":3978,"name":"陈俊杰","nickName":"俊杰","problemId":1,"returnType":"Time Limit Exceeded on test 1","returnTypeId":3,"statusId":207768,"time":1465523063000,"userName":"cjj490168650"},
-                {"caseNumber":1,"email":"490168650@qq.com","language":"C++","length":3949,"name":"陈俊杰","nickName":"俊杰","problemId":1,"returnType":"Time Limit Exceeded on test 1","returnTypeId":3,"statusId":207764,"time":1465522585000,"userName":"cjj490168650"},
-                {"caseNumber":1,"email":"490168650@qq.com","language":"C++","length":3856,"name":"陈俊杰","nickName":"俊杰","problemId":1,"returnType":"Runtime Error on test 1","returnTypeId":8,"statusId":207763,"time":1465522496000,"userName":"cjj490168650"},
-                {"caseNumber":50,"email":"849199382@qq.com","language":"C++","length":1922,"memoryCost":6928,"name":"Chuck","nickName":"Evian Semitemos","problemId":2,"returnType":"Accepted","returnTypeId":1,"statusId":207761,"time":1465491917000,"timeCost":207,"userName":"FirstLast"},
-                {"caseNumber":1,"email":"849199382@qq.com","language":"C++","length":1640,"name":"Chuck","nickName":"Evian Semitemos","problemId":2,"returnType":"Wrong Answer on test 1","returnTypeId":5,"statusId":207760,"time":1465490972000,"userName":"FirstLast"},
-                {"caseNumber":50,"email":"849199382@qq.com","language":"C++","length":791,"memoryCost":2568,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Accepted","returnTypeId":1,"statusId":207759,"time":1465489838000,"timeCost":73,"userName":"FirstLast"},
-                {"caseNumber":19,"email":"849199382@qq.com","language":"C++","length":788,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Wrong Answer on test 19","returnTypeId":5,"statusId":207757,"time":1465489268000,"userName":"FirstLast"},
-                {"caseNumber":4,"email":"870380501@qq.com","language":"C++","length":1503,"memoryCost":20496,"name":"DongHaiChen","nickName":"870380501","problemId":1,"returnType":"Accepted","returnTypeId":1,"statusId":207752,"time":1465484467000,"timeCost":726,"userName":"870380501"},
-                {"caseNumber":117,"email":"849199382@qq.com","language":"C++","length":1267,"memoryCost":6112,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Accepted","returnTypeId":1,"statusId":207746,"time":1465478736000,"timeCost":63,"userName":"FirstLast"},
-                {"caseNumber":1,"email":"870380501@qq.com","language":"C++","length":1397,"name":"DongHaiChen","nickName":"870380501","problemId":1,"returnType":"Wrong Answer on test 1","returnTypeId":5,"statusId":207745,"time":1465478316000,"userName":"870380501"},
-                {"caseNumber":1,"email":"870380501@qq.com","language":"C++","length":1331,"name":"DongHaiChen","nickName":"870380501","problemId":1,"returnType":"Wrong Answer on test 1","returnTypeId":5,"statusId":207744,"time":1465477168000,"userName":"870380501"}
             ],
         "pageInfo":
             {
                 "countPerPage":20,
-                "currentPage":2,
+                "currentPage":1,
                 "displayDistance":2,
                 "totalItems":89062,
                 "totalPages":4454
@@ -227,6 +195,97 @@ app.post('/status/search', function(req, res){
         'status':200,
     };
     res.json(status);
+    /*if(req.body.languageId === 0){
+        let status = {
+            "result":{
+                "list":[
+                    {"caseNumber":2,"email":"virtual.judge.3@gmail.com","language":"C++","length":1030,"name":"赵子龙","nickName":"赵子龙","problemId":2,"returnType":"Wrong Answer on test 2","returnTypeId":5,"statusId":207780,"time":1465530869000,"userName":"Vjudge3"},
+                ],
+            "pageInfo":
+                {
+                    "countPerPage":20,
+                    "currentPage":1,
+                    "displayDistance":2,
+                    "totalItems":89062,
+                    "totalPages":4454
+                },
+            },
+            'status':200,
+        };
+        res.json(status);
+    }else if(req.body.problemId){
+        let status = {
+            "result":{
+                "list":[
+                    {"caseNumber":2,"email":"virtual.judge.3@gmail.com","language":"C++","length":1030,"name":"赵子龙","nickName":"赵子龙","problemId":2,"returnType":"Wrong Answer on test 2","returnTypeId":5,"statusId":207780,"time":1465530869000,"userName":"Vjudge3"},
+                    {"caseNumber":132,"email":"849199382@qq.com","language":"C++","length":1075,"memoryCost":1300,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Accepted","returnTypeId":1,"statusId":207778,"time":1465529784000,"timeCost":78,"userName":"FirstLast"},
+                ],
+            "pageInfo":
+                {
+                    "countPerPage":20,
+                    "currentPage":2,
+                    "displayDistance":2,
+                    "totalItems":89062,
+                    "totalPages":4454
+                },
+            },
+            'status':200,
+        };
+        res.json(status);
+    }else{
+        let status = {
+            "result":{
+                "list":[
+                    {
+                        "caseNumber":26,
+                        "email":"virtual.judge.2@gmail.com",
+                        "language":"C++",
+                        "length":1203,
+                        "memoryCost":16604,
+                        "name":"张翼德",
+                        "nickName":"张翼德",
+                        "problemId":1,
+                        "returnType":"Accepted",
+                        "returnTypeId":1,
+                        "statusId":207781,
+                        "time":1465530904000,
+                        "timeCost":627,
+                        "userName":"Vjudge2"
+                    },
+                    {"caseNumber":2,"email":"virtual.judge.3@gmail.com","language":"C++","length":1030,"name":"赵子龙","nickName":"赵子龙","problemId":2,"returnType":"Wrong Answer on test 2","returnTypeId":5,"statusId":207780,"time":1465530869000,"userName":"Vjudge3"},
+                    {"caseNumber":132,"email":"849199382@qq.com","language":"C++","length":1075,"memoryCost":1300,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Accepted","returnTypeId":1,"statusId":207778,"time":1465529784000,"timeCost":78,"userName":"FirstLast"},
+                    {"caseNumber":82,"email":"1182563586@qq.com","language":"C++","length":1681,"memoryCost":2064,"name":"zxy","nickName":"just_sort","problemId":2,"returnType":"Accepted","returnTypeId":1,"statusId":207776,"time":1465527841000,"timeCost":5,"userName":"just_sort"},
+                    {"caseNumber":15,"email":"849199382@qq.com","language":"C++","length":548,"memoryCost":63356,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Accepted","returnTypeId":1,"statusId":207775,"time":1465525864000,"timeCost":70,"userName":"FirstLast"},
+                    {"caseNumber":2,"email":"849199382@qq.com","language":"C++","length":548,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Runtime Error on test 2","returnTypeId":8,"statusId":207773,"time":1465525594000,"userName":"FirstLast"},
+                    {"caseNumber":50,"email":"849199382@qq.com","language":"C++","length":812,"memoryCost":1876,"name":"Chuck","nickName":"Evian Semitemos","problemId":2,"returnType":"Accepted","returnTypeId":1,"statusId":207772,"time":1465523578000,"timeCost":22,"userName":"FirstLast"},
+                    {"caseNumber":1,"email":"490168650@qq.com","language":"C++","length":3998,"name":"陈俊杰","nickName":"俊杰","problemId":2,"returnType":"Time Limit Exceeded on test 1","returnTypeId":3,"statusId":207771,"time":1465523481000,"userName":"cjj490168650"},
+                    {"caseNumber":1,"email":"849199382@qq.com","language":"C++","length":786,"name":"Chuck","nickName":"Evian Semitemos","problemId":2,"returnType":"Wrong Answer on test 1","returnTypeId":5,"statusId":207770,"time":1465523468000,"userName":"FirstLast"},
+                    {"caseNumber":1,"email":"490168650@qq.com","language":"C++","length":3978,"name":"陈俊杰","nickName":"俊杰","problemId":1,"returnType":"Time Limit Exceeded on test 1","returnTypeId":3,"statusId":207768,"time":1465523063000,"userName":"cjj490168650"},
+                    {"caseNumber":1,"email":"490168650@qq.com","language":"C++","length":3949,"name":"陈俊杰","nickName":"俊杰","problemId":1,"returnType":"Time Limit Exceeded on test 1","returnTypeId":3,"statusId":207764,"time":1465522585000,"userName":"cjj490168650"},
+                    {"caseNumber":1,"email":"490168650@qq.com","language":"C++","length":3856,"name":"陈俊杰","nickName":"俊杰","problemId":1,"returnType":"Runtime Error on test 1","returnTypeId":8,"statusId":207763,"time":1465522496000,"userName":"cjj490168650"},
+                    {"caseNumber":50,"email":"849199382@qq.com","language":"C++","length":1922,"memoryCost":6928,"name":"Chuck","nickName":"Evian Semitemos","problemId":2,"returnType":"Accepted","returnTypeId":1,"statusId":207761,"time":1465491917000,"timeCost":207,"userName":"FirstLast"},
+                    {"caseNumber":1,"email":"849199382@qq.com","language":"C++","length":1640,"name":"Chuck","nickName":"Evian Semitemos","problemId":2,"returnType":"Wrong Answer on test 1","returnTypeId":5,"statusId":207760,"time":1465490972000,"userName":"FirstLast"},
+                    {"caseNumber":50,"email":"849199382@qq.com","language":"C++","length":791,"memoryCost":2568,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Accepted","returnTypeId":1,"statusId":207759,"time":1465489838000,"timeCost":73,"userName":"FirstLast"},
+                    {"caseNumber":19,"email":"849199382@qq.com","language":"C++","length":788,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Wrong Answer on test 19","returnTypeId":5,"statusId":207757,"time":1465489268000,"userName":"FirstLast"},
+                    {"caseNumber":4,"email":"870380501@qq.com","language":"C++","length":1503,"memoryCost":20496,"name":"DongHaiChen","nickName":"870380501","problemId":1,"returnType":"Accepted","returnTypeId":1,"statusId":207752,"time":1465484467000,"timeCost":726,"userName":"870380501"},
+                    {"caseNumber":117,"email":"849199382@qq.com","language":"C++","length":1267,"memoryCost":6112,"name":"Chuck","nickName":"Evian Semitemos","problemId":1,"returnType":"Accepted","returnTypeId":1,"statusId":207746,"time":1465478736000,"timeCost":63,"userName":"FirstLast"},
+                    {"caseNumber":1,"email":"870380501@qq.com","language":"C++","length":1397,"name":"DongHaiChen","nickName":"870380501","problemId":1,"returnType":"Wrong Answer on test 1","returnTypeId":5,"statusId":207745,"time":1465478316000,"userName":"870380501"},
+                    {"caseNumber":1,"email":"870380501@qq.com","language":"C++","length":1331,"name":"DongHaiChen","nickName":"870380501","problemId":1,"returnType":"Wrong Answer on test 1","returnTypeId":5,"statusId":207744,"time":1465477168000,"userName":"870380501"}
+                ],
+            "pageInfo":
+                {
+                    "countPerPage":20,
+                    "currentPage":1,
+                    "displayDistance":2,
+                    "totalItems":89062,
+                    "totalPages":4454
+                },
+            },
+            'status':200,
+        };
+        res.json(status);
+    }
+*/
 });
 
 app.get('/contest/rankList/:id', function(req, res){

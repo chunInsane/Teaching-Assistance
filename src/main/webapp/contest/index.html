@@ -20,13 +20,13 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
         <style>
-            table.table * {
+            #rank table.table * {
                 text-align: center;
             }
-            table.table td {
+            #rank table.table td {
                 padding: 0 !important;
             }
-            table.table td > div {
+            #rank table.table td > div {
                 width: 100%;
                 height: 100%;
                 padding: 10px;
@@ -204,7 +204,7 @@
                                 <h1>{{ problem.title }}</h1>
                                 <p>Time Limit:{{ problem.javaTimeLimit }}/{{ problem.timeLimit }}(Java/Others)&nbsp;&nbsp;Memory Limit:{{ problem.javaMemoryLimit }}/{{ problem.memoryLimit }}(Java/Others)</p>
                                 <button type="button" class="btn btn-primary btn-md block-center" data-toggle="modal" data-target="#submitProb">submit</button>
-                                <a type="button" href="/status/index.html?problemId={{ problem.problemId }}" class="btn btn-primary btn-md block-center">status</a>
+                                <a type="button" v-on:click.prevent="checkProbStatus(problem.problemId)" class="btn btn-primary btn-md block-center">status</a>
                             </div>
                             <div class="col-md-12">
                                 <p id="description"></p>
@@ -267,6 +267,50 @@
                         </div>
                         <!-- 题目通过状态 -->
                         <div role="tabpanel" class="tab-pane row" id="status">
+                            <!-- 查询框 start -->
+                            <div class="row">
+                                <div class="col-md-12 search-bar">
+                                    <form class="form-inline" v-on:submit.prevent="searchProbStatus">
+                                        <div class="form-group">
+                                            <label for="user">用户</label>
+                                            <input v-model="search.userId" type="text" class="form-control" placeholder="User ID" id="user">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="prob">题目</label>
+                                            <input v-model="search.probId" type="text" class="form-control" placeholder="Prob ID" id="prob">
+                                        </div>
+                                        <div class="form-group">
+                                        <label for="result">状态</label>
+                                            <select v-model="search.result" class="form-control" id="result">
+                                                <option value=""  selected="selected">All</option>
+                                                <option value="1">Accepted</option>
+                                                <option value="2">Presentation Error</option>
+                                                <option value="3">Time Limit Exceeded</option>
+                                                <option value="4">Memory Limit Exceeded</option>
+                                                <option value="5">Wrong Answer</option>
+                                                <option value="6">Output Limit Exceeded</option>
+                                                <option value="7">Compilation Error</option>
+                                                <option value="8">Runtime Error</option>
+                                                <option value="9">Restricted Function</option>
+                                                <option value="10">System Error</option>
+                                                <option value="11">Judging</option><option value="12">Queuing</option>
+                                                <option value="13">Not accepted</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="language">语言</label>
+                                            <select v-model="search.languageId" class="form-control" id="language">
+                                                <option value="" selected="selected">All</option>
+                                                <option value="0">C</option>
+                                                <option value="1" >C++</option>
+                                                <option value="2">Java</option>
+                                            </select>
+                                        </div>
+                                        <button  type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- 查询框 end -->
                             <!-- 分页工具 start-->
                             <div class="row">
                                 <nav class="col-md-12">

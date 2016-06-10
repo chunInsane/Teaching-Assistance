@@ -61,6 +61,13 @@ let contestDetails = Vue.extend({
                 maxPage:1,      // 分页列表中最大页码值
                 minPage:1,      // 分页列表中最小页码值
             },
+            search: {
+                contestId: '',
+                probId: '',
+                userId: '',
+                languageId: 0,
+                result: 0,
+            },
         };
     },
     ready:function(){
@@ -117,10 +124,15 @@ let contestDetails = Vue.extend({
                             // 获取提交状态列表 & rank 列表
                             if(_this.contestId){
                                 // 获取提交状态列表
-                                let search = {
-                                    contestId: _this.contestId,
-                                };
-                                let pageInfo = getPageList2(1, search);
+                                // let search = {
+                                //     contestId: _this.contestId,
+                                //     userId: '',
+                                //     problemId: '',
+                                //     languageId: 0,
+                                //     result: 0,
+                                // };
+                                _this.search.contestId = _this.contestId;
+                                let pageInfo = getPageList2(1, _this.search);
                                 setPage2(pageInfo, _this);
                                 // 设置 rank 列表（此处初始化 ）
                                 setRankList(_this);
@@ -236,6 +248,30 @@ let contestDetails = Vue.extend({
             this.submitProbId = this.problem.problemId;
             setProbAttr(this.problem);
         },
+        /*
+         * 根据 problemId 显示题目提交状态
+         */
+        checkProbStatus: function (id){
+            console.log(id);
+            $("#tab_1 a").eq(2).tab('show');
+            // this.hightlightProb = id; // from 0
+            // this.problem = this.problemList[index];
+            // this.submitProbId = this.problem.problemId;
+            // setProbAttr(this.problem);
+            this.search.contestId = this.contestId;
+            this.search.problemId = id;
+            let pageInfo = getPageList2(1, this.search);
+            setPage2(pageInfo, this);
+        },
+        /**
+         * 根据关键属性查询题目提交状态
+         */
+        searchProbStatus: function(){
+            console.log("search");
+            let search = this.search;
+            let pageInfo = getPageList2(1, search);
+            setPage2(pageInfo, this);
+        },
         /**
          * 提交题目
          *
@@ -297,7 +333,7 @@ let contestDetails = Vue.extend({
          * @return {[type]}       [description]
          */
         setPage: function(index){
-            console.log(index);
+            // console.log(index);
             let pageInfo = getPageList2(index);
             setPage(pageInfo, this);
         },
@@ -594,7 +630,6 @@ function getPageList2( p, search ){
         data.currentPage = p;
     }
     let result = {};
-
     $.ajax({
         method:"post",
         data:JSON.stringify(data),
