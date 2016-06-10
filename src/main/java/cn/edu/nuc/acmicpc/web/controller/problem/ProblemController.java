@@ -13,7 +13,10 @@ import cn.edu.nuc.acmicpc.dto.UserDto;
 import cn.edu.nuc.acmicpc.form.condition.ProblemCondition;
 import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
 import cn.edu.nuc.acmicpc.form.dto.problem.ProblemEditDto;
-import cn.edu.nuc.acmicpc.service.*;
+import cn.edu.nuc.acmicpc.service.FileService;
+import cn.edu.nuc.acmicpc.service.PictureService;
+import cn.edu.nuc.acmicpc.service.ProblemService;
+import cn.edu.nuc.acmicpc.service.StatusService;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.xml.transform.Result;
 import java.util.*;
 
 /**

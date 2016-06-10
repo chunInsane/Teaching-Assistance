@@ -35,8 +35,8 @@ let addProb = Vue.extend({
             javaTimeLimit: 3000,
             MemoryLimit: 65535,
             JavaMemoryLimit: 65535,
-            OutputLimit: 65535,
-            TotalData: "",
+            OutputLimit: 8000,
+            TotalData: 0,
             isSpj: false,
             isVisible: false,
             description: "",
@@ -89,6 +89,7 @@ let addProb = Vue.extend({
             let prob = {};
             this.canSubmit = true; // 初始化
             prob.action = "new";
+            prob.title = this.title;
             prob.description = this.description;
             prob.hint = this.hint;
             prob.input = this.input;
@@ -103,34 +104,33 @@ let addProb = Vue.extend({
             prob.sampleOutput = this.sample_output;
             prob.source = this.source;
             prob.timeLimit = this.TimeLimit;
-            prob.title = this.title;
             // prob.TotalData = this.TotalData;    // 上传文件名
             console.log(prob);
             for(let item in prob){
-                if(!(item === "isSpj" || item === "isVisible")){
+                if(item === "action" || item === "title"){
                     if(prob[item] == ""){
                         layer.msg(item + "不能为空！");
                         this.canSubmit = false;
                     }
                 }
             }
-            if(prob.sampleInput.length > 0){
-                for(let item in prob.sampleInput){
-                    if(prob.sampleInput[item] === ""){
-                        layer.msg("第" + (item) + "个SampleInput不能为空！");
-                        this.canSubmit = false;
-                    }
-                }
-                for(let item in prob.sampleOutput){
-                    if(prob.sampleOutput[item] === ""){
-                        layer.msg("第" + (item) + "个sampleOutput不能为空！");
-                        this.canSubmit = false;
-                    }
-                }
-            } else {
-                layer.msg("请添加sampleInput、sampleOutput！");
-                this.canSubmit = false;
-            }
+            //if(prob.sampleInput.length > 0){
+            //    for(let item in prob.sampleInput){
+            //        if(prob.sampleInput[item] === ""){
+            //            layer.msg("第" + (item) + "个SampleInput不能为空！");
+            //            this.canSubmit = false;
+            //        }
+            //    }
+            //    for(let item in prob.sampleOutput){
+            //        if(prob.sampleOutput[item] === ""){
+            //            layer.msg("第" + (item) + "个sampleOutput不能为空！");
+            //            this.canSubmit = false;
+            //        }
+            //    }
+            //} else {
+            //    layer.msg("请添加sampleInput、sampleOutput！");
+            //    this.canSubmit = false;
+            //}
 
 
             if(this.canSubmit){
@@ -163,21 +163,23 @@ let addProb = Vue.extend({
             let problemId = "new";
             let file = document.getElementById('TotalData').files[0];
             if(file){
-                if(file.type !== "application/x-zip-compressed"){
+                if(file.type !== "application/zip" && file.type !== "application/x-compressed"
+                    && file.type !== "application/x-zip-compressed" && file.type !== "multipart/x-zip"){
                     layer.msg("文件格式必须为zip");
                 }else{
                     let formData = new FormData();
-                    formData.append('upload', file);
+                    formData.append('uploadFile', file);
                     var xhr = new XMLHttpRequest();
-                    xhr.open('POST', "/uploadDataFile/"+problemId);
+                    xhr.open('POST', "/problem/uploadDataFile/"+problemId);
                     // 定义上传完成后的回调函数
-                    xhr.onload = function (msg) {
-                        if (xhr.status === 200 && msg.status === 200) {
+                    xhr.onload = function () {
+                        let message = JSON.parse(xhr.response);
+                        if (xhr.status === 200 && message.status === 200) {
                             layer.msg('上传成功');
                             return true;
                         } else {
                             layer.msg('文件上传出错');
-                            showAjaxMsg(msg);
+                            showAjaxMsg(message);
                             return false;
                         }
             　　　　};

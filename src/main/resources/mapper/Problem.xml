@@ -147,7 +147,7 @@
             <if test="title != null"> `title` = #{title}, </if>
             <if test="description != null"> `description` = #{description}, </if>
             <if test="input != null"> `input` = #{input}, </if>
-            <if test="output != null"> `ouput` = #{output}, </if>
+            <if test="output != null"> `output` = #{output}, </if>
             <if test="sampleInput != null"> `sample_input` = #{sampleInput}, </if>
             <if test="sampleOutput != null"> `sample_output` = #{sampleOutput}, </if>
             <if test="hint != null"> `hint` = #{hint}, </if>

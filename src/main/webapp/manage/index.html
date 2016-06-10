@@ -90,20 +90,8 @@
 
         <!-- 添加题目 start -->
         <script type="text/html" id="add-problems">
-            <h2>New problems</h2>
-            <p><a href="http://wowubuntu.com/markdown/basic.html">如何编写markdown？</a></p>
+            <h2>New Problems<label class="font-sm red-500" style="font-weight:400;text-indent:2rem;"><a href="http://wowubuntu.com/markdown/basic.html">如何编写markdown？</a></label></h2>
 
-            <div class="col-lg-12">
-                <div class="form-group">
-                    <label for="TotalData">Total Data</label>
-                    <form enctype="multipart/form-data">
-                        <input id="TotalData" class="file" type="file" multiple data-min-file-count="1">
-                        <br>
-                        <button v-on:click.stop.prevent="uploadFile()" type="submit" class="btn btn-primary">Submit</button>
-                        <button type="reset" class="btn btn-default">Reset</button>
-                    </form>
-                </div>
-            </div>
             <form enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="form-group">
@@ -142,7 +130,7 @@
                     <div class="form-group">
                         <label for="JavaMemoryLimit" class="col-sm-4 control-label">Java Memory Limit</label>
                         <div class="col-sm-8 input-group input-group-sm">
-                            <input name="JavaMemoryLimit" v-model="JavaMemoryLimit" type="number" id="JavaMemoryLimit" class="form-control" value="3000" required>
+                            <input name="JavaMemoryLimit" v-model="JavaMemoryLimit" type="number" id="JavaMemoryLimit" class="form-control" value="65535" required>
                             <span class="input-group-addon">kb</span>
                         </div>
                     </div>
@@ -151,7 +139,7 @@
                     <div class="form-group">
                         <label for="OutputLimit" class="col-sm-4 control-label">Output Limit</label>
                         <div class="col-sm-8 input-group input-group-sm">
-                            <input name="OutputLimit" v-model="OutputLimit" type="number" id="OutputLimit" class="form-control" value="65535" required>
+                            <input name="OutputLimit" v-model="OutputLimit" type="number" id="OutputLimit" class="form-control" value="8000" required>
                             <span class="input-group-addon">kb</span>
                         </div>
                     </div>
@@ -213,7 +201,19 @@
                         <textarea data-provide="markdown" name="output" v-model="output" id="output" cols="50" rows="3" required></textarea>
                     </div>
                 </div>
-
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label for="TotalData">Total Data</label>
+                        <div>
+                             <!-- enctype="multipart/form-data" -->
+                            <input id="TotalData" class="file" type="file" multiple data-min-file-count="1">
+                            <br>
+                            <button v-on:click.stop.prevent="uploadFile()" type="submit" class="btn btn-primary">Upload</button>
+                            <button type="reset" class="btn btn-default">Clean</button>
+                            <label class="red-500">You must upload the file before submit！</label>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-sm-12">
                     <label for="sample">Sample input and output</label>
                     <div class="col-sm-offset-1 col-sm-11">
@@ -255,8 +255,8 @@
         <!-- 添加题目模板 end -->
         <!-- 添加比赛模板 start -->
         <script type="text/html" id="add-contests">
-            <h2>New Contests</h2>
-            <p><a href="http://wowubuntu.com/markdown/basic.html">如何编写markdown？</a></p>
+            <h2>New Contests<label class="font-sm red-500" style="font-weight:400;text-indent:2rem;"><a href="http://wowubuntu.com/markdown/basic.html">如何编写markdown？</a></label></h2>
+
             <form enctype="multipart/form-data" class="form-horizontal">
                 <div class="form-group">
                     <label for="title" class="col-sm-2 control-label">Contests Title</label>
