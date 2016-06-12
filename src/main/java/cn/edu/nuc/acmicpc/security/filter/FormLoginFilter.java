@@ -2,6 +2,7 @@ package cn.edu.nuc.acmicpc.security.filter;
 
 import cn.edu.nuc.acmicpc.common.constant.StatusConstant;
 import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
+import cn.edu.nuc.acmicpc.form.dto.user.LoginUserDto;
 import com.alibaba.fastjson.JSON;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -14,6 +15,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -91,9 +93,26 @@ public class FormLoginFilter extends PathMatchingFilter {
         }
     }
 
+    private String getRequestPayload(HttpServletRequest req) {
+        StringBuilder sb = new StringBuilder();
+        try(BufferedReader reader = req.getReader()) {
+            char[]buff = new char[1024];
+            int len;
+            while((len = reader.read(buff)) != -1) {
+                sb.append(buff,0, len);
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
+    }
+
     private boolean login(HttpServletRequest req) {
-        String username = req.getParameter(usernameParam);
-        String password = req.getParameter(passwordParam);
+        String requestPayloadStr = getRequestPayload(req);
+        LoginUserDto loginUserDto = JSON.parseObject(requestPayloadStr, LoginUserDto.class);
+        String username = loginUserDto.getUserName();
+        String password = loginUserDto.getPassword();
+
         try {
             SecurityUtils.getSubject().login(new UsernamePasswordToken(username, password));
         } catch (Exception e) {
