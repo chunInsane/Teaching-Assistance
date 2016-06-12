@@ -7,6 +7,7 @@ import cn.edu.nuc.acmicpc.web.common.PageInfo;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created with IDEA
@@ -29,6 +30,13 @@ public interface UserService {
      * @return
      */
     public UserDto getUserByUsername(String username);
+
+    /**
+     * Get user's roles information.
+     * @param username
+     * @return
+     */
+    public Set<String> getRolesByUsername(String username);
 
     /**
      * Update user information by userDto

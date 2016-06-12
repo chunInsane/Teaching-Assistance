@@ -83,4 +83,5 @@
         <!-- max upload size in bytes -->
         <property name="maxUploadSize" value="20971520" /> <!-- 20MB -->
     </bean>
+
 </beans>

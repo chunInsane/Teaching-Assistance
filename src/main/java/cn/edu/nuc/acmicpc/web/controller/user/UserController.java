@@ -67,11 +67,6 @@ public class UserController {
     @Autowired
     private CaptchaService captchaService;
 
-    @RequestMapping("/toLogin")
-    public String toLogin(Model model) {
-        return "user/login";
-    }
-
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public @ResponseBody ResultDto login(HttpSession session, @RequestBody @Valid LoginUserDto loginUser,
                                       BindingResult validateResult) {

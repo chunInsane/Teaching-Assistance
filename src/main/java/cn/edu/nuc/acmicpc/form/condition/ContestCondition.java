@@ -36,6 +36,9 @@ public class ContestCondition extends BasicCondition {
 
     public Map<String, Object> toConditionMap() {
         Map<String, Object> conditionMap = super.toConditionMap();
+        if (keyword != null) {
+            conditionMap.put("keyword", keyword);
+        }
         if (startId != null) {
             conditionMap.put("startId", startId);
         }

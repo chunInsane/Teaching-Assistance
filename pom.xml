@@ -14,6 +14,7 @@
       <org.slf4j.version>1.6.2</org.slf4j.version>
       <logback.version>1.0.7</logback.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <shiro.version>1.2.2</shiro.version>
   </properties>
 
   <dependencies>
@@ -256,8 +257,34 @@
           </exclusions>
       </dependency>
 
-  </dependencies>
+      <!--shiro-->
+      <dependency>
+          <groupId>org.apache.shiro</groupId>
+          <artifactId>shiro-core</artifactId>
+          <version>${shiro.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.shiro</groupId>
+          <artifactId>shiro-web</artifactId>
+          <version>${shiro.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.shiro</groupId>
+          <artifactId>shiro-ehcache</artifactId>
+          <version>${shiro.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.shiro</groupId>
+          <artifactId>shiro-spring</artifactId>
+          <version>${shiro.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.shiro</groupId>
+          <artifactId>shiro-quartz</artifactId>
+          <version>${shiro.version}</version>
+      </dependency>
 
+  </dependencies>
 
   <build>
       <finalName>Teaching-Assistance</finalName>
@@ -286,7 +313,7 @@
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>maven-jetty-plugin</artifactId>
-                <version>6.1.10</version>
+                <version>6.1.26</version>
                 <configuration>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                     <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>

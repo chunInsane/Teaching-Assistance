@@ -1,5 +1,7 @@
 package cn.edu.nuc.acmicpc.service.impl;
 
+import cn.edu.nuc.acmicpc.common.enums.AuthenticationType;
+import cn.edu.nuc.acmicpc.common.exception.AppException;
 import cn.edu.nuc.acmicpc.dto.UserDto;
 import cn.edu.nuc.acmicpc.dto.TypeAheadUserDto;
 import cn.edu.nuc.acmicpc.mapper.UserMapper;
@@ -15,8 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -41,6 +45,16 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserByUsername(String username) {
         checkArgument(StringUtils.isNotBlank(username), "username为空!");
         return userMapper.getUserByUsername(username);
+    }
+
+    @Override
+    public Set<String> getRolesByUsername(String username) {
+        UserDto userDto = getUserByUsername(username);
+        Set<String> roles = new HashSet<>();
+        if (userDto != null) {
+            roles.add(AuthenticationType.values()[userDto.getType()].getDescription());
+        }
+        return roles;
     }
 
     @Override
