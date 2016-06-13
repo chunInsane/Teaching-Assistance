@@ -262,8 +262,8 @@ let contestDetails = Vue.extend({
          */
         getRankList: function(){
             this.search.contestId = this.contestId;
-            let pageInfo = getPageList2(1, this.search);
-            setPage2(pageInfo, this);
+            // let pageInfo = getPageList2(1, this.search);
+            // setPage2(pageInfo, this);
             // 设置 rank 列表（此处初始化 ）
             setRankList(this);
         },
@@ -692,8 +692,10 @@ function setRankList(_this){
                 console.log("msg.result");
                 console.log(msg.result);
                 rank = msg.result;
-                _this.problemListLen = rank.rankList.problemList.length; // 设置比赛题目数
+                console.log(rank);
+                _this.problemListLen = rank.problemList.length; // 设置比赛题目数
                 _this.rankList = rank.rankList;
+                _this.problemList = rank.problemList;
                 return true;
             }else{
                 showAjaxMsg(msg);

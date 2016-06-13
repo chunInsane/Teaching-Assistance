@@ -376,7 +376,7 @@
                                     <th>Penalty</th>
                                     <th v-for="i in problemListLen">{{ i + 1 }}</th>
                                 </tr>
-                                <tr v-for="item in rankList.rankList" class="bg-blue-100">
+                                <tr v-for="item in rankList" class="bg-blue-100">
                                     <td>
                                         <div>
                                             {{ item.rank }}
@@ -408,6 +408,18 @@
                                         <div v-bind:class="{'bg-green-200': it.solved, 'bg-green-500': it.firstBlood}">
                                             {{ Math.floor(it.solvedTime / 1000 / (60*60)) }} : {{ Math.floor((it.solvedTime / 1000 % (60*60)) / 60) }} : {{ Math.floor((it.solvedTime / 1000 % (60*60)) % 60) }}
                                             <span v-if="it.tried != 0">&nbsp;({{ it.tried }})</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td v-for="item in  problemList" class="bg-black white">
+                                        <div>
+                                            <span>{{ item.solved }} / {{ item.tried }}</span>
+                                            <span>({{parseInt((item.solved / item.tried) *100) }}%)</span>
                                         </div>
                                     </td>
                                 </tr>

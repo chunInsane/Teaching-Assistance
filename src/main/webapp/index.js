@@ -292,90 +292,193 @@ app.get('/contest/rankList/:id', function(req, res){
     let list = {
     	status: 200,
     	result: {
-    		rankList: {
-    			lastFetched: 1465531198689,
-    			problemList: [
-    				{
-    				solved: 7,
-    				title: "1028",
-    				tried: 44
-    				},
-    				{
-    				solved: 1,
-    				title: "1029",
-    				tried: 20
-    				},
-    				{
-    				solved: 2,
-    				title: "1030",
-    				tried: 29
-    				},
-    				{
-    				solved: 2,
-    				title: "1031",
-    				tried: 17
-    				},
-    				{
-    				solved: 1,
-    				title: "1032",
-    				tried: 9
-    				}
-    			],
-    			rankList: [
-    				{
-    				email: "fsdfssef@woiefh",
-    				itemList: [
-    				{
-    				firstBlood: false,
-    				penalty: 280,
-    				solved: true,
-    				solvedTime: 5400000,
-    				tried: -1,
-    				triedAfterFrozen: false
-    				},
-    				{
-    				firstBlood: false,
-    				penalty: 3688,
-    				solved: false,
-    				solvedTime: 222222,
-    				tried: 0,
-    				triedAfterFrozen: false
-    				},
-    				{
-    				firstBlood: true,
-    				penalty: 2820,
-    				solved: true,
-    				solvedTime: 2820000,
-    				tried: 0,
-    				triedAfterFrozen: false
-    				},
-    				{
-    				firstBlood: false,
-    				penalty: 1699,
-    				solved: true,
-    				solvedTime: 1699000,
-    				tried: 0,
-    				triedAfterFrozen: false
-    				},
-    				{
-    				firstBlood: true,
-    				penalty: 5487,
-    				solved: true,
-    				solvedTime: 5487000,
-    				tried: 0,
-    				triedAfterFrozen: false
-    				}
-    				],
-    				name: "bugs",
-    				nickName: "千里之外",
-    				penalty: 13974,
-    				rank: 1,
-    				reallyName: "送你离开",
-    				solved: 5,
-    				tried: 5
-    				}
-    			]
-    		}
+    		// rankList: {
+			lastFetched: 1465531198689,
+			problemList: [
+				{
+				solved: 7,
+				title: "1028",
+				tried: 44
+				},
+				{
+				solved: 1,
+				title: "1029",
+				tried: 20
+				},
+				{
+				solved: 2,
+				title: "1030",
+				tried: 29
+				},
+				{
+				solved: 2,
+				title: "1031",
+				tried: 17
+				},
+				{
+				solved: 1,
+				title: "1032",
+				tried: 9
+				}
+			],
+			rankList: [
+				{
+				email: "fsdfssef@woiefh",
+				itemList: [
+				{
+				firstBlood: false,
+				penalty: 280,
+				solved: true,
+				solvedTime: 5400000,
+				tried: -1,
+				triedAfterFrozen: false
+				},
+				{
+				firstBlood: false,
+				penalty: 3688,
+				solved: false,
+				solvedTime: 222222,
+				tried: 0,
+				triedAfterFrozen: false
+				},
+				{
+				firstBlood: true,
+				penalty: 2820,
+				solved: true,
+				solvedTime: 2820000,
+				tried: 0,
+				triedAfterFrozen: false
+				},
+				{
+				firstBlood: false,
+				penalty: 1699,
+				solved: true,
+				solvedTime: 1699000,
+				tried: 0,
+				triedAfterFrozen: false
+				},
+				{
+				firstBlood: true,
+				penalty: 5487,
+				solved: true,
+				solvedTime: 5487000,
+				tried: 0,
+				triedAfterFrozen: false
+				}
+				],
+				name: "bugs",
+				nickName: "千里之外",
+				penalty: 13974,
+				rank: 1,
+				reallyName: "送你离开",
+				solved: 5,
+				tried: 5
+                },
+                {
+				email: "fsdfssef@woiefh",
+				itemList: [
+				{
+				firstBlood: false,
+				penalty: 280,
+				solved: true,
+				solvedTime: 5400000,
+				tried: -1,
+				triedAfterFrozen: false
+				},
+				{
+				firstBlood: false,
+				penalty: 3688,
+				solved: false,
+				solvedTime: 222222,
+				tried: 0,
+				triedAfterFrozen: false
+				},
+				{
+				firstBlood: true,
+				penalty: 2820,
+				solved: true,
+				solvedTime: 2820000,
+				tried: 0,
+				triedAfterFrozen: false
+				},
+				{
+				firstBlood: false,
+				penalty: 1699,
+				solved: true,
+				solvedTime: 1699000,
+				tried: 0,
+				triedAfterFrozen: false
+				},
+				{
+				firstBlood: true,
+				penalty: 5487,
+				solved: true,
+				solvedTime: 5487000,
+				tried: 0,
+				triedAfterFrozen: false
+				}
+				],
+				name: "bugs",
+				nickName: "千里之外",
+				penalty: 13974,
+				rank: 1,
+				reallyName: "送你离开",
+				solved: 5,
+				tried: 5
+                },
+                {
+				email: "fsdfssef@woiefh",
+				itemList: [
+				{
+				firstBlood: false,
+				penalty: 280,
+				solved: true,
+				solvedTime: 5400000,
+				tried: -1,
+				triedAfterFrozen: false
+				},
+				{
+				firstBlood: false,
+				penalty: 3688,
+				solved: false,
+				solvedTime: 222222,
+				tried: 0,
+				triedAfterFrozen: false
+				},
+				{
+				firstBlood: true,
+				penalty: 2820,
+				solved: true,
+				solvedTime: 2820000,
+				tried: 0,
+				triedAfterFrozen: false
+				},
+				{
+				firstBlood: false,
+				penalty: 1699,
+				solved: true,
+				solvedTime: 1699000,
+				tried: 0,
+				triedAfterFrozen: false
+				},
+				{
+				firstBlood: true,
+				penalty: 5487,
+				solved: true,
+				solvedTime: 5487000,
+				tried: 0,
+				triedAfterFrozen: false
+				}
+				],
+				name: "bugs",
+				nickName: "千里之外",
+				penalty: 13974,
+				rank: 1,
+				reallyName: "送你离开",
+				solved: 5,
+				tried: 5
+            },
+			]
     	}
     };
     res.json(list);
