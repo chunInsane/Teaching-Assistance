@@ -8,17 +8,20 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created with IDEA
  * User: chuninsane
  * Date: 16/6/12
+ * User realm.
  */
 public class UserRealm extends AuthorizingRealm {
 
-    @Autowired
     private UserService userService;
+
+    public UserService getUserService() {
+        return userService;
+    }
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -38,7 +41,6 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
         String username = (String)token.getPrincipal();
-
         UserDto user = userService.getUserByUsername(username);
 
         if(user == null) {
@@ -46,9 +48,9 @@ public class UserRealm extends AuthorizingRealm {
         }
 
         //TODO 账号锁定功能
-//        if(Boolean.TRUE.equals(user.getLocked())) {
-//            throw new LockedAccountException(); //帐号锁定
-//        }
+        //if(Boolean.TRUE.equals(user.getLocked())) {
+        //    throw new LockedAccountException(); //帐号锁定
+        //}
 
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
@@ -87,5 +89,4 @@ public class UserRealm extends AuthorizingRealm {
         clearAllCachedAuthenticationInfo();
         clearAllCachedAuthorizationInfo();
     }
-
 }

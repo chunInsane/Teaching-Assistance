@@ -15,12 +15,13 @@
     <bean id="credentialsMatcher" class="cn.edu.nuc.acmicpc.security.credentials.RetryLimitHashedCredentialsMatcher">
         <constructor-arg ref="cacheManager"/>
         <property name="hashAlgorithmName" value="md5"/>
-        <property name="hashIterations" value="2"/>
+        <property name="hashIterations" value="1"/>
         <property name="storedCredentialsHexEncoded" value="true"/>
     </bean>
 
     <!-- Realm实现 -->
     <bean id="userRealm" class="cn.edu.nuc.acmicpc.security.realm.UserRealm">
+        <property name="userService" ref="userService"/>
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
         <property name="cachingEnabled" value="true"/>
         <property name="authenticationCachingEnabled" value="true"/>
@@ -77,6 +78,7 @@
 
     <!-- 基于Form表单的身份验证过滤器 -->
     <bean id="formAuthenticationFilter" class="cn.edu.nuc.acmicpc.security.filter.FormLoginFilter">
+        <property name="userService" ref="userService"/>
         <property name="usernameParam" value="username"/>
         <property name="passwordParam" value="password"/>
         <property name="loginUrl" value="/user/login"/>
@@ -86,6 +88,7 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/index.html"/>
+        <property name="unauthorizedUrl" value="/unauthorized.html"/>
         <property name="filters">
             <util:map>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
@@ -93,10 +96,7 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
-                /index.html = anon
-                /unauthorized.html = anon
                 /user/login = authc
-                /logout = logout
                 /** = anon
             </value>
         </property>

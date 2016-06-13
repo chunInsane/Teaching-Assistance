@@ -29,7 +29,6 @@ import java.util.Set;
  * Date: 16/4/2
  * User service implement.
  */
-@Service("userService")
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
 

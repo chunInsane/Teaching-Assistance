@@ -11,6 +11,7 @@ import cn.edu.nuc.acmicpc.service.DepartmentService;
 import cn.edu.nuc.acmicpc.service.LanguageService;
 import cn.edu.nuc.acmicpc.service.RecentContestService;
 import com.alibaba.fastjson.JSON;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,14 +35,6 @@ public class IndexController {
     private DepartmentService departmentService;
     @Autowired
     private LanguageService languageService;
-    @Autowired
-    private RecentContestService recentContestService;
-
-
-    @RequestMapping("/")
-    public String index() {
-        return "index";
-    }
 
     /**
      * redirect the page when use IE.
@@ -52,10 +45,11 @@ public class IndexController {
         return "nonsupport";
     }
 
+    @RequiresAuthentication
     @RequestMapping("data")
     public @ResponseBody ResultDto data(HttpSession session) {
         ResultDto resultDto = new ResultDto();
-        UserDto currentUser = SessionUtil.getCurrentLoginUser(session);
+        UserDto currentUser = SessionUtil.getCurrentLoginUser();
         if (currentUser == null) {
             resultDto.setStatus(StatusConstant.UNAUTHERIZED);
             return resultDto;

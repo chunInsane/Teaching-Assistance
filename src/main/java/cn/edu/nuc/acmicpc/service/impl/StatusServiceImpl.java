@@ -95,9 +95,10 @@ public class StatusServiceImpl implements StatusService {
     @Override
     public List<StatusDto> getShowStatusList(Map<String, Object> condition, PageInfo pageInfo) {
         checkNotNull(condition);
-        checkNotNull(pageInfo);
-        condition.put("firstNo", pageInfo.getFirstNo());
-        condition.put("pageSize", pageInfo.getCountPerPage());
+        if (pageInfo != null) {
+            condition.put("firstNo", pageInfo.getFirstNo());
+            condition.put("pageSize", pageInfo.getCountPerPage());
+        }
         return statusMapper.getShowStatusList(condition);
     }
 

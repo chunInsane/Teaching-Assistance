@@ -23,6 +23,7 @@ import java.io.IOException;
  * Captcha controller.
  */
 @Controller
+@RequestMapping("/")
 public class CaptchaController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CaptchaController.class);

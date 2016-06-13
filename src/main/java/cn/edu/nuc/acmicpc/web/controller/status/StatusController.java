@@ -15,6 +15,8 @@ import cn.edu.nuc.acmicpc.form.dto.status.ShowStatusDto;
 import cn.edu.nuc.acmicpc.form.dto.status.SubmitStatusDto;
 import cn.edu.nuc.acmicpc.service.*;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,20 +53,17 @@ public class StatusController {
     @Autowired
     private CodeService codeService;
     @Autowired
-    private CompileInfoService compileInfoService;
-    @Autowired
     private ContestService contestService;
     @Autowired
     private ContestProblemService contestProblemService;
     @Autowired
     private LanguageService languageService;
     @Autowired
-    private UserService userService;
-    @Autowired
     private Settings settings;
 
+    @RequiresAuthentication
     @RequestMapping("search")
-    public @ResponseBody ResultDto search(HttpSession session, @RequestBody StatusCondition condition) {
+    public @ResponseBody ResultDto search(@RequestBody StatusCondition condition) {
         ResultDto resultDto = new ResultDto();
         if (condition.contestId == null) {
             condition.contestId = -1L;
@@ -72,7 +71,7 @@ public class StatusController {
         if (condition.result == null) {
             condition.result = JudgeResultType.JUDGE_ALL;
         }
-        if (!SessionUtil.isAdmin(session)) {
+        if (!SessionUtil.isAdmin()) {
             condition.isForAdmin = false;
             if (condition.contestId != -1) {
                 ContestDto contestDto = contestService.getContestDtoByContestId(condition.contestId);
@@ -81,7 +80,7 @@ public class StatusController {
                     throw new AppException("不存在该比赛!");
                 }
                 //check permission
-                if (SessionUtil.checkContestPermission(session, condition.contestId)) {
+                if (SessionUtil.checkContestPermission(condition.contestId)) {
                     resultDto.setStatus(StatusConstant.UNAUTHORIZED);
                     return resultDto;
                 }
@@ -126,13 +125,13 @@ public class StatusController {
 
     /**
      * submit code.
-     * @param session
      * @param submitDto
      * @param validateResult
      * @return
      */
+    @RequiresAuthentication
     @RequestMapping("/submit")
-    public @ResponseBody ResultDto submit(HttpSession session, @RequestBody @Valid SubmitStatusDto submitDto,
+    public @ResponseBody ResultDto submit(@RequestBody @Valid SubmitStatusDto submitDto,
                                        BindingResult validateResult) {
         ResultDto resultDto = new ResultDto();
         if (validateResult.hasErrors()) {
@@ -141,8 +140,7 @@ public class StatusController {
             return resultDto;
         }
 
-        UserDto currentUser = SessionUtil.getCurrentLoginUser(session);
-
+        UserDto currentUser = SessionUtil.getCurrentLoginUser();
         //check language
         if (submitDto.getLanguageId() == null) {
             throw new AppException("请选择语言!");
@@ -169,17 +167,17 @@ public class StatusController {
                     submitDto.getContestId())) {
                 throw new AppException("错误的题目id.");
             }
-            if (!SessionUtil.isAdmin(session)) {
+            if (!SessionUtil.isAdmin()) {
                 Timestamp currentTime = DateUtil.getCurrentTime();
                 if (currentTime.before(contestDto.getStartTime()) || currentTime.after(contestDto.getEndTime())) {
                     throw new AppException("比赛已经结束!");
                 }
-                if (!SessionUtil.checkContestPermission(session, submitDto.getContestId())) {
+                if (!SessionUtil.checkContestPermission(submitDto.getContestId())) {
                     throw new AppException("尚未注册该比赛!");
                 }
             }
         } else { //status not in contest
-            if (!SessionUtil.isAdmin(session)) {
+            if (!SessionUtil.isAdmin()) {
                 if (!problemDto.getIsVisible()) {
                     throw new AppException("不存在该比赛!");
                 }

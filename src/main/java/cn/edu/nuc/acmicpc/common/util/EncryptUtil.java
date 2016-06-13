@@ -1,12 +1,9 @@
 package cn.edu.nuc.acmicpc.common.util;
 
-import com.google.common.base.Charsets;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.BASE64Encoder;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 /**
@@ -19,24 +16,25 @@ public class EncryptUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EncryptUtil.class);
 
-    private static final String SALT = "nf94t90jnd-as81;";
+    private static final String DEFAULT_SALT = "dcaijopq4901jf";
+
+    public static String encoderByMd5(String originalStr, String salt) {
+       return new Md5Hash(originalStr, salt).toHex();
+    }
 
     public static String encoderByMd5(String originalStr) {
-        MessageDigest md5 = null;
-        try {
-          md5 = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("", e);
-        }
-        BASE64Encoder base64en = new BASE64Encoder();
-        md5.update(originalStr.getBytes(Charsets.UTF_8));
-        md5.update(SALT.getBytes(Charsets.UTF_8));
-        String encodeStr = base64en.encode(md5.digest());
-        return encodeStr;
+        return EncryptUtil.encoderByMd5(originalStr, DEFAULT_SALT);
+    }
+
+    public static boolean checkPassword(String originalStr, String salt, String encodeStr) {
+        return Objects.equals(encoderByMd5(originalStr, salt), encodeStr);
     }
 
     public static boolean checkPassword(String originalStr, String encodeStr) {
-        return Objects.equals(encoderByMd5(originalStr), encodeStr);
+        return EncryptUtil.checkPassword(originalStr, DEFAULT_SALT, encodeStr);
     }
 
+    public static void main(String[] args) {
+        System.out.println(encoderByMd5("111111"));
+    }
 }

@@ -1,11 +1,10 @@
 package cn.edu.nuc.acmicpc.web.controller.user;
 
-import cn.edu.nuc.acmicpc.common.constant.SessionConstant;
 import cn.edu.nuc.acmicpc.common.constant.StatusConstant;
 import cn.edu.nuc.acmicpc.common.exception.AppException;
 import cn.edu.nuc.acmicpc.common.settings.Settings;
 import cn.edu.nuc.acmicpc.common.util.DateUtil;
-import cn.edu.nuc.acmicpc.common.util.EncryptUtil;
+import cn.edu.nuc.acmicpc.common.util.SessionUtil;
 import cn.edu.nuc.acmicpc.common.util.UUIDUtil;
 import cn.edu.nuc.acmicpc.common.util.ValidateUtil;
 import cn.edu.nuc.acmicpc.dto.TypeAheadUserDto;
@@ -13,17 +12,17 @@ import cn.edu.nuc.acmicpc.dto.UserDto;
 import cn.edu.nuc.acmicpc.form.condition.UserCondition;
 import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
 import cn.edu.nuc.acmicpc.form.dto.user.BasicInfoDto;
-import cn.edu.nuc.acmicpc.form.dto.user.LoginUserDto;
 import cn.edu.nuc.acmicpc.form.dto.user.ProfileUserDto;
 import cn.edu.nuc.acmicpc.form.dto.user.RegisterUserDto;
 import cn.edu.nuc.acmicpc.model.UserSerialKey;
 import cn.edu.nuc.acmicpc.service.*;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,45 +52,17 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private ProblemService problemService;
-    @Autowired
-    private StatusService statusService;
-    @Autowired
     private UserSerialKeyService userSerialKeyService;
     @Autowired
     private EmailService emailService;
-    @Autowired
-    private DepartmentService departmentService;
     @Autowired
     private Settings settings;
     @Autowired
     private CaptchaService captchaService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public @ResponseBody ResultDto login(HttpSession session, @RequestBody @Valid LoginUserDto loginUser,
-                                      BindingResult validateResult) {
-        ResultDto resultDto = new ResultDto();
-        if (validateResult.hasErrors()) {
-            resultDto.setStatus(StatusConstant.SERVER_ERROR);
-            resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
-        } else {
-            UserDto userDto = userService.getUserByUsername(loginUser.getUserName());
-            if (userDto == null || !EncryptUtil.checkPassword(loginUser.getPassword(), userDto.getPassword())) {
-                Map<String, String> errors = new HashMap<>();
-                errors.put("password", "用户名和密码不匹配!");
-                resultDto.setStatus(StatusConstant.SERVER_ERROR);
-                resultDto.setErrors(errors);
-            }
-            userDto.setLastLogin(DateUtil.getCurrentTime());
-            userService.updateUser(userDto);
-            session.setAttribute(SessionConstant.CURRENT_LOGIN_USER_KEY, userDto);
-        }
-        return resultDto;
-    }
-
     @RequestMapping("/logout")
-    public String logout(HttpSession session) {
-        session.removeAttribute(SessionConstant.CURRENT_LOGIN_USER_KEY);
+    public String logout() {
+        SessionUtil.logout();
         return "redirect:/index.html";
     }
 
@@ -221,6 +192,7 @@ public class UserController {
         return resultDto;
     }
 
+    @RequiresAuthentication
     @RequestMapping("/profile/{userId}")
     public @ResponseBody ResultDto profile(@PathVariable("userId") Long userId) {
         UserDto userDto = userService.getUserByUserId(userId);
@@ -232,6 +204,7 @@ public class UserController {
         return resultDto;
     }
 
+    @RequiresAuthentication
     @RequestMapping("/typeAheadItem/{username}")
     public @ResponseBody ResultDto typeAheadItem(@PathVariable("username") String username) {
         ResultDto resultDto = new ResultDto();
@@ -251,6 +224,7 @@ public class UserController {
         return resultDto;
     }
 
+    @RequiresAuthentication
     @RequestMapping("typeAheadList")
     public @ResponseBody ResultDto typeAheadList(@RequestBody UserCondition condition) {
         ResultDto resultDto = new ResultDto();

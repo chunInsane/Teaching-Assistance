@@ -3,6 +3,7 @@ package cn.edu.nuc.acmicpc.security.filter;
 import cn.edu.nuc.acmicpc.common.constant.StatusConstant;
 import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
 import cn.edu.nuc.acmicpc.form.dto.user.LoginUserDto;
+import cn.edu.nuc.acmicpc.service.UserService;
 import com.alibaba.fastjson.JSON;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 /**
@@ -30,17 +32,20 @@ public class FormLoginFilter extends PathMatchingFilter {
 
     private String passwordParam;
 
+    private UserService userService;
+
     private String loginUrl;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FormLoginFilter.class);
 
     @Override
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
-        if(SecurityUtils.getSubject().isAuthenticated()) {
-            return true; //已经登录过
-        }
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
+
+        if(SecurityUtils.getSubject().isAuthenticated() && !isLoginRequest(req)) {
+            return true; //已经登录过
+        }
         if(isLoginRequest(req)) {
             if("post".equalsIgnoreCase(req.getMethod())) { //form表单提交
                 boolean loginSuccess = login(req); //登录
@@ -54,6 +59,13 @@ public class FormLoginFilter extends PathMatchingFilter {
             responseUnautherized(resp);
             return false;
         }
+    }
+
+    private void updateLastLoginTime() {
+        //TODO
+//        userDto.setLastLogin(DateUtil.getCurrentTime());
+//        userService.updateUser(userDto);
+//        session.setAttribute(SessionConstant.CURRENT_LOGIN_USER_KEY, userDto);
     }
 
     private void responseUnautherized(HttpServletResponse response) {
@@ -95,7 +107,7 @@ public class FormLoginFilter extends PathMatchingFilter {
 
     private String getRequestPayload(HttpServletRequest req) {
         StringBuilder sb = new StringBuilder();
-        try(BufferedReader reader = req.getReader()) {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(req.getInputStream()))) {
             char[]buff = new char[1024];
             int len;
             while((len = reader.read(buff)) != -1) {
@@ -148,5 +160,13 @@ public class FormLoginFilter extends PathMatchingFilter {
 
     public void setLoginUrl(String loginUrl) {
         this.loginUrl = loginUrl;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }

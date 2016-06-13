@@ -18,6 +18,9 @@ import cn.edu.nuc.acmicpc.service.PictureService;
 import cn.edu.nuc.acmicpc.service.ProblemService;
 import cn.edu.nuc.acmicpc.service.StatusService;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,14 +56,15 @@ public class ProblemController {
     @Autowired
     private Settings settings;
 
+    @RequiresAuthentication
     @RequestMapping("/data/{problemId}")
-    public @ResponseBody ResultDto data(@PathVariable("problemId") Long problemId, HttpSession session) {
+    public @ResponseBody ResultDto data(@PathVariable("problemId") Long problemId) {
         ProblemDto problemDto = problemService.getProblemDtoByProblemId(problemId);
         if (null == problemDto) {
             LOGGER.error(String.format("不存在该题目, problemId = %s!", problemId));
             throw new AppException("不存在该题目!");
         }
-        if (!SessionUtil.isAdmin(session)) {
+        if (!SessionUtil.isAdmin()) {
             if (!problemDto.getIsVisible()) {
                 LOGGER.error(String.format("不存在该题目, problemId = %s!", problemId));
                 throw new AppException("不存在该题目!");
@@ -74,10 +78,11 @@ public class ProblemController {
         return resultDto;
     }
 
+    @RequiresAuthentication
     @RequestMapping("/search")
-    public @ResponseBody ResultDto search(HttpSession session, @RequestBody(required = false) ProblemCondition condition) {
+    public @ResponseBody ResultDto search(@RequestBody(required = false) ProblemCondition condition) {
         ResultDto resultDto = new ResultDto();
-        if (!SessionUtil.isAdmin(session)) {
+        if (!SessionUtil.isAdmin()) {
             condition.isVisible = true;
         }
         Map<String, Object> conditionMap = condition.toConditionMap();
@@ -85,7 +90,7 @@ public class ProblemController {
         PageInfo pageInfo = PageInfo.buildPageInfo(count, condition.currentPage, settings.RECORD_PER_PAGE, null);
         List<ProblemListDto> problemListDtos = problemService.getProblemListDtos(conditionMap, pageInfo);
 
-        Map<Long, ProblemSolvedStatusType> problemStatus = getProblemStatus(SessionUtil.getCurrentLoginUser(session), session);
+        Map<Long, ProblemSolvedStatusType> problemStatus = getProblemStatus(SessionUtil.getCurrentLoginUser());
 
         for (ProblemListDto problemListDto : problemListDtos) {
             ProblemSolvedStatusType problemSolvedStatusType = problemStatus.get(problemListDto.getProblemId());
@@ -103,6 +108,8 @@ public class ProblemController {
         return resultDto;
     }
 
+    @RequiresAuthentication
+    @RequiresRoles(value = {"Teacher", "Administrator"}, logical = Logical.OR)
     @RequestMapping("edit")
     public @ResponseBody ResultDto editProblem(@RequestBody @Valid ProblemEditDto problemEditDto, BindingResult validateResult) {
         ResultDto resultDto = new ResultDto();
@@ -171,6 +178,8 @@ public class ProblemController {
      * @param files
      * @return
      */
+    @RequiresAuthentication
+    @RequiresRoles(value = {"Teacher", "Administrator"}, logical = Logical.OR)
     @RequestMapping("/uploadDataFile/{problemId}")
     public @ResponseBody ResultDto uploadProblemDataFile(@PathVariable("problemId") String problemId,
                      @RequestParam(value = "uploadFile", required = true)MultipartFile[] files) {
@@ -200,19 +209,18 @@ public class ProblemController {
     /**
      * Get current login user problem status.
      * @param currentUser
-     * @param session
      * @return
      */
-    private Map<Long, ProblemSolvedStatusType> getProblemStatus(UserDto currentUser, HttpSession session) {
+    private Map<Long, ProblemSolvedStatusType> getProblemStatus(UserDto currentUser) {
         Map<Long, ProblemSolvedStatusType> problemStatus = new HashMap<>();
         if (currentUser != null) {
             List<Long> triedProblemIds = statusService.findAllProblemIdsThatUserTried(
-                    currentUser.getUserId(), SessionUtil.isAdmin(session));
+                    currentUser.getUserId(), SessionUtil.isAdmin());
             for (Long triedProblemId : triedProblemIds) {
                 problemStatus.put(triedProblemId, ProblemSolvedStatusType.FAIL);
             }
             List<Long> acProblemIds = statusService.findAllProblemIdsThatUserSolved(
-                    currentUser.getUserId(), SessionUtil.isAdmin(session));
+                    currentUser.getUserId(), SessionUtil.isAdmin());
             for (Long acProblemId : acProblemIds) {
                 problemStatus.put(acProblemId, ProblemSolvedStatusType.PASS);
             }

@@ -8,18 +8,22 @@ import cn.edu.nuc.acmicpc.common.util.DateUtil;
 import cn.edu.nuc.acmicpc.common.util.EncryptUtil;
 import cn.edu.nuc.acmicpc.common.util.SessionUtil;
 import cn.edu.nuc.acmicpc.common.util.ValidateUtil;
-import cn.edu.nuc.acmicpc.dto.ContestDto;
-import cn.edu.nuc.acmicpc.dto.ContestProblemDto;
-import cn.edu.nuc.acmicpc.dto.ContestUserDto;
-import cn.edu.nuc.acmicpc.dto.UserDto;
+import cn.edu.nuc.acmicpc.dto.*;
 import cn.edu.nuc.acmicpc.dto.contest.ContestProblemDetailDto;
 import cn.edu.nuc.acmicpc.form.condition.ContestCondition;
+import cn.edu.nuc.acmicpc.form.condition.StatusCondition;
 import cn.edu.nuc.acmicpc.form.dto.contest.LoginContestDto;
 import cn.edu.nuc.acmicpc.form.dto.contest.ShowContestDto;
 import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
-import cn.edu.nuc.acmicpc.model.Contest;
+import cn.edu.nuc.acmicpc.model.RankList;
+import cn.edu.nuc.acmicpc.model.RankListDto;
+import cn.edu.nuc.acmicpc.model.RankListStatus;
 import cn.edu.nuc.acmicpc.service.*;
 import cn.edu.nuc.acmicpc.web.common.PageInfo;
+import com.google.common.base.Preconditions;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +51,17 @@ public class ContestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContestController.class);
 
+    private final Map<String, RankList> rankListPool = new HashMap<>();
+
+    private final long FETCH_INTERVAL = 10 * 1000; //10 seconds
+
     @Autowired
     private Settings settings;
     @Autowired
     private ContestService contestService;
     @Autowired
     private PictureService pictureService;
-
+    @Autowired
     private ProblemService problemService;
     @Autowired
     private ContestProblemService contestProblemService;
@@ -61,6 +69,8 @@ public class ContestController {
     private UserService userService;
     @Autowired
     private ContestUserService contestUserService;
+    @Autowired
+    private StatusService statusService;
 
     /**
      * user register contest
@@ -68,7 +78,8 @@ public class ContestController {
      * @param contestId
      * @return
      */
-    @RequestMapping("register/{userId}/{contestId}")
+    @RequiresAuthentication
+    @RequestMapping("/register/{userId}/{contestId}")
     public @ResponseBody ResultDto register(@PathVariable("userId") Long userId, @PathVariable("contestId") Long contestId) {
         ResultDto resultDto = new ResultDto();
         //check user
@@ -105,13 +116,14 @@ public class ContestController {
         return resultDto;
     }
 
+    @RequiresAuthentication
     @RequestMapping("search")
     public @ResponseBody ResultDto search(HttpSession session, @RequestBody(required = false) ContestCondition condition) {
         ResultDto resultDto = new ResultDto();
         if (condition == null) {
             condition = new ContestCondition();
         }
-        if (!SessionUtil.isAdmin(session)) {
+        if (!SessionUtil.isAdmin()) {
             condition.isVisible = true;
         }
         Map<String, Object> conditionMap = condition.toConditionMap();
@@ -137,6 +149,7 @@ public class ContestController {
         return resultDto;
     }
 
+    @RequiresAuthentication
     @RequestMapping("data/{contestId}")
     public @ResponseBody ResultDto data(@PathVariable("contestId") Long contestId, HttpSession session) {
         ResultDto resultDto = new ResultDto();
@@ -145,22 +158,22 @@ public class ContestController {
             LOGGER.error(String.format("不存在该比赛! contestId = %s", contestId));
             throw new AppException("不存在该比赛!");
         }
-        if (!contestDto.isVisible() && !SessionUtil.isAdmin(session)) {
+        if (!contestDto.isVisible() && !SessionUtil.isAdmin()) {
             LOGGER.error(String.format("不存在该比赛! contestId = %s", contestId));
             throw new AppException("不存在该比赛!");
         }
-        if (SessionUtil.checkContestPermission(session, contestId)) {
+        if (SessionUtil.checkContestPermission(contestId)) {
             resultDto.setStatus(StatusConstant.UNAUTHORIZED);
             return resultDto;
         }
 
         List<ContestProblemDetailDto> contestProblemDetailDtos;
-        contestDto.setType(SessionUtil.getContestType(session, contestId));
-        if (contestDto.getStatus().equals("Pending") && !SessionUtil.isAdmin(session)) {
+        contestDto.setType(SessionUtil.getContestType(contestId));
+        if (contestDto.getStatus().equals("Pending") && !SessionUtil.isAdmin()) {
             contestProblemDetailDtos = Collections.EMPTY_LIST;
         } else {
             contestProblemDetailDtos = contestProblemService.getContestProblemDetailDtoByContestId(contestId);
-            if (!SessionUtil.isAdmin(session)) {
+            if (!SessionUtil.isAdmin()) {
                 for (ContestProblemDetailDto contestProblemDetailDto : contestProblemDetailDtos) {
                     contestProblemDetailDto.setSource("");
                 }
@@ -173,6 +186,76 @@ public class ContestController {
         return resultDto;
     }
 
+    @RequiresAuthentication
+    @RequiresRoles(value = {"Normal"}, logical = Logical.OR)
+    @RequestMapping("/rankList/{contestId}")
+    public @ResponseBody ResultDto rankList(@PathVariable("contestId") Long contestId, HttpSession session) {
+        ResultDto resultDto = new ResultDto();
+        try {
+            resultDto.setResult(getRankListInfo(contestId));
+        } catch (Exception e) {
+            resultDto.setStatus(StatusConstant.SERVER_ERROR);
+            resultDto.setMessage(e.getMessage());
+        }
+        return resultDto;
+    }
+
+    private synchronized RankList getRankListInfo(Long contestId) {
+        Preconditions.checkNotNull(contestId);
+        String rankListName = contestId.toString();
+        RankList lastModified = rankListPool.get(rankListName);
+        if (lastModified != null &&
+                (System.currentTimeMillis() - lastModified.getLastFetch().getTime()) <= FETCH_INTERVAL) {
+            return lastModified;
+        }
+
+        ContestDto contestDto = contestService.getContestDtoByContestId(contestId);
+        if (contestDto == null) {
+            throw new AppException("不存在该比赛!");
+        }
+        if (contestDto.getStatus().equals("Pending")) {
+            throw new AppException("比赛暂未开始!");
+        }
+
+        // Fetch problem list
+        List<ContestProblemDetailDto> contestProblemList = contestProblemService
+                .getContestProblemDetailDtoByContestId(contestId);
+
+        // Fetch status list
+        StatusCondition statusCondition = new StatusCondition();
+        statusCondition.contestId = contestId;
+        statusCondition.isForAdmin = false;
+        List<StatusDto> statusList = statusService.getShowStatusList(statusCondition.toConditionMap(), null);
+
+        RankListDto rankListDto = new RankListDto();
+
+        //set problem
+        for (ContestProblemDetailDto problem : contestProblemList) {
+            rankListDto.addRankListProblem(problem.getProblemId().toString());
+        }
+
+        //set status
+        for (StatusDto statusDto : statusList) {
+            if (contestDto.getStartTime().after(statusDto.getTime()) ||
+                    contestDto.getEndTime().before(statusDto.getTime())) {
+                continue;
+            }
+            RankListStatus rankListStatus = new RankListStatus();
+            rankListStatus.setTried(1);
+            rankListStatus.setResult(statusDto.getResultId());
+            rankListStatus.setProblemTitle(statusDto.getProblemId().toString());
+            rankListStatus.setUserName(statusDto.getUsername());
+            rankListStatus.setNickName(statusDto.getNickname());
+            rankListStatus.setEmail(statusDto.getUsername());
+            rankListStatus.setTime(statusDto.getTime().getTime() - contestDto.getStartTime().getTime());
+            rankListDto.addStatus(rankListStatus);
+        }
+        RankList rankList = rankListDto.toRankList();
+        rankListPool.put(rankListName, rankList);
+        return rankList;
+    }
+
+    @RequiresAuthentication
     @RequestMapping("/loginContest")
     public @ResponseBody ResultDto loginContest(HttpSession session,
                         @RequestBody @Valid LoginContestDto loginContestDto, BindingResult validateResult) {
@@ -199,7 +282,7 @@ public class ContestController {
     private Map<String, String> checkLoginInfo(HttpSession session, LoginContestDto loginContestDto) {
         Map<String, String> errors = new HashMap<>();
         ContestDto contestDto = contestService.getContestDtoByContestId(loginContestDto.getContestId());
-        if (contestDto == null || (!contestDto.isVisible() && !SessionUtil.isAdmin(session))) {
+        if (contestDto == null || (!contestDto.isVisible() && !SessionUtil.isAdmin())) {
             throw new AppException("不存在该比赛!");
         }
 
@@ -207,7 +290,7 @@ public class ContestController {
             //public type, do nothing
         } else if (contestDto.getType() == ContestType.PRIVATE.ordinal()){
             //check password
-            if (!SessionUtil.isAdmin(session)) {
+            if (!SessionUtil.isAdmin()) {
                 if (!EncryptUtil.checkPassword(loginContestDto.getPassword(), contestDto.getPassword())) {
                     errors.put("password", "密码不正确!");
                 }
@@ -220,6 +303,8 @@ public class ContestController {
         return errors;
     }
 
+    @RequiresAuthentication
+    @RequiresRoles(value = {"Teacher", "Administrator"}, logical = Logical.OR)
     @RequestMapping("edit")
     public @ResponseBody ResultDto edit(@RequestBody @Valid ContestDto contestEditDto,
                     BindingResult validateResult) {
