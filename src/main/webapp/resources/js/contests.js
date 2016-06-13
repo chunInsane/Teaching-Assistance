@@ -248,6 +248,25 @@ let contestDetails = Vue.extend({
             this.submitProbId = this.problem.problemId;
             setProbAttr(this.problem);
         },
+        /**
+         * 加载 全部status
+         */
+        getStatusList: function (){
+            $("#tab_1 a").eq(2).tab('show');
+            this.search.contestId = this.contestId;
+            let pageInfo = getPageList2(1, this.search);
+            setPage2(pageInfo, this);
+        },
+        /**
+         * 加载整个排行榜
+         */
+        getRankList: function(){
+            this.search.contestId = this.contestId;
+            let pageInfo = getPageList2(1, this.search);
+            setPage2(pageInfo, this);
+            // 设置 rank 列表（此处初始化 ）
+            setRankList(this);
+        },
         /*
          * 根据 problemId 显示题目提交状态
          */
@@ -651,7 +670,6 @@ function getPageList2( p, search ){
             return false;
         }
     });
-
     return result;
 }
 /**

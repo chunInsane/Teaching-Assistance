@@ -157,8 +157,8 @@
                     <ul class="nav nav-tabs" role="tablist" id="tab_1">
                         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Overview</a></li>
                         <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Problems</a></li>
-                        <li role="presentation"><a href="#status" aria-controls="profile" role="tab" data-toggle="tab">Status</a></li>
-                        <li role="presentation"><a href="#rank" aria-controls="profile" role="tab" data-toggle="tab">Rank</a></li>
+                        <li role="presentation"><a v-on:click="getStatusList()" href="#status" aria-controls="profile" role="tab" data-toggle="tab">Status</a></li>
+                        <li role="presentation"><a v-on:click="getRankList()" href="#rank" aria-controls="profile" role="tab" data-toggle="tab">Rank</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
