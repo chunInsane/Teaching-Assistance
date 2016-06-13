@@ -1,6 +1,9 @@
 package cn.edu.nuc.acmicpc.security.filter;
 
+import cn.edu.nuc.acmicpc.common.constant.SessionConstant;
 import cn.edu.nuc.acmicpc.common.constant.StatusConstant;
+import cn.edu.nuc.acmicpc.common.util.DateUtil;
+import cn.edu.nuc.acmicpc.dto.UserDto;
 import cn.edu.nuc.acmicpc.form.dto.other.ResultDto;
 import cn.edu.nuc.acmicpc.form.dto.user.LoginUserDto;
 import cn.edu.nuc.acmicpc.service.UserService;
@@ -52,9 +55,15 @@ public class FormLoginFilter extends PathMatchingFilter {
                 if(loginSuccess) {
                     responseSuccess(resp);
                     return false;
+                } else {
+                    Class clz = (Class)req.getAttribute("shiroLoginFailure");
+                    responseFailure(resp, clz);
+                    return false;
                 }
+            } else {
+                responseUnautherized(resp);
+                return false;
             }
-            return true;//继续过滤器链
         } else {
             responseUnautherized(resp);
             return false;
@@ -105,6 +114,25 @@ public class FormLoginFilter extends PathMatchingFilter {
         }
     }
 
+    private void responseFailure(HttpServletResponse response, Class clz) {
+        ResultDto resultDto = new ResultDto();
+        resultDto.setStatus(StatusConstant.SERVER_ERROR);
+        resultDto.setMessage("用户名和密码不匹配!");
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.setHeader("Cache-Control", "no-cache");
+        PrintWriter pw = null;
+        try {
+            pw = response.getWriter();
+            pw.write(JSON.toJSONString(resultDto));
+        } catch (IOException e) {
+            LOGGER.error("Output information fail to response!");
+        } finally {
+            pw.close();
+        }
+    }
+
     private String getRequestPayload(HttpServletRequest req) {
         StringBuilder sb = new StringBuilder();
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(req.getInputStream()))) {
@@ -131,6 +159,13 @@ public class FormLoginFilter extends PathMatchingFilter {
             req.setAttribute("shiroLoginFailure", e.getClass());
             return false;
         }
+
+        //add user's information to shiro session and update user last login time
+        UserDto userDto = userService.getUserByUsername(username);
+        SecurityUtils.getSubject().getSession().setAttribute(SessionConstant.CURRENT_LOGIN_USER_KEY, userDto);
+        userDto.setLastLogin(DateUtil.getCurrentTime());
+        userService.updateUser(userDto);
+
         return true;
     }
 
