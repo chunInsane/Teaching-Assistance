@@ -262,8 +262,6 @@ let contestDetails = Vue.extend({
          */
         getRankList: function(){
             this.search.contestId = this.contestId;
-            // let pageInfo = getPageList2(1, this.search);
-            // setPage2(pageInfo, this);
             // 设置 rank 列表（此处初始化 ）
             setRankList(this);
         },
@@ -302,7 +300,7 @@ let contestDetails = Vue.extend({
                 problemId: this.submitProbId,
                 contestId: this.contestId,
                 languageId: this.language,
-                codeContent:this.code,
+                codeContent: this.code,
             };
             console.log(data);
             if(typeof data.contestId === "undefined" || data.contestId === "" || data.contestId == 0){
@@ -333,14 +331,18 @@ let contestDetails = Vue.extend({
                     layer.msg("提交数据失败!" + msg.message);
                     return false;
                 },
-            }).done(function(msg){
+            }).done(function(msg) {
+                let _this = this;
                 if(msg.status === 200){
                     layer.msg("提交成功!");
-                    setTimeout(function () {
-                        window.location.href = "/status/index.html?probId="+data.problemId;
-                        //console.log("status");
-                    },2000)
-                }else{
+                    $("#cancelSubmitProb").click();
+                    console.log(_this);
+                    _this.search.contestId = data.contestId;
+                    _this.search.problemId = data.problemId;
+                    let pageInfo = getPageList2(1, _this.search);
+                    setPage2(pageInfo, _this);
+                    $("#tab_1 a").eq(2).tab('show');
+                } else {
                     showAjaxMsg(msg);
                     return false;
                 }

@@ -35,6 +35,6 @@ public class EncryptUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(encoderByMd5("111111"));
+        System.out.println(encoderByMd5("111111", "administrator@ta.com"));
     }
 }

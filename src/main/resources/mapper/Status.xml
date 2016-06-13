@@ -95,7 +95,7 @@
                 </if>
             </trim>
         ) as s
-        left join (
+        inner join (
             select *
             from tb_user
             <trim prefix="where" suffixOverrides="and">
@@ -223,7 +223,7 @@
             <if test="resultId != null">`result_id` = #{resultId} and </if>
         </trim>
         ) as s
-        left join (
+        inner join (
         select *
         from tb_user
         <trim prefix="where" suffixOverrides="and">

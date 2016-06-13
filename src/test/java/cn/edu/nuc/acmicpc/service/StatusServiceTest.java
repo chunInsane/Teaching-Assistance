@@ -1,13 +1,17 @@
 package cn.edu.nuc.acmicpc.service;
 
 import cn.edu.nuc.acmicpc.common.BasicTest;
+import cn.edu.nuc.acmicpc.common.util.ObjectUtil;
 import cn.edu.nuc.acmicpc.dto.StatusDto;
 import cn.edu.nuc.acmicpc.model.Status;
+import cn.edu.nuc.acmicpc.web.common.PageInfo;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IDEA
@@ -18,6 +22,16 @@ public class StatusServiceTest extends BasicTest {
 
     @Autowired
     private StatusService statusService;
+
+    @Test
+    public void test() {
+        Map<String, Object> conditionMap = new HashMap<>();
+        conditionMap.put("userType", 2);
+        Long count = statusService.count(conditionMap);
+        PageInfo pageInfo = PageInfo.buildPageInfo(count, 1L, 15L, null);
+        List<StatusDto> statusDtos = statusService.getShowStatusList(conditionMap, pageInfo);
+        System.out.println(statusDtos);
+    }
 
     @Test
     public void test1() {

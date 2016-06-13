@@ -6,6 +6,8 @@ import cn.edu.nuc.acmicpc.dto.UserDto;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 
+import java.sql.Timestamp;
+
 /**
  * Created with IDEA
  * User: chuninsane
@@ -25,10 +27,24 @@ public class SessionUtil {
         return SecurityUtils.getSubject().hasRole(AuthenticationType.ADMIN.getDescription());
     }
 
+    public static void updateContestPermission(Long contestId) {
+        Session session = SecurityUtils.getSubject().getSession();
+        String key = SessionConstant.CONTEST_PERMISSION_KEY + contestId;
+        session.setAttribute(key, DateUtil.getCurrentTime());
+    }
+
     public static Boolean checkContestPermission(Long contestId) {
         Session session = SecurityUtils.getSubject().getSession();
         String key = SessionConstant.CONTEST_PERMISSION_KEY + contestId;
-        return session.getAttribute(key) != null ? true : false;
+        if (session.getAttribute(key) == null)
+            return false;
+        Timestamp loginTime = (Timestamp)session.getAttribute(key);
+        Long timeDiff = DateUtil.getCurrentTime().getTime() - loginTime.getTime();
+        if (timeDiff >= 0 && timeDiff <= SessionConstant.CONTEST_PERMISSION_INTERVAL) {
+            updateContestPermission(contestId);
+            return true;
+        }
+        return false;
     }
 
     public static Byte getContestType(Long contestId) {

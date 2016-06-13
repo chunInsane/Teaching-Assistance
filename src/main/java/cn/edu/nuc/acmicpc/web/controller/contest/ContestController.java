@@ -151,7 +151,7 @@ public class ContestController {
 
     @RequiresAuthentication
     @RequestMapping("data/{contestId}")
-    public @ResponseBody ResultDto data(@PathVariable("contestId") Long contestId, HttpSession session) {
+    public @ResponseBody ResultDto data(@PathVariable("contestId") Long contestId) {
         ResultDto resultDto = new ResultDto();
         ContestDto contestDto = contestService.getContestDtoByContestId(contestId);
         if (contestDto == null) {
@@ -162,9 +162,16 @@ public class ContestController {
             LOGGER.error(String.format("不存在该比赛! contestId = %s", contestId));
             throw new AppException("不存在该比赛!");
         }
-        if (SessionUtil.checkContestPermission(contestId)) {
-            resultDto.setStatus(StatusConstant.UNAUTHORIZED);
-            return resultDto;
+        if (!SessionUtil.isAdmin() && !SessionUtil.checkContestPermission(contestId)) {
+            LoginContestDto loginContestDto = new LoginContestDto();
+            loginContestDto.setContestId(contestId);
+            loginContestDto.setPassword("");
+            Map<String, String> errors = this.checkLoginInfo(loginContestDto);
+            if (errors.size() > 0) {
+                resultDto.setStatus(StatusConstant.SERVER_ERROR);
+                resultDto.setErrors(errors);
+                return resultDto;
+            }
         }
 
         List<ContestProblemDetailDto> contestProblemDetailDtos;
@@ -187,7 +194,6 @@ public class ContestController {
     }
 
     @RequiresAuthentication
-    @RequiresRoles(value = {"Normal"}, logical = Logical.OR)
     @RequestMapping("/rankList/{contestId}")
     public @ResponseBody ResultDto rankList(@PathVariable("contestId") Long contestId, HttpSession session) {
         ResultDto resultDto = new ResultDto();
@@ -226,6 +232,15 @@ public class ContestController {
         statusCondition.contestId = contestId;
         statusCondition.isForAdmin = false;
         List<StatusDto> statusList = statusService.getShowStatusList(statusCondition.toConditionMap(), null);
+        Collections.sort(statusList, new Comparator<StatusDto>() {
+            @Override
+            public int compare(StatusDto o1, StatusDto o2) {
+                if (!o1.getTime().equals(o2.getTime())) {
+                    return o1.getTime().before(o2.getTime()) ? -1 : 1;
+                 }
+                return 0;
+            }
+        });
 
         RankListDto rankListDto = new RankListDto();
 
@@ -257,14 +272,13 @@ public class ContestController {
 
     @RequiresAuthentication
     @RequestMapping("/loginContest")
-    public @ResponseBody ResultDto loginContest(HttpSession session,
-                        @RequestBody @Valid LoginContestDto loginContestDto, BindingResult validateResult) {
+    public @ResponseBody ResultDto loginContest(@RequestBody @Valid LoginContestDto loginContestDto, BindingResult validateResult) {
         ResultDto resultDto = new ResultDto();
         if (validateResult.hasErrors()) {
             resultDto.setStatus(StatusConstant.SERVER_ERROR);
             resultDto.setErrors(ValidateUtil.fieldErrorsToMap(validateResult.getFieldErrors()));
         } else {
-            Map<String, String> errors = checkLoginInfo(session, loginContestDto);
+            Map<String, String> errors = checkLoginInfo(loginContestDto);
             if (errors != null && errors.size() > 0) {
                 resultDto.setStatus(StatusConstant.SERVER_ERROR);
                 resultDto.setErrors(errors);
@@ -275,11 +289,10 @@ public class ContestController {
 
     /**
      * check login information when login contest.
-     * @param session
      * @param loginContestDto
      * @return
      */
-    private Map<String, String> checkLoginInfo(HttpSession session, LoginContestDto loginContestDto) {
+    private Map<String, String> checkLoginInfo(LoginContestDto loginContestDto) {
         Map<String, String> errors = new HashMap<>();
         ContestDto contestDto = contestService.getContestDtoByContestId(loginContestDto.getContestId());
         if (contestDto == null || (!contestDto.isVisible() && !SessionUtil.isAdmin())) {
@@ -288,11 +301,16 @@ public class ContestController {
 
         if (contestDto.getType() == ContestType.PUBLIC.ordinal()) {
             //public type, do nothing
-        } else if (contestDto.getType() == ContestType.PRIVATE.ordinal()){
+        } else if (contestDto.getType() == ContestType.PRIVATE.ordinal()) {
+            if (SessionUtil.checkContestPermission(loginContestDto.getContestId())) {
+                return errors;
+            }
             //check password
             if (!SessionUtil.isAdmin()) {
                 if (!EncryptUtil.checkPassword(loginContestDto.getPassword(), contestDto.getPassword())) {
                     errors.put("password", "密码不正确!");
+                } else {
+                    SessionUtil.updateContestPermission(loginContestDto.getContestId());
                 }
             }
         } else {

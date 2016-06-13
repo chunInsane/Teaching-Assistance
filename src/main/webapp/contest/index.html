@@ -419,7 +419,7 @@
                                     <td v-for="item in  problemList" class="bg-black white">
                                         <div>
                                             <span>{{ item.solved }} / {{ item.tried }}</span>
-                                            <span>({{parseInt((item.solved / item.tried) *100) }}%)</span>
+                                            <span v-if="item.tried != 0">({{parseInt((item.solved / item.tried) *100) }}%)</span>
                                         </div>
                                     </td>
                                 </tr>

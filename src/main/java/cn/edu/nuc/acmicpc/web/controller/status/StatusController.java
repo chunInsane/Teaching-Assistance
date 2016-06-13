@@ -1,6 +1,7 @@
 package cn.edu.nuc.acmicpc.web.controller.status;
 
 import cn.edu.nuc.acmicpc.common.constant.StatusConstant;
+import cn.edu.nuc.acmicpc.common.enums.ContestType;
 import cn.edu.nuc.acmicpc.common.enums.JudgeResultType;
 import cn.edu.nuc.acmicpc.common.enums.JudgeReturnType;
 import cn.edu.nuc.acmicpc.common.exception.AppException;
@@ -80,7 +81,8 @@ public class StatusController {
                     throw new AppException("不存在该比赛!");
                 }
                 //check permission
-                if (SessionUtil.checkContestPermission(condition.contestId)) {
+                if (contestDto.getType() == ContestType.PRIVATE.ordinal() &&
+                        !SessionUtil.checkContestPermission(condition.contestId)) {
                     resultDto.setStatus(StatusConstant.UNAUTHORIZED);
                     return resultDto;
                 }
@@ -89,6 +91,7 @@ public class StatusController {
                 //TODO
             }
         } else {
+            condition.isForAdmin = true;
             if (condition.contestId != -1) {
                 ContestDto contestDto = contestService.getContestDtoByContestId(condition.contestId);
                 if (contestDto == null) {
@@ -172,9 +175,9 @@ public class StatusController {
                 if (currentTime.before(contestDto.getStartTime()) || currentTime.after(contestDto.getEndTime())) {
                     throw new AppException("比赛已经结束!");
                 }
-                if (!SessionUtil.checkContestPermission(submitDto.getContestId())) {
-                    throw new AppException("尚未注册该比赛!");
-                }
+//                if (!SessionUtil.checkContestPermission(submitDto.getContestId())) {
+//                    throw new AppException("尚未注册该比赛!");
+//                }
             }
         } else { //status not in contest
             if (!SessionUtil.isAdmin()) {
