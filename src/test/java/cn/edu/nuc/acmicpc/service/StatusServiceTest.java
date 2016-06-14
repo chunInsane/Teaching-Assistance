@@ -78,12 +78,8 @@ public class StatusServiceTest extends BasicTest {
 
     @Test
     public void test8() {
-        List<StatusDto> statusDtos = statusService.getQueuingStatus(true);
+        List<StatusDto> statusDtos = statusService.getQueuingStatus(false);
         System.out.println(statusDtos.size());
-        Assert.assertEquals(1, statusDtos.size());
-        statusDtos = statusService.getQueuingStatus(false);
-        System.out.println(statusDtos.size());
-        Assert.assertEquals(1, statusDtos.size());
     }
 
     @Test

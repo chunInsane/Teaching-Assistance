@@ -85,7 +85,6 @@
                 <if test="problemId != null">`problem_id` = #{problemId} and </if>
                 <if test="languageId != null">`language_id` = #{languageId} and </if>
                 <if test="contestId != null">`contest_id` = #{contestId} and </if>
-                <if test="contestId == null">`contest_id` is null and </if>
                 <if test="result != null">`result_id` = #{result} and </if>
                 <if test="results != null">
                   `result_id` in
@@ -95,7 +94,7 @@
                 </if>
             </trim>
         ) as s
-        inner join (
+        left join (
             select *
             from tb_user
             <trim prefix="where" suffixOverrides="and">

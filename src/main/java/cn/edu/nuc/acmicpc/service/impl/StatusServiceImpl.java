@@ -69,7 +69,7 @@ public class StatusServiceImpl implements StatusService {
             results.addAll(JudgeResultType.JUDGE_JUDGING.getResults());
             params.put("results", results);
         } else {
-            params.put("result", JudgeResultType.JUDGE_WAIT.getResults());
+            params.put("results", JudgeResultType.JUDGE_WAIT.getResults());
         }
         return statusMapper.getStatusList(params);
     }
